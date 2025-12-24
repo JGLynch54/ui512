@@ -1,0 +1,25 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/.vs/ui512v1.6
+/.vs/ui512.slnx/v18
+/ui512v1.6/x64/Debug/ui512v1.6.tlog
+/ui512v1.6/x64/Debug/ui512v1.6.log
+/x64/Debug
+/ui512_unit_tests/x64/Debug/pch.obj
+/ui512_unit_tests/x64/Debug/ui512_unit_tests.dll.recipe
+/ui512_unit_tests/x64/Debug/ui512_unit_tests.ilk
+/ui512_unit_tests/x64/Debug/ui512_unit_tests.log
+/ui512_unit_tests/x64/Debug/ui512_unit_tests.obj
+/ui512_unit_tests/x64/Debug/ui512_unit_tests.pch
+/ui512_unit_tests/x64/Debug/vc145.pdb
+/ui512_unit_tests/x64/Debug/vc145.idb
+/ui512_unit_tests/x64/Debug/ui512_unit_tests_subtraction.obj
+/ui512_unit_tests/x64/Debug/ui512_unit_tests.tlog/CL.command.1.tlog
+/ui512_unit_tests/x64/Debug/ui512_unit_tests.tlog/Cl.items.tlog
+/ui512_unit_tests/x64/Debug/ui512_unit_tests.tlog/CL.read.1.tlog
+/ui512_unit_tests/x64/Debug/ui512_unit_tests.tlog/CL.write.1.tlog
+/ui512_unit_tests/x64/Debug/ui512_unit_tests.tlog/link.command.1.tlog
+/ui512_unit_tests/x64/Debug/ui512_unit_tests.tlog/link.write.1.tlog
+/ui512_unit_tests/x64/Debug/ui512_unit_tests.tlog/ui512_unit_tests.lastbuildstate
