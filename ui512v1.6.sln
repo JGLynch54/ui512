@@ -1,0 +1,60 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 18
+VisualStudioVersion = 18.1.11312.151 d18.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ui512v1.6", "ui512v1.6.vcxproj", "{D9144C10-737C-41A4-949E-BD83A8A6B785}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8EC462FD-D22E-90A8-E5CE-7E832BA40C5D}"
+	ProjectSection(SolutionItems) = preProject
+		ReadMe.md = ReadMe.md
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ui512_unit_tests", "ui512_unit_tests\ui512_unit_tests.vcxproj", "{18A111A0-ECF2-6AD4-DB84-CE0D017A1ED6}"
+	ProjectSection(ProjectDependencies) = postProject
+		{D9144C10-737C-41A4-949E-BD83A8A6B785} = {D9144C10-737C-41A4-949E-BD83A8A6B785}
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "includes", "includes", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+	ProjectSection(SolutionItems) = preProject
+		includes\ui512_compile_time_options.inc = includes\ui512_compile_time_options.inc
+		includes\ui512_externs.inc = includes\ui512_externs.inc
+		includes\ui512_legalnotes.inc = includes\ui512_legalnotes.inc
+		includes\ui512_macros.inc = includes\ui512_macros.inc
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D9144C10-737C-41A4-949E-BD83A8A6B785}.Debug|x64.ActiveCfg = Debug|x64
+		{D9144C10-737C-41A4-949E-BD83A8A6B785}.Debug|x64.Build.0 = Debug|x64
+		{D9144C10-737C-41A4-949E-BD83A8A6B785}.Debug|x86.ActiveCfg = Debug|Win32
+		{D9144C10-737C-41A4-949E-BD83A8A6B785}.Debug|x86.Build.0 = Debug|Win32
+		{D9144C10-737C-41A4-949E-BD83A8A6B785}.Release|x64.ActiveCfg = Release|x64
+		{D9144C10-737C-41A4-949E-BD83A8A6B785}.Release|x64.Build.0 = Release|x64
+		{D9144C10-737C-41A4-949E-BD83A8A6B785}.Release|x86.ActiveCfg = Release|Win32
+		{D9144C10-737C-41A4-949E-BD83A8A6B785}.Release|x86.Build.0 = Release|Win32
+		{18A111A0-ECF2-6AD4-DB84-CE0D017A1ED6}.Debug|x64.ActiveCfg = Debug|x64
+		{18A111A0-ECF2-6AD4-DB84-CE0D017A1ED6}.Debug|x64.Build.0 = Debug|x64
+		{18A111A0-ECF2-6AD4-DB84-CE0D017A1ED6}.Debug|x86.ActiveCfg = Debug|Win32
+		{18A111A0-ECF2-6AD4-DB84-CE0D017A1ED6}.Debug|x86.Build.0 = Debug|Win32
+		{18A111A0-ECF2-6AD4-DB84-CE0D017A1ED6}.Release|x64.ActiveCfg = Release|x64
+		{18A111A0-ECF2-6AD4-DB84-CE0D017A1ED6}.Release|x64.Build.0 = Release|x64
+		{18A111A0-ECF2-6AD4-DB84-CE0D017A1ED6}.Release|x86.ActiveCfg = Release|Win32
+		{18A111A0-ECF2-6AD4-DB84-CE0D017A1ED6}.Release|x86.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{02EA681E-C7D8-13C7-8484-4AC65E1B71E8} = {8EC462FD-D22E-90A8-E5CE-7E832BA40C5D}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {74AFCD22-4957-4879-9FA7-35287C3BE141}
+	EndGlobalSection
+EndGlobal

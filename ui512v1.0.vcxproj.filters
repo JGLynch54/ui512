@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <MASM Include="ui512_clear_copy_set.asm" />
+    <MASM Include="ui512_compare.asm" />
+    <MASM Include="ui512_addition.asm" />
+    <MASM Include="ui512_subtraction.asm" />
+    <MASM Include="ui512_multiply.asm" />
+    <MASM Include="ui512_global_data.asm" />
+    <MASM Include="ui512_division.asm" />
+    <MASM Include="ui512_significance.asm" />
+    <MASM Include="ui512_shift.asm" />
+    <MASM Include="ui512_bitops.asm" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ReadMe.md" />
+  </ItemGroup>
+</Project>
