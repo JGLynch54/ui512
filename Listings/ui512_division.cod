@@ -1,0 +1,1317 @@
+Microsoft (R) Macro Assembler (x64) Version 14.50.35721.0   12/28/25 07:42:47
+ui512_division.asm					     Page 1 - 1
+
+
+				;
+				;			ui512_division
+				;
+				;--------------------------------------------------------------------------------------------------------------------------------------------------------------
+				;
+				;			File:			ui512_division.asm
+				;			Author:			John G. Lynch
+				;			Legal:			Copyright @2025, per MIT License below
+				;			Date:			November 19, 2025  (file creation)
+
+								INCLUDE			ui512_legalnotes.inc
+			      C ;
+			      C ;			ui512 Legal Notes
+			      C ;
+			      C ;--------------------------------------------------------------------------------------------------------------------------------------------------------------
+			      C ;
+			      C ;			File:			ui512_legalnotes.inc
+			      C ;			Author:			John G. Lynch
+			      C ;			Legal:			Copyright 2025, per MIT License included
+			      C ;			Date:			Octoberr 24, 2025
+			      C ;
+			      C IFNDEF							ui512_legalnotes_INC
+ = 00000001		      C ui512_legalnotes_INC			EQU		1
+			      C 
+			      C ;--------------------------------------------------------------------------------------------------------------------------------------------------------------
+			      C ;
+			      C ;			Notes:
+			      C ;				ui512 is a small project to provide basic operations for a variable type of unsigned 512 bit integer.
+			      C ;
+			      C ;				ui512a provides basic operations: zero, copy, compare, add, subtract.
+			      C ;				ui512b provides basic bit-oriented operations: shift left, shift right, and, or, not, least significant bit and most significant bit.
+			      C ;               ui512md provides multiply and divide.
+			      C ;
+			      C ;				It is written in assembly language, using the MASM (ml64) assembler provided as an option within Visual Studio.
+			      C ;				(currently using VS Community 2022 17.14.10)
+			      C ;
+			      C ;				It provides external signatures that allow linkage to C and C++ programs,
+			      C ;				where a shell/wrapper could encapsulate the methods as part of an object.
+			      C ;
+			      C ;				Note: X64 ZMM regs are "little-endian". The 8 QWORD C array declarion is "big-endian".
+			      C ;				In memory the most significant word is first: var[0], the least last var[7]. Normally not an issue,
+			      C ;				but when that var is laoded in a Z-reg, the least significant is first, and the most last, which is
+			      C ;				the way z-regs are loaded, but convention has the z-reg first word commonly termed the most significant, 
+			      C ;				which is not the way our c arrays are defined. Not an issue programmatically, but often a qword shift left, or right
+			      C ;				or a carry or borrow to the next most significant word is not the same when the data is in a z-reg.
+			      C ;
+			      C ;				It has assembly time options directing the use of Intel processor extensions: AVX4, AVX2, SIMD, or none:
+			      C ;				(Z (512), Y (256), or X (128) registers, or regular Q (64bit)).
+			      C ;
+			      C ;				Note: The file "compile_time_options.inc" contains the options that can be configured for extension usage, and other options.
+			      C ;
+			      C ;				If processor extensions are used, the caller must align the variables declared and passed
+			      C ;				on the appropriate byte boundary (e.g. alignas 64 for 512)
+			      C ;
+			      C ;				The modules (in total) are very light-weight (less than 10K bytes) and relatively fast,
+			      C ;				but is not intended for all processor types or all environments. 
+			      C ;
+			      C ;				Intended use cases:
+			      C ;					1.) a "sum of primes" for primes up to 2^48. 
+			      C ;					2.) elliptical curve cryptography (ECC)
+			      C ;
+			      C ;--------------------------------------------------------------------------------------------------------------------------------------------------------------
+			      C ;
+			      C ;			MIT License
+			      C ;
+			      C ;			Copyright (c) 2024 John G. Lynch
+			      C ;
+			      C ;				Permission is hereby granted, free of charge, to any person obtaining a copy
+			      C ;				of this software and associated documentation files (the "Software"), to deal
+			      C ;				in the Software without restriction, including without limitation the rights
+			      C ;				to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+			      C ;				copies of the Software, and to permit persons to whom the Software is
+			      C ;				furnished to do so, subject to the following conditions:
+			      C ;
+			      C ;				The above copyright notice and this permission notice shall be included in all
+			      C ;				copies or substantial portions of the Software.
+			      C ;
+			      C ;				THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+			      C ;				IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+			      C ;				FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+			      C ;				AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+			      C ;				LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+			      C ;				OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+			      C ;				SOFTWARE.
+			      C ;
+			      C ENDIF			; ui512_legalnotes_INC
+			      C 
+								INCLUDE			ui512_compile_time_options.inc
+			      C ;
+			      C ;			ui512_compile_time_options
+			      C ;
+			      C ;--------------------------------------------------------------------------------------------------------------------------------------------------------------
+			      C ;
+			      C ;			File:			ui512_compile_time_options.inc
+			      C ;			Author:			John G. Lynch
+			      C ;			Legal:			Copyright @2025, per MIT License included
+			      C ;			Date:			August 20, 2025 (file creation)
+			      C ;
+			      C IFNDEF							compile_time_options_INC
+ = 1			      C compile_time_options_INC		EQU			<1>
+			      C 
+			      C ;--------------------------------------------------------------------------------------------------------------------------------------------------------------
+			      C ;			Configuration choices
+			      C ;
+			      C ;	Note: Choosing these options requires knowledge of the target machine CPU model. If you are unsure of the capabiites of the target machine CPU,
+			      C ;	You can use the "CPU-Z" tool. https://www.cpuid.com/downloads/cpu-z/cpu-z_2.09-en.exe 
+			      C ;	Basically, Intel Skylake and later can use "Z", Haswell and later can use BMI2, etc. 
+			      C ;	Too many processors, options, vendors for me to list here. Go to the CPU vendor specifications, or use the tool to inform your choice.
+			      C ;
+			      C ;	Note: This is intended to be a mutually exclusive choice (UseZ thru UseQ).
+			      C ;	However, the coding of the options selects the "highest" one used and ignores the rest ( If __UseZ ... ELSEIF __UseY ... )
+			      C 
+ = 00000000		      C __UseZ			EQU				0									; Use AVX4 processor features (512 bit registers and instructions)
+ = 00000000		      C __UseY			EQU				0									; Use AVX2 processor features (256 bit registers and instructions)
+ = 00000000		      C __UseX			EQU				0									; Use SIMD/SSE processor features (128 bit registers and instructions)
+ = 00000001		      C __UseQ			EQU				1									; Do not use extensions, use standard x64 bit registers and instructions
+			      C ;
+ = 00000001		      C __UseBMI2		EQU				1									; Bit manipulation instructions (Haswell and later) ref:https://en.wikipedia.org/wiki/X86_Bit_manipulation_instruction_set
+			      C ;
+ = 00000001		      C __VerifyRegs	EQU				1									; in debug mode, or with unit tests, define routine to verify non-volatile regs 
+ = 00000000		      C __CheckAlign	EQU				0									; User is expected to pass arguments aligned on 64 byte boundaries, 
+			      C ;																	; This setting enforces that with a check. It should not be necessary, but included to help debugging
+			      C 
+			      C ENDIF			; ui512_compile_time_options_INC
+			      C 
+								INCLUDE			ui512_macros.inc
+			      C ;
+			      C ;			ui512 Macros
+			      C ;
+			      C ;--------------------------------------------------------------------------------------------------------------------------------------------------------------
+			      C ;
+			      C ;			File:			ui512_macros.inc
+			      C ;			Author:			John G. Lynch
+			      C ;			Legal:			Copyright @2025, per MIT License included
+			      C ;			Date:			October 24, 2025  (file creation)
+			      C ;
+			      C IFNDEF							ui512_macros_INC
+ = 1			      C ui512_macros_INC				EQU		<1>
+			      C 
+			      C ;--------------------------------------------------------------------------------------------------------------------------------------------------------------
+			      C ;
+			      C ; Some coding shortcuts
+			      C ;
+ = ZMMWORD PTR		      C ZM_PTR			EQU				ZMMWORD PTR 
+ = YMMWORD PTR		      C YM_PTR			EQU				YMMWORD PTR
+ = XMMWORD PTR		      C XM_PTR			EQU				XMMWORD PTR
+ = QWORD PTR		      C Q_PTR			EQU				QWORD PTR
+ = DWORD PTR		      C D_PTR			EQU				DWORD PTR
+ = WORD PTR		      C W_PTR			EQU				WORD PTR
+ = BYTE PTR		      C B_PTR			EQU				BYTE PTR
+ = DWORD BCST		      C m32BCST			EQU				DWORD BCST
+ = QWORD BCST		      C m64BCST			EQU				QWORD BCST
+			      C LPVOID			TYPEDEF			PTR VOID
+			      C 
+			      C ; Mask codes (for compares using instructions like VPCMPUQ)
+ = 00000000		      C CPEQ			EQU				0
+ = 00000001		      C CPLT			EQU				1
+ = 00000002		      C CPLE			EQU				2
+ = 00000003		      C CPFALSE			EQU				3
+ = 00000004		      C CPNE			EQU				4
+ = 00000005		      C CPGE			EQU				5
+ = 00000006		      C CPGT			EQU				6
+ = 00000007		      C CPTRUE			EQU				7
+			      C 
+			      C ; Masks commonly used: here in Record form, which can be used as immediate values. Example: OR	R8D, MASK kMask.b8
+			      C kMask			RECORD			b8:1, b7:1, b6:1, b5:1, b4:1, b3:1, b2:1, b1:1, b0:1
+			      C 
+			      C ; Return codes commonly used.	
+ = 00000000		      C retcode_zero	EQU				0
+ = 00000001		      C retcode_one		EQU				1
+ =-00000001		      C retcode_neg_one	EQU				-1
+			      C 
+			      C ;--------------------------------------------------------------------------------------------------------------------------------------------------------------
+			      C ;           Notes on x64 calling conventions        specifically "fast call"
+			      C ; ref: https://learn.microsoft.com/en-us/cpp/build/x64-calling-convention?view=msvc-170
+			      C ; The callers first four parameters are passed in registers: RCX, RDX, R8, R9 if integer or address; if floating point XMM0L, XMM1L, XMM2L, XMM3L
+			      C ; return (if any) is in EAX
+			      C ;
+			      C ; RAX, RCX, RDX, R8, R9, R10, R11 are considered volatile, and do not need to be saved
+			      C ; XMM0, YMM0, ZMM0 and  ..1, ..2, ..3, ..4, and ..5 are considered volatile, and do not need to be saved
+			      C ; ZMM16 to ZMM31: volatile, also do not need to be zeroed to resume full clock speeds
+			      C ;
+			      C ; R12, R13, R14, R15, RDI, RSI, RBX, RBP, RSP are non-volatile and if used, must be restored
+			      C ; XMM, YMM, and ZMM ..6 thru 15 are non-volatile and if used, must be restored
+			      C ;
+			      C ; A "leaf" function is one that does not call and does not change non volatile registers
+			      C ; leaf functionss therefore do not need frame, prolog or epilog
+			      C ;
+			      C 
+			      C ;--------------------------------------------------------------------------------------------------------------------------------------------------------------
+			      C ; Selected macros from "macamd64.inc" (c) Microsoft Corporation
+			      C ;	These macros generate .xdata and .pdata entries in the executable image file.
+			      C ;	The entries assist in exception and debugging; helping 'unwind' operations.
+			      C ;	Only a few macros are included, and are reformatted to match coding style:;	indents and capitalization.
+			      C ;
+			      C ;--------------------------------------------------------------------------------------------------------------------------------------------------------------
+			      C ; Leaf_Entry <Name>
+			      C ;
+			      C ; Macro Description:
+			      C ;   This macro indicates the beginning of a leaf function.;
+			      C ;
+			      C ; Arguments:
+			      C ;   Name - Supplies the name of the function
+			      C ;   
+			      C Leaf_Entry		MACRO			Name
+			      C 				DB				6 DUP (0cch)
+			      C 				ALIGN			16
+			      C 				PUBLIC			Name
+			      C Name			PROC
+			      C ; Addresses of param regs "home" after reg pushs, and _allocspace adjust
+			      C RCXHome			EQU				Q_PTR [ RSP + ( 1 * 8 ) ]	
+			      C RDXHome			EQU				Q_PTR [ RSP + ( 2 * 8 ) ]
+			      C R8Home			EQU				Q_PTR [ RSP + ( 3 * 8 ) ]
+			      C R9Home			EQU				Q_PTR [ RSP + ( 4 * 8 ) ]
+			      C 				ENDM
+			      C ;--------------------------------------------------------------------------------------------------------------------------------------------------------------
+			      C ; Proc_w_Local	ProcName, LocalStructName, NV_Regs_Used:vararg
+			      C ;
+			      C Proc_w_Local	MACRO			ProcName, LocalStructName, NV_Regs_Used:vararg
+			      C 
+			      C _shadowspace	EQU				40h								; stack space for caller (at top) and callee (at bottom)
+			      C _localspace		=				sizeof (LocalStructName)		; space needed (on stack) for local variables
+			      C _alignspace		EQU				64								; amount of space that might get truncated to get frame space aligned on specified boundary (64)
+			      C _allocspace		=				_localspace + ( 2 * _shadowspace) + _alignspace	; calculate total stack space to allocate.
+			      C 
+			      C 				DB				6 DUP (0cch)
+			      C 				ALIGN			16
+			      C 				PUBLIC			ProcName						; Declare code section, public proc, no prolog, no frame, exceptions handled by caller
+			      C ProcName		PROC			FRAME
+			      C 				
+			      C 				MOV				[ RSP + ( 1 * 8) ], RCX
+			      C 				push_reg        RBP								; standard prologue code
+			      C 
+			      C 	nRegs = 1
+			      C 				FOR				reg, <NV_Regs_Used>				; save specified non-volatile regs on stack (in top shadowspace)
+			      C 				push_reg		reg
+			      C 	nRegs = nRegs + 1
+			      C 				ENDM
+			      C 
+			      C 				SUB				RSP, _allocspace				; set stack pointer down by space needed (locals+ (2 * shadowspace))
+			      C 				.ALLOCSTACK		_allocspace
+			      C 	
+			      C ; set frame pointer within new space, but above shadowspace
+			      C 				LEA				RBP, ( _shadowspace + _alignspace ) [ RSP ]
+			      C 				AND				RBP, -_alignspace				; truncate low bits of base pointer to yield aligned pointer
+			      C 
+			      C 				.ENDPROLOG
+			      C ; Addresses of param regs "home" after reg pushs, and _allocspace adjust
+			      C RCXHome			EQU				Q_PTR  [ RSP + ( _allocspace + ( ( nRegs + 1 ) * 8 ) ) ]
+			      C RDXHome			EQU				Q_PTR  [ RSP + ( _allocspace + ( ( nRegs + 2 ) * 8 ) ) ] 
+			      C R8Home			EQU				Q_PTR  [ RSP + ( _allocspace + ( ( nRegs + 3 ) * 8 ) ) ]
+			      C R9Home			EQU				Q_PTR  [ RSP + ( _allocspace + ( ( nRegs + 4 ) * 8 ) ) ]
+			      C l_Ptr			EQU				[RBP] + LocalStructName			; set up shortcut for accessing local data structure
+			      C 				ENDM
+			      C 
+			      C ;--------------------------------------------------------------------------------------------------------------------------------------------------------------
+			      C ; Local_Exit	NV_Regs_Used:vararg
+			      C ;
+			      C Local_Exit		MACRO			NV_Regs_Used:vararg
+			      C 				ADD				RSP,  _allocspace
+			      C 				FOR				reg, <NV_Regs_Used>
+			      C 				POP				reg
+			      C 				ENDM 
+			      C 				POP				RBP
+			      C 				RET
+			      C 				ENDM
+			      C 
+			      C ;--------------------------------------------------------------------------------------------------------------------------------------------------------------
+			      C ; push_reg	reg (non-volatile) to push
+			      C ;
+			      C push_reg		MACRO			reg
+			      C 				PUSH			reg
+			      C 				.PUSHREG		reg
+			      C 				ENDM
+			      C 
+			      C ;--------------------------------------------------------------------------------------------------------------------------------------------------------------
+			      C ; CheckAlign <RAddr>
+			      C ;
+			      C ;			Test passed variable addresses for 64 byte alignment
+			      C ;			Note: Better performance if this is off, but for debugging, maybe have it on
+			      C ;
+			      C CheckAlign		MACRO			Raddr:REQ, ExitLbl:VARARG
+			      C 	IF	__CheckAlign
+			      C 				TEST			Raddr, 63							; Is specified param aligned 64?
+			      C 				JZ				@F									; Yes, passes test, continue
+			      C 				MOV				EAX, 0C0000005h						; Windows code for General Protection Fault	
+			      C 		IFNB	<ExitLbl>
+			      C 				JMP				ExitLbl								; Return to caller, with GPFault code in EAX
+			      C 		ELSE
+			      C 				RET													; No, fault return with err code
+			      C 		ENDIF
+			      C @@:
+			      C 	ENDIF
+			      C 				ENDM
+			      C 
+			      C 
+			      C ;--------------------------------------------------------------------------------------------------------------------------------------------------------------
+			      C ;			Zero a 512 bit destination, conditional assembly based on configuration parameters
+			      C ;
+			      C Zero512			MACRO			dest:REQ
+			      C 	IF		__UseZ
+			      C 				CheckAlign		dest
+			      C 				VPXORQ			ZMM31, ZMM31, ZMM31
+			      C 				VMOVDQA64		ZM_PTR [ dest ], ZMM31
+			      C 	ELSEIF	__UseY
+			      C 				CheckAlign		dest
+			      C 				VPXORQ			YMM4, YMM4, YMM4
+			      C 				FOR				idx, < 0, 4 >
+			      C 				VMOVDQA64		YM_PTR [ dest ] [ idx * 8 ], YMM4
+			      C 				ENDM
+			      C 	ELSEIF	__UseX
+			      C 				CheckAlign		dest
+			      C 				PXOR			XMM4, XMM4
+			      C 				FOR				idx, < 0, 2, 4, 6 >
+			      C 				MOVDQA			XM_PTR [ dest ] [ idx * 8 ], XMM4
+			      C 				ENDM		
+			      C 	ELSE
+			      C 				XOR				RAX, RAX
+			      C 				FOR				idx,  < 0, 1, 2, 3, 4, 5, 6, 7 >
+			      C 				MOV				Q_PTR [ dest ] [ idx * 8 ], RAX
+			      C 				ENDM
+			      C 	ENDIF
+			      C 				ENDM
+			      C 
+			      C ;--------------------------------------------------------------------------------------------------------------------------------------------------------------
+			      C ;			Zero a 512 bit destination, always use Q_PTR, avoids clock penalty from using SIMD
+			      C ;
+			      C Zero512Q		MACRO			dest:REQ
+			      C 				XOR				RAX, RAX
+			      C 				FOR				idx,  < 0, 1, 2, 3, 4, 5, 6, 7 >
+			      C 				MOV				Q_PTR [ dest ] [ idx * 8 ], RAX
+			      C 				ENDM
+			      C 
+			      C 				ENDM
+			      C 
+			      C ;--------------------------------------------------------------------------------------------------------------------------------------------------------------
+			      C ;			Copy a 512 bit source to destination, conditional assembly based on configuration parameters
+			      C ;
+			      C Copy512			MACRO			dest:REQ, src:REQ
+			      C 	IF		__UseZ 
+			      C 				CheckAlign		dest
+			      C 				CheckAlign		src
+			      C 				VMOVDQA64		ZMM31, ZM_PTR [ src ]
+			      C 				VMOVDQA64		ZM_PTR [ dest ], ZMM31
+			      C 	ELSEIF	__UseY
+			      C 				CheckAlign		dest
+			      C 				CheckAlign		src
+			      C 				VMOVDQA64		YMM4, YM_PTR [ src + 0 * 8 ]
+			      C 				VMOVDQA64		YM_PTR [ dest ] [ 0 * 8 ], YMM4	; alternate ymm regs in case pipeline can execute next without waiting for this.
+			      C 				VMOVDQA64		YMM5, YM_PTR [ src ] [ 4 * 8 ]
+			      C 				VMOVDQA64		YM_PTR [ dest ] [ 4 * 8 ], YMM5
+			      C 	ELSEIF	__UseX
+			      C 				CheckAlign		dest
+			      C 				CheckAlign		src
+			      C 				MOVDQA			XMM4, XM_PTR [ src ] [ 0 * 8 ]
+			      C 				MOVDQA			XM_PTR [ dest ] [ 0 * 8 ], XMM4
+			      C 				MOVDQA			XMM3, XM_PTR [ src ] [ 2 * 8 ]
+			      C 				MOVDQA			XM_PTR [ dest ] [ 2 * 8 ], XMM3
+			      C 				MOVDQA			XMM4, XM_PTR [ src ] [ 4 * 8 ]
+			      C 				MOVDQA			XM_PTR [ dest ] [ 4 * 8 ], XMM4
+			      C 				MOVDQA			XMM3, XM_PTR [ src ] [ 6 * 8 ]
+			      C 				MOVDQA			XM_PTR [ dest ] [ 6 * 8 ], XMM3
+			      C 	ELSE
+			      C 				FOR				idx, < 0, 1, 2, 3, 4, 5, 6, 7 >
+			      C 				MOV				RAX, Q_PTR [ src ] [ idx * 8 ]
+			      C 				MOV				Q_PTR [ dest ] [ idx * 8 ], RAX
+			      C 				ENDM
+			      C 	ENDIF
+			      C 				ENDM
+			      C 
+			      C ;--------------------------------------------------------------------------------------------------------------------------------------------------------------
+			      C ;			Copy a 512 bit source to destination, always use Q_PTR, avoids clock penalty from using SIMD
+			      C ;
+			      C Copy512Q		MACRO			dest:REQ, src:REQ
+			      C 				FOR				idx, < 0, 1, 2, 3, 4, 5, 6, 7 >
+			      C 				MOV				RAX, Q_PTR [ src ] [ idx * 8 ]
+			      C 				MOV				Q_PTR [ dest ] [ idx * 8 ], RAX
+			      C 				ENDM
+			      C 
+			      C 				ENDM
+			      C 
+			      C ;--------------------------------------------------------------------------------------------------------------------------------------------------------------
+			      C ;	VerifyRegs <none>
+			      C ;
+			      C ;			If option is on, generate a function, callable by unit test routines, 
+			      C ;				to save non-volatile registers in passed structure.
+			      C ;
+			      C IF	__VerifyRegs
+			      C ;--------------------------------------------------------------------------------------------------------------------------------------------------------------
+			      C ;			EXTERNDEF		reg_verify:PROC	;	void reg_verify ( u64* regstruct)
+			      C ;			reg_verify		-	copy non-volatile regs into callers struct of nine qwords) intended for unit tests to verify non-volatile regs are not changed
+			      C ;			Prototype:		-	void reg_verify( uu64* regstruct);
+			      C ;			regstruct		-	Address of 9 QWORDS in a struct where regs will be copied (in RCX)
+			      C ; //			reg_verify		-	save non-volatile regs for verification (debug)
+			      C ; //			Prototype		-	void reg_verify ( u64* reg struct)
+			      C 
+			      C EXTERNDEF		reg_verify:PROC	;	void reg_verify ( u64* reg struct)
+			      C 
+			      C VerifyRegs		MACRO
+			      C 				Leaf_Entry		reg_verify
+			      C 				MOV				Q_PTR [ RCX ] [ 0 * 8 ], R12
+			      C 				MOV				Q_PTR [ RCX ] [ 1 * 8 ], R13
+			      C 				MOV				Q_PTR [ RCX ] [ 2 * 8 ], R14
+			      C 				MOV				Q_PTR [ RCX ] [ 3 * 8 ], R15
+			      C 				MOV				Q_PTR [ RCX ] [ 4 * 8 ], RDI
+			      C 				MOV				Q_PTR [ RCX ] [ 5 * 8 ], RSI
+			      C 				MOV				Q_PTR [ RCX ] [ 6 * 8 ], RBX
+			      C 				MOV				Q_PTR [ RCX ] [ 7 * 8 ], RBP
+			      C 				MOV				Q_PTR [ RCX ] [ 8 * 8 ], RSP
+			      C 				RET
+			      C reg_verify		ENDP
+			      C 				ENDM
+			      C ENDIF
+			      C 
+			      C ;--------------------------------------------------------------------------------------------------------------------------------------------------------------
+			      C ;			Get a GP reg QWORD from within a Z register as specified by mask
+			      C ;			Note: RAX, ZMM0 and k1 are used and not restored
+			      C ;			Example usage: GetZatIdx R11, ZMM1, MaskBit2 or SetZatIdx ZMM1, R12, [ R9 ]  (where R9 is a bit mask, not an integer index)
+			      C ;			Note: These are req to reg ops; no memory fetches (other than instructions from pipeline)
+			      C ;
+			      C GetZatMask		MACRO			dest, src, mask
+			      C 				LEA				RAX,  mask
+			      C 				KMOVB			k1, RAX
+			      C 				VPCOMPRESSQ		ZMM0 {k1}{z}, src
+			      C 				VMOVQ			dest, XMM0
+			      C 				ENDM
+			      C 
+			      C ;--------------------------------------------------------------------------------------------------------------------------------------------------------------
+			      C ;			Set a GP Reg QWORD within a Z register as specified by mask
+			      C ;			Note: RAX and k1 are used and not restored
+			      C ;			Example usage: SetZatIdx ZMM1, R8, MaskBit2
+			      C ;			Note: These are req to reg ops; no memory fetches (other than instructions from pipeline)
+			      C ;
+			      C SetZatMask		MACRO			dest, src, mask
+			      C 				LEA				RAX, mask
+			      C 				KMOVB			k1, RAX
+			      C 				VPBROADCASTQ 	dest {k1}, src
+			      C 				ENDM
+			      C 
+			      C ;--------------------------------------------------------------------------------------------------------------------------------------------------------------
+			      C ENDIF			; ui512_macros_INC
+			      C 
+								INCLUDE			ui512_externs.inc
+			      C ;
+			      C ;			ui512 Externs
+			      C ;
+			      C ;--------------------------------------------------------------------------------------------------------------------------------------------------------------
+			      C ;
+			      C ;			File:			ui512_externs.inc
+			      C ;			Author:			John G. Lynch
+			      C ;			Legal:			Copyright @2025, per MIT License included
+			      C ;			Date:			October 24, 2025
+			      C ;
+			      C IFNDEF							ui512_externs_INC
+ = 1			      C ui512_externs_INC				EQU		<1>
+			      C 
+			      C ;--------------------------------------------------------------------------------------------------------------------------------------------------------------
+			      C ;   header file equivalent extern declarations
+			      C ;			EXTERN "C" signatures 
+			      C 
+			      C ;--------------------------------------------------------------------------------------------------------------------------------------------------------------
+			      C ; from ui512_clear_copy_set.asm:
+			      C ;
+			      C ;	// void zero_u ( u64* destarr ); 
+			      C ;	// fill supplied 512bit (8 QWORDS) with zero
+			      C EXTERNDEF		zero_u:PROC
+			      C 
+			      C ;	// void copy_u ( u64* destarr, u64* srcarr );
+			      C ;	// copy supplied 512bit (8 QWORDS) source to supplied destination
+			      C EXTERNDEF		copy_u:PROC
+			      C 
+			      C ;	// void set_uT64 ( u64* destarr, u64 value );
+			      C ;	// set supplied destination 512 bit to supplied u64 value
+			      C EXTERNDEF		set_uT64:PROC
+			      C 
+			      C ;--------------------------------------------------------------------------------------------------------------------------------------------------------------
+			      C ; from ui512_compare.asm
+			      C ;
+			      C ;	// s16 compare_u ( u64* lh_op, u64* rh_op );
+			      C ;	// compare supplied 512bit (8 QWORDS) LH operand to supplied RH operand
+			      C ;	// returns: (0) for equal, -1 for less than, 1 for greater than (logical, unsigned compare)
+			      C EXTERNDEF		compare_u:PROC
+			      C 
+			      C ;	// s16 compare_uT64 ( u64* lh_op, u64 rh_op );
+			      C ;	// compare supplied 512bit (8 QWORDS) LH operand to supplied 64bit RH operand (value)
+			      C ;	// returns: (0) for equal, -1 for less than, 1 for greater than (logical, unsigned compare)
+			      C EXTERNDEF		compare_uT64:PROC
+			      C 
+			      C ;--------------------------------------------------------------------------------------------------------------------------------------------------------------
+			      C ; from ui512_addition.asm
+			      C ;
+			      C ;	// s16 add_u ( u64* sum, u64* addend1, u64* addend2 );
+			      C ;	// add supplied 512bit (8 QWORDS) sources, place in supplied destination
+			      C ;	// returns: zero for no carry, 1 for carry (overflow)
+			      C EXTERNDEF		add_u:PROC
+			      C 
+			      C ;	// s16 add_u_wc ( u64* sum, u64* addend1, u64* addend2, s16 carry );
+			      C ;	// add supplied 512bit (8 QWORDS) sources, with passed-in carry, place in supplied destination
+			      C ;	// returns: zero for no carry, 1 for carry (overflow)
+			      C EXTERNDEF		add_u_wc:PROC
+			      C 
+			      C ;	// s16 add_uT64 ( u64* sum, u64* addend1, u64 addend2 );
+			      C ;	// add 64bit QWORD (value) to supplied 512bit (8 QWORDS), place in supplied destination
+			      C ;	// returns: zero for no carry, 1 for carry (overflow)
+			      C EXTERNDEF		add_uT64:PROC
+			      C 
+			      C ;--------------------------------------------------------------------------------------------------------------------------------------------------------------
+			      C ; from ui512_subtraction.asm
+			      C ;
+			      C ;	// s16 sub_u ( u64* difference, u64* left operand, u64* right operand );
+			      C ;	// subtract supplied 512bit (8 QWORDS) RH OP from LH OP giving difference in destination
+			      C ;	// returns: zero for no borrow, 1 for borrow (underflow)
+			      C EXTERNDEF		sub_u:PROC
+			      C 
+			      C ;	// s16 sub_u_wc ( u64* difference, u64* left operand, u64* right operand, s16 borrow );
+			      C ;	// subtract supplied 512bit (8 QWORDS) RH OP from LH OP, with passed-in borrow giving difference in destination
+			      C ;	// returns: zero for no borrow, 1 for borrow (underflow)
+			      C EXTERNDEF		sub_u_wb:PROC
+			      C 
+			      C ;	// s16 sub_uT64( u64* difference, u64* left operand, u64 right operand );
+			      C ;	// subtract supplied 64 bit right hand (64 bit value) op from left hand (512 bit) giving difference
+			      C ;	// returns: zero for no borrow, 1 for borrow (underflow)
+			      C EXTERNDEF		sub_uT64:PROC
+			      C 
+			      C ;--------------------------------------------------------------------------------------------------------------------------------------------------------------
+			      C ; from ui512_multiply.asm
+			      C ;
+			      C ; //			mult_uT64		-	multiply 512 bit multiplicand by 64 bit multiplier, giving 512 product, 64 bit overflow
+			      C ; //			Prototype:		-	s16 mult_uT64( u64* product, u64* overflow, u64* multiplicand, u64 multiplier);
+			      C EXTERNDEF		mult_uT64:PROC	;	s16 mult_uT64( u64* product, u64* overflow, u64* multiplicand, u64 multiplier);
+			      C 
+			      C ; //			mult_u			-	multiply 512 multiplicand by 512 multiplier, giving 512 product, overflow
+			      C ; //			Prototype:		-	s16 mult_u( u64* product, u64* overflow, u64* multiplicand, u64* multiplier);
+			      C EXTERNDEF		mult_u:PROC		;	s16 mult_u( u64* product, u64* overflow, u64* multiplicand, u64* multiplier);
+			      C 
+			      C ;--------------------------------------------------------------------------------------------------------------------------------------------------------------
+			      C ; from ui512_division.asm
+			      C ;
+			      C ; //			div_uT64		-	divide 512 bit dividend by 64 bit bit divisor, giving 512 bit quotient and 64 bit remainder
+			      C ; //			Prototype:		-	s16 div_u( u64* quotient, u64* remainder, u64* dividend, u64 divisor,);
+			      C EXTERNDEF		div_uT64:PROC	;	s16 div_uT64( u64* quotient, u64* remainder, u64* dividend, u64 divisor);
+			      C 
+			      C ; //			div_u			-	divide 512 bit dividend by 512 bit divisor, giving 512 bit quotient and remainder
+			      C ; //			Prototype:		-	s16 div_u( u64* quotient, u64* remainder, u64* dividend, u64* divisor);
+			      C EXTERNDEF		div_u:PROC		;	s16 div_u( u64* quotient, u64* remainder, u64* dividend, u64* divisor);
+			      C 
+			      C ;--------------------------------------------------------------------------------------------------------------------------------------------------------------
+			      C ; from ui512_significance.asm
+			      C 
+			      C ;   // find most significant bit in supplied source 512bit (8 QWORDS)
+			      C ;	// s16 msb_u( u64* );
+			      C ;   // returns: -1 if no most significant bit, bit number otherwise, bits numbered 0 to 511 inclusive
+			      C ;	//	Note:	a returned zero means the significant bit is bit0 of the eighth word of the 512bit source parameter; (the right most bit).
+			      C ;	//			a returned 511 means bit63 of the first word; (the left most bit).	
+			      C EXTERNDEF		msb_u:PROC
+			      C 
+			      C ;   // find least significant bit in supplied source 512bit (8 QWORDS)
+			      C ;	// s16 lsb_u( u64* );
+			      C ;   // returns: -1 if no least significant bit, bit number otherwise, bits numbered 0 to 511 inclusive
+			      C ;	//	Note:	a returned zero means the significant bit is bit0 of the eighth word of the 512bit source parameter; (the right most bit).
+			      C ;	//			a returned 511 means bit63 of the first word; (the left most bit).	
+			      C EXTERNDEF		lsb_u:PROC
+			      C 
+			      C ;--------------------------------------------------------------------------------------------------------------------------------------------------------------
+			      C ; from ui512_shift.asm
+			      C ;
+			      C ;   // void shr_u ( u64* destination, u64* source, u16 bits_to_shift )
+			      C ;   // shift supplied source 512bit (8 QWORDS) right, put in destination
+			      C EXTERNDEF		shr_u:PROC
+			      C 
+			      C ;   // void shl_u ( u64* destination, u64* source, u16 bits_to_shift );
+			      C ;   // shift supplied source 512bit (8 QWORDS) left, put in destination
+			      C EXTERNDEF		shl_u:PROC
+			      C 
+			      C ;--------------------------------------------------------------------------------------------------------------------------------------------------------------
+			      C ; from ui512_bitops
+			      C ;
+			      C ;   // void and_u ( u64* destination, u64* lh_op, u64* rh_op );
+			      C ;   // logical 'AND' bits in lh_op, rh_op, put result in destination
+			      C EXTERNDEF		and_u:PROC
+			      C 
+			      C ;   // logical 'OR' bits in lh_op, rh_op, put result in destination
+			      C ;   // void or_u( u64* destination, u64* lh_op, u64* rh_op);
+			      C EXTERNDEF		or_u:PROC
+			      C 
+			      C ;   // logical 'XOR' bits in lh_op, rh_op, put result in destination
+			      C ;   // void xor_u( u64* destination, u64* lh_op, u64* rh_op);
+			      C EXTERNDEF		xor_u:PROC
+			      C 
+			      C ;   // logical 'NOT' bits in source, put result in destination
+			      C ;	// void not_u( u64* destination, u64* source);
+			      C EXTERNDEF		not_u:PROC
+			      C 
+			      C ;--------------------------------------------------------------------------------------------------------------------------------------------------------------
+			      C ; from ui512_global_data
+			      C ;
+			      C EXTERNDEF		qOnes:QWORD
+			      C EXTERNDEF		qZero:QWORD
+			      C 
+			      C EXTERNDEF		ret_zero:DWORD
+			      C EXTERNDEF		ret_one:DWORD
+			      C EXTERNDEF		ret_neg_one:DWORD
+			      C EXTERNDEF		ret_GPFault:DWORD
+			      C 
+			      C EXTERNDEF		mskB0:DB
+			      C EXTERNDEF		mskB1:DB
+			      C EXTERNDEF		mskB2:DB
+			      C EXTERNDEF		mskB3:DB
+			      C EXTERNDEF		mskB4:DB
+			      C EXTERNDEF		mskB5:DB
+			      C EXTERNDEF		mskB6:DB
+			      C EXTERNDEF		mskB7:DB
+			      C EXTERNDEF		mskAll8:DB
+			      C 
+			      C ENDIF			; ui512_externs_INC
+			      C 
+			      C 
+				.NOLISTIF
+								OPTION			CASEMAP:NONE
+ 00000000			ui512_division	SEGMENT			PARA 'CODE'
+
+				;--------------------------------------------------------------------------------------------------------------------------------------------------------------
+				;			EXTERNDEF		div_u:PROC					; s16 div_u( u64* quotient, u64* remainder, u64* dividend, u64* divisor)
+				;			div_u			-	divide 512 bit dividend by 512 bit divisor, giving 512 bit quotient and remainder
+				;			Prototype:		-	s16 div_u( u64* quotient, u64* remainder, u64* dividend, u64* divisor);
+				;			quotient		-	Address of 8 QWORDS to store resulting quotient (in RCX)
+				;			remainder		-	Address of 8 QWORDs for resulting remainder (in RDX)
+				;			dividend		-	Address of 8 QWORDS dividend (in R8)
+				;			divisor			-	Address of 8 QWORDs divisor (in R9)
+				;			returns			-	0 for success, -1 for attempt to divide by zero, (GP_Fault) for mis-aligned parameter address
+
+ 000001B0			div_u_Locals	STRUCT
+
+ 00000000  00000010 [		currnumerator	QWORD			16 dup (?)							; scratch working copy of dividend (numerator). could be 9 qwords, 16 declared for alignment
+	    0000000000000000
+	   ]
+ 00000080  00000010 [		qdiv			QWORD			16 dup (?)							; scratch working copy of (trial) qhat * divisor. could be 9 qwords, 16 declared for alignment
+	    0000000000000000
+	   ]
+
+ 00000100  00000008 [		quotient		QWORD			8 dup (?)							; working copy of quotient
+	    0000000000000000
+	   ]
+ 00000140  00000008 [		normdivisor		QWORD			8 dup (?)							; working copy of normalized divisor
+	    0000000000000000
+	   ]
+ 00000180  0000000000000000	nDiv			QWORD			?									; first qword of normalized divisor
+
+ 00000188  0000000000000000	qHat			QWORD			?									; trial quotient 
+ 00000190  0000000000000000	rHat			QWORD			?									; trial remainder
+													
+ 00000198  0000			mMSB			WORD			?									; indexes and dimensions of dividend (numerator) Note: dimensions are zero-based (0 to 7)
+ 0000019A  0000			mDim			WORD			?
+ 0000019C  0000			mIdx			WORD			?										
+
+ 0000019E  0000			nMSB			WORD			?									; indexes and dimensions of divisor (denominator)
+ 000001A0  0000			nDim			WORD			?									
+ 000001A2  0000			nIdx			WORD			?
+
+ 000001A4  0000			jIdx			WORD			?
+ 000001A6  0000			jDim			WORD			?									
+
+ 000001A8  0000			normf			WORD			?
+
+ 000001AA  00000003 [						WORD			3 dup (?)							; to get to 16 byte align for stack alloc (adjust as necessary)
+	    0000
+	   ]
+
+				div_u_Locals	ENDS
+
+				; Declare proc, save regs, set up frame
+								Proc_w_Local	div_u, div_u_Locals, R12
+ = 00000040		     1	_shadowspace	EQU				40h								; stack space for caller (at top) and callee (at bottom)
+ = 00000040		     1	_alignspace		EQU				64								; amount of space that might get truncated to get frame space aligned on specified boundary (64)
+ 00000000  00000006 [	     1					DB				6 DUP (0cch)
+	    CC
+	   ]
+ 00000010		     1	div_u		PROC			FRAME
+ 00000010  48/ 89 4C 24	     1					MOV				[ RSP + ( 1 * 8) ], RCX
+	   08
+ 00000015  55		     2					PUSH			RBP
+ 00000016  41/ 54	     3					PUSH			R12
+ 00000018  48/ 81 EC	     1					SUB				RSP, _allocspace				; set stack pointer down by space needed (locals+ (2 * shadowspace))
+	   00000270
+ 0000001F  48/ 8D AC 24	     1					LEA				RBP, ( _shadowspace + _alignspace ) [ RSP ]
+	   00000080
+ 00000027  48/ 83 E5 C0	     1					AND				RBP, -_alignspace				; truncate low bits of base pointer to yield aligned pointer
+ 0000002B  48/ 89 8C 24						MOV				RCXHome, RCX
+	   00000288
+ 00000033  48/ 89 94 24						MOV				RDXHome, RDX
+	   00000290
+ 0000003B  4C/ 89 84 24						MOV				R8Home, R8
+	   00000298
+ 00000043  4C/ 89 8C 24						MOV				R9Home, R9
+	   000002A0
+
+								CheckAlign		RCX, @ret							; (out) Quotient
+								CheckAlign		RDX, @ret							; (out) Remainder
+								CheckAlign		R8, @ret							; (in) Dividend
+								CheckAlign		R9, @ret							; (in) Divisor
+
+ 0000004B  49/ 87 FA						XCHG			RDI, R10							; clear entire framed area
+ 0000004E  48/ 33 C0						XOR				RAX, RAX
+ 00000051  48/ 8D 7D 00						LEA				RDI, l_Ptr.currnumerator
+ 00000055  B9 000001B0						MOV				ECX, sizeof(div_u_Locals)
+ 0000005A  F3/ AA						REP				STOSB
+ 0000005C  49/ 87 FA						XCHG			RDI, R10
+ 0000005F  48/ 8B 8C 24						MOV				RCX, RCXHome
+	   00000288
+				; Initialize: in frame / stack reserved memory, clear 16 qword area for working version of quotient; set up indexes for loop
+								
+								Zero512			RCX									; zero callers quotient
+ 00000067  48/ 33 C0	     1					XOR				RAX, RAX
+ 0000006A  48/ 89 01	     2					MOV				Q_PTR [ RCX ] [ 0 * 8 ], RAX
+ 0000006D  48/ 89 41 08	     2					MOV				Q_PTR [ RCX ] [ 1 * 8 ], RAX
+ 00000071  48/ 89 41 10	     2					MOV				Q_PTR [ RCX ] [ 2 * 8 ], RAX
+ 00000075  48/ 89 41 18	     2					MOV				Q_PTR [ RCX ] [ 3 * 8 ], RAX
+ 00000079  48/ 89 41 20	     2					MOV				Q_PTR [ RCX ] [ 4 * 8 ], RAX
+ 0000007D  48/ 89 41 28	     2					MOV				Q_PTR [ RCX ] [ 5 * 8 ], RAX
+ 00000081  48/ 89 41 30	     2					MOV				Q_PTR [ RCX ] [ 6 * 8 ], RAX
+ 00000085  48/ 89 41 38	     2					MOV				Q_PTR [ RCX ] [ 7 * 8 ], RAX
+								Zero512			RDX									; zero callers remainder
+ 00000089  48/ 33 C0	     1					XOR				RAX, RAX
+ 0000008C  48/ 89 02	     2					MOV				Q_PTR [ RDX ] [ 0 * 8 ], RAX
+ 0000008F  48/ 89 42 08	     2					MOV				Q_PTR [ RDX ] [ 1 * 8 ], RAX
+ 00000093  48/ 89 42 10	     2					MOV				Q_PTR [ RDX ] [ 2 * 8 ], RAX
+ 00000097  48/ 89 42 18	     2					MOV				Q_PTR [ RDX ] [ 3 * 8 ], RAX
+ 0000009B  48/ 89 42 20	     2					MOV				Q_PTR [ RDX ] [ 4 * 8 ], RAX
+ 0000009F  48/ 89 42 28	     2					MOV				Q_PTR [ RDX ] [ 5 * 8 ], RAX
+ 000000A3  48/ 89 42 30	     2					MOV				Q_PTR [ RDX ] [ 6 * 8 ], RAX
+ 000000A7  48/ 89 42 38	     2					MOV				Q_PTR [ RDX ] [ 7 * 8 ], RAX
+					IF __UseZ
+					ELSE
+ 000000AB  49/ 87 FA						XCHG			RDI, R10
+ 000000AE  48/ 33 C0						XOR				RAX, RAX
+ 000000B1  48/ 8D 7D 00						LEA				RDI, [ RBP ]						; clear working copy of contigous quotient, remainder				
+ 000000B5  B9 00000010						MOV				ECX, 16								; need to start as zero, results are accumulated
+ 000000BA  F3/ 48/ AB						REP				STOSQ
+ 000000BD  49/ 87 FA						XCHG			RDI, R10
+					ENDIF
+
+				; Examine divisor
+ 000000C0  49/ 8B C9						MOV				RCX, R9								; divisor
+ 000000C3  E8 00000000 E					CALL			msb_u								; get most significant bit
+ 000000C8  66| 85 C0						TEST			AX, AX								; msb < 0? 
+ 000000CB  0F 8C 0000020E					JL				divbyzero							; divisor is zero, abort
+ 000000D1  0F 84 0000022B					JE				divbyone							; divisor is one, exit with remainder = 0, quotient = dividend 
+ 000000D7  66| 83 F8 40						CMP				AX, 64								; divisor only one 64-bit word?
+ 000000DB  7D 5F						JGE				mbynDiv								; no, do divide of m digit by n digit
+
+				; Divide of m 64-bit qwords by one 64 bit qword divisor, use the quicker divide routine (div_uT64), and return
+ 000000DD  48/ 8B 8C 24						MOV				RCX, RCXHome						; set up parms for call to div by 64bit: RCX - addr of quotient
+	   00000288
+ 000000E5  48/ 8B 94 24						MOV				RDX, RDXHome						; RDX - addr of remainder
+	   00000290
+ 000000ED  4C/ 8B 84 24						MOV				R8, R8Home							; R8 - addr of dividend
+	   00000298
+ 000000F5  48/ 8B 84 24						MOV				RAX, R9Home
+	   000002A0
+ 000000FD  4C/ 8B 48 38						MOV				R9, Q_PTR [ RAX ] [ 7 * 8 ]			; R9 - value of 64 bit divisor
+ 00000101  E8 000002DA						CALL			div_uT64
+ 00000106  48/ 8B 94 24						MOV				RDX, RDXHome						; move 64 bit remainder to last word of 8 word remainder
+	   00000290
+ 0000010E  48/ 8B 0A						MOV				RCX, Q_PTR [ RDX ]					; get the one qword remainder
+								Zero512			RDX									; clear the 8 qword callers remainder
+ 00000111  48/ 33 C0	     1					XOR				RAX, RAX
+ 00000114  48/ 89 02	     2					MOV				Q_PTR [ RDX ] [ 0 * 8 ], RAX
+ 00000117  48/ 89 42 08	     2					MOV				Q_PTR [ RDX ] [ 1 * 8 ], RAX
+ 0000011B  48/ 89 42 10	     2					MOV				Q_PTR [ RDX ] [ 2 * 8 ], RAX
+ 0000011F  48/ 89 42 18	     2					MOV				Q_PTR [ RDX ] [ 3 * 8 ], RAX
+ 00000123  48/ 89 42 20	     2					MOV				Q_PTR [ RDX ] [ 4 * 8 ], RAX
+ 00000127  48/ 89 42 28	     2					MOV				Q_PTR [ RDX ] [ 5 * 8 ], RAX
+ 0000012B  48/ 89 42 30	     2					MOV				Q_PTR [ RDX ] [ 6 * 8 ], RAX
+ 0000012F  48/ 89 42 38	     2					MOV				Q_PTR [ RDX ] [ 7 * 8 ], RAX
+ 00000133  48/ 89 4A 38						MOV				Q_PTR [ RDX ] [ 7 * 8 ], RCX		; put the one qword remainder in the least significant qword of the callers remainder
+ 00000137  E9 00000194						JMP				cleanupret							; exit normally
+
+				; Divide m digit by n digit
+ 0000013C			mbynDiv:
+ 0000013C  66| 89 85						MOV				l_Ptr.nMSB, AX						; save msb of divisor
+	   0000019E
+ 00000143  66| C1 E8 06						SHR				AX, 6								;
+ 00000147  66| 89 85						MOV				l_Ptr.nDim, AX						; Dimension (Nr Qwords) of divisor (n)
+	   000001A0
+
+				; examine dividend
+ 0000014E  48/ 8B 8C 24						MOV				RCX, R8Home
+	   00000298
+ 00000156  E8 00000000 E					CALL			msb_u								; get msb of dividend
+ 0000015B  66| 85 C0						TEST			AX, AX
+ 0000015E  0F 8C 0000021B					JL				numtoremain							; dividend == zero > answer is zero with remainder
+ 00000164  66| 3B 85						CMP				AX, l_Ptr.nMSB						; msb of dividend < msb of divisor? -> answer is zero with dividend going to remainder
+	   0000019E
+ 0000016B  0F 8C 0000020E					JL				numtoremain							;
+ 00000171  66| 89 85						MOV				l_Ptr.mMSB, AX						; save msb of dividend
+	   00000198
+ 00000178  66| C1 E8 06						SHR				AX, 6
+ 0000017C  66| 89 85						MOV				l_Ptr.mDim, AX						; save dimension (Nr Qwords) of dividend (m)
+	   0000019A
+
+				; Normalize divisor 
+ 00000183  48/ 0F B7 85						MOVZX			RAX, l_Ptr.nMSB						; 
+	   0000019E
+ 0000018B  48/ 83 E0 3F						AND				RAX, 63
+ 0000018F  49/ C7 C0						MOV				R8, 63
+	   0000003F
+ 00000196  4C/ 2B C0						SUB				R8, RAX
+ 00000199  66| 44/ 89 85					MOV				l_Ptr.normf, R8W					; save normalization factor	
+	   000001A8
+ 000001A1  48/ 8D 8D						LEA				RCX, l_Ptr.normdivisor				; put normalized divisor here
+	   00000140
+ 000001A8  48/ 8B 94 24						MOV				RDX, R9Home							; using callers divisor
+	   000002A0
+ 000001B0  E8 00000000 E					CALL			shl_u								; shifting left until msb is in high bit position
+
+				; Normalize dividend
+ 000001B5  48/ 8D 4D 40						LEA				RCX, l_Ptr.currnumerator [ 8 * 8 ]	; put normalized dividend here
+ 000001B9  48/ 8B 94 24						MOV				RDX, R8Home							; using callers dividend
+	   00000298
+ 000001C1  66| 44/ 8B 85					MOV				R8W, l_Ptr.normf					; get normalization factor
+	   000001A8
+ 000001C9  E8 00000000 E					CALL			shl_u								; the same number of bits that the divisor was shifted
+
+				; Check: did we shift out msb bits of dividend?
+ 000001CE  66| 8B 85						MOV				AX, l_Ptr.mMSB						; get msb of dividend
+	   00000198
+ 000001D5  66| 03 85						ADD				AX, l_Ptr.normf						; add in shift count
+	   000001A8
+ 000001DC  66| 3D 01FF						CMP				AX, 511								; did we shift out bits?
+ 000001E0  7E 20						JLE				normdivdone							; no
+ 000001E2  66| FF 85						INC				l_Ptr.mDim							; yes, increment dimension of dividend
+	   0000019A
+ 000001E9  66| 44/ 8B 85					MOV				R8W, l_Ptr.nMSB
+	   0000019E
+ 000001F1  48/ 8D 4D 00						LEA				RCX, l_Ptr.currnumerator [ 0 * 8 ]	;
+ 000001F5  48/ 8B 94 24						MOV				RDX, R8Home							; using callers dividend
+	   00000298
+ 000001FD  E8 00000000 E					Call			shl_u								; left to get shifted out bits Note: we shift entire 512 bits - msb
+																					; putting low into new msb ninth word of currnumerator	
+ 00000202			normdivdone:
+				; To recap: we have checked edge cases (div by zero, div by one, num < denom)
+				; We have normalized divisor and dividend, and set up dimensions of each
+				; The leading bit of the normalized divisor is in bit 63 of qword nDim, thus the first qword of the normalized divisor is >= 0x8000000000000000
+				; The dividend is in currnumerator, and may be up to one qword longer than before normalization, with the leading bit in bit 62 of qword mDim, thus
+				; the first qword of the normalized dividend is < 0x800000000000000
+				; thus the first qword of the normalized dividend is always less than the first qword of the normalized divisor, and the first divide
+				; will be of the form (at most) 0x7FFFFFFFFFFFFFFF, 0xFFFFFFFFFFFFFFFF / 0x8000000000000000, yielding a qHat of 0x0FFFFFFFFFFFFFFF
+				; which fits in 64 bits.
+
+				; Reminder: the dimensions (mDim, nDim) are zero-based (0 to 7), so the actual number of qwords is dimension + 1, and the most significant
+				; qword is at index = (7 - dimension); thus for a dimension of 3, the number of qwords is 4, and the most significant qword is at index 4 (7 - 3), least significant
+				; at index 7. Remember also that the working copy of the dividend (currnumerator) is up to 9 qwords long, with the most significant qword at index 15 - dimension,
+				; least significant at index 7. And the base is currnumerator [ 7 * 8 ] if there was a qword added due to normalization. Put another way, 
+				; currnumerator goes from 7 to 15, with 7 being most significant, 15 least significant. 
+				; Progressing from most significant to least, as in the divide, indexes are started at the most significant word or limit - dimension,
+				; and are incremented until reaching the limit. Progressing from least signicant to most,
+				; as in the multiply, add, and subtract - the index starts at the limit (i.e. 7), and is decremented until it reaches (limit - dimension).
+				; 
+
+				; Main divide loop, initializxe 
+
+ 00000202  66| 8B 85						MOV				AX, l_Ptr.mDim
+	   0000019A
+ 00000209  66| 2B 85						SUB				AX, l_Ptr.nDim						; since nDim <= mDim, this will be from 0 (one qword) to 6 as mDim is 2->8, nDim 2->7
+	   000001A0
+ 00000210  66| 89 85						MOV				l_Ptr.jDim, AX						; the Nr digits (QWORDS) of quotient is <= mDim - n?Dim + 1. Set jDim
+	   000001A6
+ 00000217  66| B9 0007						MOV				CX, 7
+ 0000021B  66| 2B C8						SUB				CX, AX
+ 0000021E  66| 89 8D						MOV				l_Ptr.jIdx, CX						; Initialize jIdx
+	   000001A4
+ 00000225  66| B8 000F						MOV				AX, 15
+ 00000229  66| 2B 85						SUB				AX, l_Ptr.mDim
+	   0000019A
+ 00000230  66| 89 85						MOV				l_Ptr.mIdx, AX						; initialize mIdx
+	   0000019C
+ 00000237  66| B8 0007						MOV				AX, 7
+ 0000023B  66| 2B 85						SUB				AX, l_Ptr.nDim
+	   000001A0
+ 00000242  66| 89 85						MOV				l_Ptr.nIdx, AX						; initialize nIdx
+	   000001A2
+
+ 00000249  48/ 8B 94 C5						MOV				RDX, l_Ptr.normdivisor [ RAX * 8 ]	; get indexed word of divisor (leading non-zero)
+	   00000140
+ 00000251  48/ 89 95						MOV				l_Ptr.nDiv, RDX						; will be using repeatedly to determine qHat
+	   00000180
+
+				; mainloop, the loop, until jIDX reaches limit
+ 00000258			maindivloop:
+
+				; compute qHat and rHat
+ 00000258  4C/ 0F B7 85						MOVZX			R8, l_Ptr.jIdx				
+	   000001A4
+ 00000260  4E/ 8D 54 C5						LEA				R10, l_Ptr.currnumerator [ R8 * 8 ]
+	   00
+ 00000265  49/ 8B 52 38						MOV				RDX, [ 7 * 8 ] [ R10 ]
+ 00000269  49/ 8B 42 40						MOV				RAX, [ 8 * 8 ] [ R10 ]
+ 0000026D  4C/ 8B 85						MOV				R8, l_Ptr.nDiv
+	   00000180
+ 00000274  49/ F7 F0						DIV				R8
+ 00000277  48/ 89 85						MOV				l_Ptr.qHat, RAX
+	   00000188
+ 0000027E  48/ 89 95						MOV				l_Ptr.rHat, RDX
+	   00000190
+
+
+ 00000285  E8 0000005E						CALL			multiply_and_subtract				; multiply qHat * divisor, subtract from currnumerator
+
+ 0000028A  E8 00000072						CALL			check_and_addback					; check if we need to add back
+
+
+				; Store digit of quotient
+ 0000028F  4C/ 8D 9D						LEA				R11, l_Ptr.quotient
+	   00000100
+ 00000296  4D/ 33 C0						XOR				R8, R8		
+ 00000299  66| 44/ 8B 85					MOV				R8W, l_Ptr.jIdx
+	   000001A4
+ 000002A1  48/ 8B 85						MOV				RAX, l_Ptr.qHat
+	   00000188
+ 000002A8  4B/ 89 04 C3						MOV				Q_PTR [ R11 ] [ R8 * 8 ], RAX		; store qHat in quotient working copy
+ 000002AC  66| 41/ FF C0					INC				R8W
+ 000002B0  66| 41/ 83 F8					CMP				R8W, 7
+	   07
+ 000002B5  7E A1						JLE				maindivloop							; loop until jDim > limit (7)
+
+				; Unnormalize remainder
+ 000002B7  48/ 8D 8C 24						LEA				RCX, RDXHome						; put remainder at callers remainder
+	   00000290
+ 000002BF  48/ 8D 55 00						LEA				RDX, l_Ptr.currnumerator			; using working copy of currnumerator
+ 000002C3  66| 44/ 8B 85					MOV				R8W, l_Ptr.normf					; get normalization factor
+	   000001A8
+ 000002CB  E8 00000000 E					CALL			shr_u								; shifting right to unnormalize
+
+				; Normal exit
+ 000002D0			cleanupret:
+ 000002D0  48/ 33 C0						XOR				RAX, RAX							; return zero
+
+				; Either fall-thru normal exit, or from exception handling
+ 000002D3			cleanupwretcode:			
+								Local_Exit		R12
+ 000002D3  48/ 81 C4	     1					ADD				RSP,  _allocspace
+	   00000270
+ 000002DA  41/ 5C	     2					POP				R12
+ 000002DC  5D		     1					POP				RBP
+ 000002DD  C3		     1					RET
+				; Flat exit if exception found before frame setup, or fall thru normal exit
+ 000002DE			@ret:
+ 000002DE  C3							RET
+
+				; Exception handling, divide by zero
+ 000002DF			divbyzero:
+ 000002DF  8D 04 25						LEA				EAX, [ retcode_neg_one ]
+	   FFFFFFFF
+ 000002E6  EB EB						JMP				cleanupwretcode
+
+ 000002E8			multiply_and_subtract:
+				; clear product work area
+					IF __UseZ
+					ELSE
+ 000002E8  49/ 87 FA						XCHG			RDI, R10
+ 000002EB  48/ 33 C0						XOR				RAX, RAX							; clear entire framed area
+ 000002EE  48/ 8D BD						LEA				RDI, l_Ptr.qdiv						; clear, every time, product of qHar, divisor				
+	   00000080
+ 000002F5  B9 00000010						MOV				ECX, 16								; need to start as zero, results are accumulated
+ 000002FA  F3/ 48/ AB						REP				STOSQ
+ 000002FD  49/ 87 FA						XCHG			RDI, R10
+					ENDIF
+				; initilize indexes for loop
+
+
+ 00000300  C3							RET
+ 00000301			check_and_addback:
+								; TO DO: implement check and add-back routine
+ 00000301  C3							RET
+				; Exception handling, divide by one
+ 00000302			divbyone:
+ 00000302  48/ 8B 8C 24						MOV				RCX, RCXHome						; callers quotient
+	   00000288
+ 0000030A  4C/ 8B 84 24						MOV				R8,  R8Home							; callers dividend
+	   00000298
+								Copy512			RCX, R8								; copy dividend to quotient
+ 00000312  49/ 8B 00	     2					MOV				RAX, Q_PTR [ R8 ] [ 0 * 8 ]
+ 00000315  48/ 89 01	     2					MOV				Q_PTR [ RCX ] [ 0 * 8 ], RAX
+ 00000318  49/ 8B 40 08	     2					MOV				RAX, Q_PTR [ R8 ] [ 1 * 8 ]
+ 0000031C  48/ 89 41 08	     2					MOV				Q_PTR [ RCX ] [ 1 * 8 ], RAX
+ 00000320  49/ 8B 40 10	     2					MOV				RAX, Q_PTR [ R8 ] [ 2 * 8 ]
+ 00000324  48/ 89 41 10	     2					MOV				Q_PTR [ RCX ] [ 2 * 8 ], RAX
+ 00000328  49/ 8B 40 18	     2					MOV				RAX, Q_PTR [ R8 ] [ 3 * 8 ]
+ 0000032C  48/ 89 41 18	     2					MOV				Q_PTR [ RCX ] [ 3 * 8 ], RAX
+ 00000330  49/ 8B 40 20	     2					MOV				RAX, Q_PTR [ R8 ] [ 4 * 8 ]
+ 00000334  48/ 89 41 20	     2					MOV				Q_PTR [ RCX ] [ 4 * 8 ], RAX
+ 00000338  49/ 8B 40 28	     2					MOV				RAX, Q_PTR [ R8 ] [ 5 * 8 ]
+ 0000033C  48/ 89 41 28	     2					MOV				Q_PTR [ RCX ] [ 5 * 8 ], RAX
+ 00000340  49/ 8B 40 30	     2					MOV				RAX, Q_PTR [ R8 ] [ 6 * 8 ]
+ 00000344  48/ 89 41 30	     2					MOV				Q_PTR [ RCX ] [ 6 * 8 ], RAX
+ 00000348  49/ 8B 40 38	     2					MOV				RAX, Q_PTR [ R8 ] [ 7 * 8 ]
+ 0000034C  48/ 89 41 38	     2					MOV				Q_PTR [ RCX ] [ 7 * 8 ], RAX
+ 00000350  48/ 8B 94 24						MOV				RDX, RDXHome						; callers remainder	
+	   00000290
+								Zero512			RDX									; remainder is zero
+ 00000358  48/ 33 C0	     1					XOR				RAX, RAX
+ 0000035B  48/ 89 02	     2					MOV				Q_PTR [ RDX ] [ 0 * 8 ], RAX
+ 0000035E  48/ 89 42 08	     2					MOV				Q_PTR [ RDX ] [ 1 * 8 ], RAX
+ 00000362  48/ 89 42 10	     2					MOV				Q_PTR [ RDX ] [ 2 * 8 ], RAX
+ 00000366  48/ 89 42 18	     2					MOV				Q_PTR [ RDX ] [ 3 * 8 ], RAX
+ 0000036A  48/ 89 42 20	     2					MOV				Q_PTR [ RDX ] [ 4 * 8 ], RAX
+ 0000036E  48/ 89 42 28	     2					MOV				Q_PTR [ RDX ] [ 5 * 8 ], RAX
+ 00000372  48/ 89 42 30	     2					MOV				Q_PTR [ RDX ] [ 6 * 8 ], RAX
+ 00000376  48/ 89 42 38	     2					MOV				Q_PTR [ RDX ] [ 7 * 8 ], RAX
+ 0000037A  E9 FFFFFF51						JMP				cleanupret
+
+				; Exception handling, If dimension of numerator (m) is less than dimension of denominator (n), result is zero, remainder is numerator
+ 0000037F			numtoremain:
+ 0000037F  4C/ 8B 84 24						MOV				R8, R8Home							; callers dividend
+	   00000298
+ 00000387  48/ 8B 94 24						MOV				RDX, RDXHome						; callers remainder
+	   00000290
+								Copy512			RDX, R8
+ 0000038F  49/ 8B 00	     2					MOV				RAX, Q_PTR [ R8 ] [ 0 * 8 ]
+ 00000392  48/ 89 02	     2					MOV				Q_PTR [ RDX ] [ 0 * 8 ], RAX
+ 00000395  49/ 8B 40 08	     2					MOV				RAX, Q_PTR [ R8 ] [ 1 * 8 ]
+ 00000399  48/ 89 42 08	     2					MOV				Q_PTR [ RDX ] [ 1 * 8 ], RAX
+ 0000039D  49/ 8B 40 10	     2					MOV				RAX, Q_PTR [ R8 ] [ 2 * 8 ]
+ 000003A1  48/ 89 42 10	     2					MOV				Q_PTR [ RDX ] [ 2 * 8 ], RAX
+ 000003A5  49/ 8B 40 18	     2					MOV				RAX, Q_PTR [ R8 ] [ 3 * 8 ]
+ 000003A9  48/ 89 42 18	     2					MOV				Q_PTR [ RDX ] [ 3 * 8 ], RAX
+ 000003AD  49/ 8B 40 20	     2					MOV				RAX, Q_PTR [ R8 ] [ 4 * 8 ]
+ 000003B1  48/ 89 42 20	     2					MOV				Q_PTR [ RDX ] [ 4 * 8 ], RAX
+ 000003B5  49/ 8B 40 28	     2					MOV				RAX, Q_PTR [ R8 ] [ 5 * 8 ]
+ 000003B9  48/ 89 42 28	     2					MOV				Q_PTR [ RDX ] [ 5 * 8 ], RAX
+ 000003BD  49/ 8B 40 30	     2					MOV				RAX, Q_PTR [ R8 ] [ 6 * 8 ]
+ 000003C1  48/ 89 42 30	     2					MOV				Q_PTR [ RDX ] [ 6 * 8 ], RAX
+ 000003C5  49/ 8B 40 38	     2					MOV				RAX, Q_PTR [ R8 ] [ 7 * 8 ]
+ 000003C9  48/ 89 42 38	     2					MOV				Q_PTR [ RDX ] [ 7 * 8 ], RAX
+ 000003CD  E9 FFFFFEFE						JMP				cleanupret
+
+ 000003D2			div_u			ENDP
+
+				;
+				;--------------------------------------------------------------------------------------------------------------------------------------------------------------
+				;			EXTERNDEF		div_uT64:PROC				; s16 div_uT64( u64* quotient, u64* remainder, u64* dividend, u64 divisor)
+				;			div_uT64		-	divide 512 bit dividend by 64 bit divisor, giving 512 bit quotient and 64 bit remainder
+				;			Prototype:		-	s16 div_u( u64* quotient, u64* remainder, u64* dividend, u64 divisor);
+				;			quotient		-	Address of 8 QWORDS to store resulting quotient (in RCX)
+				;			remainder		-	Address of QWORD for resulting remainder (in RDX)
+				;			dividend		-	Address of 8 QWORDS dividend (in R8)
+				;			divisor			-	Value of 64 bit divisor (in R9)
+				;			returns			-	0 for success, -1 for attempt to divide by zero, (GP_Fault) for mis-aligned parameter address
+				;
+				;			Regs with contents destroyed, not restored: RAX, RDX, R10 (each considered volitile, but caller might optimize on other regs)
+
+								Leaf_Entry		div_uT64							; Declare code section, public proc, no prolog, no frame, exceptions handled by caller
+ 000003D2  00000006 [	     1					DB				6 DUP (0cch)
+	    CC
+	   ]
+ 000003E0		     1	div_uT64			PROC
+								CheckAlign		RCX									; (out) Quotient
+								CheckAlign		R8									; (in) Dividend
+
+				; Test divisor for divide by zero				
+ 000003E0  4D/ 85 C9						TEST			R9, R9
+ 000003E3  74 63						JZ				@@DivByZero
+
+				; DIV instruction (64-bit) uses RAX and RDX. Need to move RDX (addr of remainder) out of the way; start it off with zero
+ 000003E5  4C/ 8B D2						MOV				R10, RDX							; save addr of callers remainder
+ 000003E8  48/ 33 D2						XOR				RDX, RDX
+
+				; FOR EACH index of 0 thru 7: get qword of dividend, divide by divisor, store qword of quotient
+								FOR				idx, < 0, 1, 2, 3, 4, 5, 6, 7 >
+								MOV				RAX, Q_PTR [ R8 ] [ idx * 8 ]		; dividend [ idx ] -> RAX
+								DIV				R9									; divide by divisor in R9 (as passed)
+								MOV				Q_PTR [ RCX ] [ idx * 8 ], RAX		; quotient [ idx ] <- RAX ; Note: remainder in RDX for next divide
+								ENDM
+ 000003EB  49/ 8B 00	     1					MOV				RAX, Q_PTR [ R8 ] [ 0 * 8 ]		; dividend [ idx ] -> RAX
+ 000003EE  49/ F7 F1	     1					DIV				R9									; divide by divisor in R9 (as passed)
+ 000003F1  48/ 89 01	     1					MOV				Q_PTR [ RCX ] [ 0 * 8 ], RAX		; quotient [ idx ] <- RAX ; Note: remainder in RDX for next divide
+ 000003F4  49/ 8B 40 08	     1					MOV				RAX, Q_PTR [ R8 ] [ 1 * 8 ]		; dividend [ idx ] -> RAX
+ 000003F8  49/ F7 F1	     1					DIV				R9									; divide by divisor in R9 (as passed)
+ 000003FB  48/ 89 41 08	     1					MOV				Q_PTR [ RCX ] [ 1 * 8 ], RAX		; quotient [ idx ] <- RAX ; Note: remainder in RDX for next divide
+ 000003FF  49/ 8B 40 10	     1					MOV				RAX, Q_PTR [ R8 ] [ 2 * 8 ]		; dividend [ idx ] -> RAX
+ 00000403  49/ F7 F1	     1					DIV				R9									; divide by divisor in R9 (as passed)
+ 00000406  48/ 89 41 10	     1					MOV				Q_PTR [ RCX ] [ 2 * 8 ], RAX		; quotient [ idx ] <- RAX ; Note: remainder in RDX for next divide
+ 0000040A  49/ 8B 40 18	     1					MOV				RAX, Q_PTR [ R8 ] [ 3 * 8 ]		; dividend [ idx ] -> RAX
+ 0000040E  49/ F7 F1	     1					DIV				R9									; divide by divisor in R9 (as passed)
+ 00000411  48/ 89 41 18	     1					MOV				Q_PTR [ RCX ] [ 3 * 8 ], RAX		; quotient [ idx ] <- RAX ; Note: remainder in RDX for next divide
+ 00000415  49/ 8B 40 20	     1					MOV				RAX, Q_PTR [ R8 ] [ 4 * 8 ]		; dividend [ idx ] -> RAX
+ 00000419  49/ F7 F1	     1					DIV				R9									; divide by divisor in R9 (as passed)
+ 0000041C  48/ 89 41 20	     1					MOV				Q_PTR [ RCX ] [ 4 * 8 ], RAX		; quotient [ idx ] <- RAX ; Note: remainder in RDX for next divide
+ 00000420  49/ 8B 40 28	     1					MOV				RAX, Q_PTR [ R8 ] [ 5 * 8 ]		; dividend [ idx ] -> RAX
+ 00000424  49/ F7 F1	     1					DIV				R9									; divide by divisor in R9 (as passed)
+ 00000427  48/ 89 41 28	     1					MOV				Q_PTR [ RCX ] [ 5 * 8 ], RAX		; quotient [ idx ] <- RAX ; Note: remainder in RDX for next divide
+ 0000042B  49/ 8B 40 30	     1					MOV				RAX, Q_PTR [ R8 ] [ 6 * 8 ]		; dividend [ idx ] -> RAX
+ 0000042F  49/ F7 F1	     1					DIV				R9									; divide by divisor in R9 (as passed)
+ 00000432  48/ 89 41 30	     1					MOV				Q_PTR [ RCX ] [ 6 * 8 ], RAX		; quotient [ idx ] <- RAX ; Note: remainder in RDX for next divide
+ 00000436  49/ 8B 40 38	     1					MOV				RAX, Q_PTR [ R8 ] [ 7 * 8 ]		; dividend [ idx ] -> RAX
+ 0000043A  49/ F7 F1	     1					DIV				R9									; divide by divisor in R9 (as passed)
+ 0000043D  48/ 89 41 38	     1					MOV				Q_PTR [ RCX ] [ 7 * 8 ], RAX		; quotient [ idx ] <- RAX ; Note: remainder in RDX for next divide
+
+				; Last (least significant qword) divide leaves a remainder, store it at callers remainder
+ 00000441  49/ 89 12						MOV				Q_PTR [ R10 ], RDX					; remainder to callers remainder
+ 00000444  48/ 33 C0						XOR				RAX, RAX							; return zero
+ 00000447			@@exit:			
+ 00000447  C3							RET
+
+				; Exception handling, divide by zero
+ 00000448			@@DivByZero:
+								Zero512			RCX									; Divide by Zero. Could throw fault, but returning zero quotient, zero remainder
+ 00000448  48/ 33 C0	     1					XOR				RAX, RAX
+ 0000044B  48/ 89 01	     2					MOV				Q_PTR [ RCX ] [ 0 * 8 ], RAX
+ 0000044E  48/ 89 41 08	     2					MOV				Q_PTR [ RCX ] [ 1 * 8 ], RAX
+ 00000452  48/ 89 41 10	     2					MOV				Q_PTR [ RCX ] [ 2 * 8 ], RAX
+ 00000456  48/ 89 41 18	     2					MOV				Q_PTR [ RCX ] [ 3 * 8 ], RAX
+ 0000045A  48/ 89 41 20	     2					MOV				Q_PTR [ RCX ] [ 4 * 8 ], RAX
+ 0000045E  48/ 89 41 28	     2					MOV				Q_PTR [ RCX ] [ 5 * 8 ], RAX
+ 00000462  48/ 89 41 30	     2					MOV				Q_PTR [ RCX ] [ 6 * 8 ], RAX
+ 00000466  48/ 89 41 38	     2					MOV				Q_PTR [ RCX ] [ 7 * 8 ], RAX
+ 0000046A  48/ 33 C0						XOR				RAX, RAX
+ 0000046D  49/ 89 02						MOV				Q_PTR [ R10 ] , RAX
+ 00000470  8D 04 25						LEA				EAX, [ retcode_neg_one ]			; return error (div by zero)
+	   FFFFFFFF
+ 00000477  EB CE						JMP				@@exit
+
+ 00000479			div_uT64		ENDP
+
+ 00000479			ui512_division	ENDS												; end of section
+
+								END													; end of module
+Microsoft (R) Macro Assembler (x64) Version 14.50.35721.0   12/28/25 07:42:47
+ui512_division.asm					     Symbols 2 - 1
+
+
+
+
+Macros:
+
+                N a m e                 Type
+
+CheckAlign . . . . . . . . . . .	Proc
+Copy512Q . . . . . . . . . . . .	Proc
+Copy512  . . . . . . . . . . . .	Proc
+GetZatMask . . . . . . . . . . .	Proc
+Leaf_Entry . . . . . . . . . . .	Proc
+Local_Exit . . . . . . . . . . .	Proc
+Proc_w_Local . . . . . . . . . .	Proc
+SetZatMask . . . . . . . . . . .	Proc
+VerifyRegs . . . . . . . . . . .	Proc
+Zero512Q . . . . . . . . . . . .	Proc
+Zero512  . . . . . . . . . . . .	Proc
+push_reg . . . . . . . . . . . .	Proc
+
+
+Structures and Unions:
+
+                N a m e                  Size
+                                         Offset      Type
+
+div_u_Locals . . . . . . . . . .	 000001B0
+  currnumerator  . . . . . . . .	 00000000	 QWord
+  qdiv . . . . . . . . . . . . .	 00000080	 QWord
+  quotient . . . . . . . . . . .	 00000100	 QWord
+  normdivisor  . . . . . . . . .	 00000140	 QWord
+  nDiv . . . . . . . . . . . . .	 00000180	 QWord
+  qHat . . . . . . . . . . . . .	 00000188	 QWord
+  rHat . . . . . . . . . . . . .	 00000190	 QWord
+  mMSB . . . . . . . . . . . . .	 00000198	 Word
+  mDim . . . . . . . . . . . . .	 0000019A	 Word
+  mIdx . . . . . . . . . . . . .	 0000019C	 Word
+  nMSB . . . . . . . . . . . . .	 0000019E	 Word
+  nDim . . . . . . . . . . . . .	 000001A0	 Word
+  nIdx . . . . . . . . . . . . .	 000001A2	 Word
+  jIdx . . . . . . . . . . . . .	 000001A4	 Word
+  jDim . . . . . . . . . . . . .	 000001A6	 Word
+  normf  . . . . . . . . . . . .	 000001A8	 Word
+
+
+Records:
+
+                N a m e                  Width     # fields
+                                         Shift     Width     Mask      Initial
+
+kMask  . . . . . . . . . . . . .	 00000009      00000009
+  b8 . . . . . . . . . . . . . .	 00000008      00000001	     0100     ?
+  b7 . . . . . . . . . . . . . .	 00000007      00000001	     0080     ?
+  b6 . . . . . . . . . . . . . .	 00000006      00000001	     0040     ?
+  b5 . . . . . . . . . . . . . .	 00000005      00000001	     0020     ?
+  b4 . . . . . . . . . . . . . .	 00000004      00000001	     0010     ?
+  b3 . . . . . . . . . . . . . .	 00000003      00000001	     0008     ?
+  b2 . . . . . . . . . . . . . .	 00000002      00000001	     0004     ?
+  b1 . . . . . . . . . . . . . .	 00000001      00000001	     0002     ?
+  b0 . . . . . . . . . . . . . .	 00000000      00000001	     0001     ?
+
+
+Types:
+
+                N a m e                  Size     Attr
+
+LPVOID . . . . . . . . . . . . .	 00000008     PTR VOID
+
+
+Segments:
+
+                N a m e                  Length   Align   Class
+
+ui512_division . . . . . . . . .	 00000479 16	  'CODE'	
+
+
+Procedures, parameters, and locals:
+
+                N a m e                 Type     Value    Attr
+
+div_uT64 . . . . . . . . . . . .	P 	 000003E0 ui512_division	Length= 00000099 Public
+  @@exit . . . . . . . . . . . .	L 	 00000447 ui512_division	
+  @@DivByZero  . . . . . . . . .	L 	 00000448 ui512_division	
+div_u  . . . . . . . . . . . . .	P 	 00000010 ui512_division	Length= 000003C2 Public
+  mbynDiv  . . . . . . . . . . .	L 	 0000013C ui512_division	
+  normdivdone  . . . . . . . . .	L 	 00000202 ui512_division	
+  maindivloop  . . . . . . . . .	L 	 00000258 ui512_division	
+  cleanupret . . . . . . . . . .	L 	 000002D0 ui512_division	
+  cleanupwretcode  . . . . . . .	L 	 000002D3 ui512_division	
+  @ret . . . . . . . . . . . . .	L 	 000002DE ui512_division	
+  divbyzero  . . . . . . . . . .	L 	 000002DF ui512_division	
+  multiply_and_subtract  . . . .	L 	 000002E8 ui512_division	
+  check_and_addback  . . . . . .	L 	 00000301 ui512_division	
+  divbyone . . . . . . . . . . .	L 	 00000302 ui512_division	
+  numtoremain  . . . . . . . . .	L 	 0000037F ui512_division	
+
+
+Symbols:
+
+                N a m e                 Type     Value    Attr
+
+$xdatasym  . . . . . . . . . . .	Byte	 00000000 _XDATA	
+B_PTR  . . . . . . . . . . . . .	Text   	 BYTE PTR
+CPEQ . . . . . . . . . . . . . .	Number	 00000000h   
+CPFALSE  . . . . . . . . . . . .	Number	 00000003h   
+CPGE . . . . . . . . . . . . . .	Number	 00000005h   
+CPGT . . . . . . . . . . . . . .	Number	 00000006h   
+CPLE . . . . . . . . . . . . . .	Number	 00000002h   
+CPLT . . . . . . . . . . . . . .	Number	 00000001h   
+CPNE . . . . . . . . . . . . . .	Number	 00000004h   
+CPTRUE . . . . . . . . . . . . .	Number	 00000007h   
+D_PTR  . . . . . . . . . . . . .	Text   	 DWORD PTR
+Q_PTR  . . . . . . . . . . . . .	Text   	 QWORD PTR
+R8Home . . . . . . . . . . . . .	Text   	 Q_PTR [ RSP + ( 3 * 8 ) ]
+R9Home . . . . . . . . . . . . .	Text   	 Q_PTR [ RSP + ( 4 * 8 ) ]
+RCXHome  . . . . . . . . . . . .	Text   	 Q_PTR [ RSP + ( 1 * 8 ) ]
+RDXHome  . . . . . . . . . . . .	Text   	 Q_PTR [ RSP + ( 2 * 8 ) ]
+W_PTR  . . . . . . . . . . . . .	Text   	 WORD PTR
+XM_PTR . . . . . . . . . . . . .	Text   	 XMMWORD PTR
+YM_PTR . . . . . . . . . . . . .	Text   	 YMMWORD PTR
+ZM_PTR . . . . . . . . . . . . .	Text   	 ZMMWORD PTR
+__CheckAlign . . . . . . . . . .	Number	 00000000h   
+__UseBMI2  . . . . . . . . . . .	Number	 00000001h   
+__UseQ . . . . . . . . . . . . .	Number	 00000001h   
+__UseX . . . . . . . . . . . . .	Number	 00000000h   
+__UseY . . . . . . . . . . . . .	Number	 00000000h   
+__UseZ . . . . . . . . . . . . .	Number	 00000000h   
+__VerifyRegs . . . . . . . . . .	Number	 00000001h   
+_alignspace  . . . . . . . . . .	Number	 00000040h   
+_allocspace  . . . . . . . . . .	Number	 00000270h   
+_localspace  . . . . . . . . . .	Number	 000001B0h   
+_shadowspace . . . . . . . . . .	Number	 00000040h   
+add_uT64 . . . . . . . . . . . .	L 	 00000000 External
+add_u_wc . . . . . . . . . . . .	L 	 00000000 External
+add_u  . . . . . . . . . . . . .	L 	 00000000 External
+and_u  . . . . . . . . . . . . .	L 	 00000000 External
+compare_uT64 . . . . . . . . . .	L 	 00000000 External
+compare_u  . . . . . . . . . . .	L 	 00000000 External
+compile_time_options_INC . . . .	Text   	 1
+copy_u . . . . . . . . . . . . .	L 	 00000000 External
+l_Ptr  . . . . . . . . . . . . .	Text   	 [RBP] + div_u_Locals
+lsb_u  . . . . . . . . . . . . .	L 	 00000000 External
+m32BCST  . . . . . . . . . . . .	Text   	 DWORD BCST
+m64BCST  . . . . . . . . . . . .	Text   	 QWORD BCST
+msb_u  . . . . . . . . . . . . .	L 	 00000000 External
+mskAll8  . . . . . . . . . . . .	DWord	 00000000 External
+mskB0  . . . . . . . . . . . . .	DWord	 00000000 External
+mskB1  . . . . . . . . . . . . .	DWord	 00000000 External
+mskB2  . . . . . . . . . . . . .	DWord	 00000000 External
+mskB3  . . . . . . . . . . . . .	DWord	 00000000 External
+mskB4  . . . . . . . . . . . . .	DWord	 00000000 External
+mskB5  . . . . . . . . . . . . .	DWord	 00000000 External
+mskB6  . . . . . . . . . . . . .	DWord	 00000000 External
+mskB7  . . . . . . . . . . . . .	DWord	 00000000 External
+mult_uT64  . . . . . . . . . . .	L 	 00000000 External
+mult_u . . . . . . . . . . . . .	L 	 00000000 External
+nRegs  . . . . . . . . . . . . .	Number	 00000002h   
+not_u  . . . . . . . . . . . . .	L 	 00000000 External
+or_u . . . . . . . . . . . . . .	L 	 00000000 External
+qOnes  . . . . . . . . . . . . .	QWord	 00000000 External
+qZero  . . . . . . . . . . . . .	QWord	 00000000 External
+reg_verify . . . . . . . . . . .	L 	 00000000 External
+ret_GPFault  . . . . . . . . . .	DWord	 00000000 External
+ret_neg_one  . . . . . . . . . .	DWord	 00000000 External
+ret_one  . . . . . . . . . . . .	DWord	 00000000 External
+ret_zero . . . . . . . . . . . .	DWord	 00000000 External
+retcode_neg_one  . . . . . . . .	Number	 -00000001h   
+retcode_one  . . . . . . . . . .	Number	 00000001h   
+retcode_zero . . . . . . . . . .	Number	 00000000h   
+set_uT64 . . . . . . . . . . . .	L 	 00000000 External
+shl_u  . . . . . . . . . . . . .	L 	 00000000 External
+shr_u  . . . . . . . . . . . . .	L 	 00000000 External
+sub_uT64 . . . . . . . . . . . .	L 	 00000000 External
+sub_u_wb . . . . . . . . . . . .	L 	 00000000 External
+sub_u  . . . . . . . . . . . . .	L 	 00000000 External
+ui512_externs_INC  . . . . . . .	Text   	 1
+ui512_legalnotes_INC . . . . . .	Number	 00000001h   
+ui512_macros_INC . . . . . . . .	Text   	 1
+xor_u  . . . . . . . . . . . . .	L 	 00000000 External
+zero_u . . . . . . . . . . . . .	L 	 00000000 External
+
+	   0 Warnings
+	   0 Errors
