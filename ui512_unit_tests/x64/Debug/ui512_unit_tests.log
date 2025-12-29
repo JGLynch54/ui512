@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ﻿  pch.cpp
   ui512_unit_tests.cpp
   ui512_unit_tests_addition.cpp
@@ -11,3 +12,6 @@
   ui512_unit_tests_division.cpp
      Creating library C:\Users\John Lynch\source\repos\ui512\x64\Debug\ui512_unit_tests.lib and object C:\Users\John Lynch\source\repos\ui512\x64\Debug\ui512_unit_tests.exp
   ui512_unit_tests.vcxproj -> C:\Users\John Lynch\source\repos\ui512\x64\Debug\ui512_unit_tests.dll
+=======
+﻿  ui512_unit_tests.vcxproj -> C:\Users\Surface Pro 4\OneDrive\My Projects\source\repos\ui512\x64\Debug\ui512_unit_tests.dll
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0

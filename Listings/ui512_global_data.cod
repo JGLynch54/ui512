@@ -1,4 +1,4 @@
-Microsoft (R) Macro Assembler (x64) Version 14.50.35721.0   12/24/25 13:55:07
+Microsoft (R) Macro Assembler (x64) Version 14.50.35721.0   12/26/25 11:15:43
 ui512_global_data.asm					     Page 1 - 1
 
 
@@ -114,7 +114,7 @@ ui512_global_data.asm					     Page 1 - 1
 			      C ;	Note: This is intended to be a mutually exclusive choice (UseZ thru UseQ).
 			      C ;	However, the coding of the options selects the "highest" one used and ignores the rest ( If __UseZ ... ELSEIF __UseY ... )
 			      C 
- = 00000001		      C __UseZ			EQU				1									; Use AVX4 processor features (512 bit registers and instructions)
+ = 00000000		      C __UseZ			EQU				0									; Use AVX4 processor features (512 bit registers and instructions)
  = 00000000		      C __UseY			EQU				0									; Use AVX2 processor features (256 bit registers and instructions)
  = 00000000		      C __UseX			EQU				0									; Use SIMD/SSE processor features (128 bit registers and instructions)
  = 00000001		      C __UseQ			EQU				1									; Do not use extensions, use standard x64 bit registers and instructions
@@ -494,7 +494,7 @@ ui512_global_data.asm					     Page 1 - 1
  00000061			ui512_global	ENDS
 
 								END
-Microsoft (R) Macro Assembler (x64) Version 14.50.35721.0   12/24/25 13:55:07
+Microsoft (R) Macro Assembler (x64) Version 14.50.35721.0   12/26/25 11:15:43
 ui512_global_data.asm					     Symbols 2 - 1
 
 
@@ -573,7 +573,7 @@ __UseBMI2  . . . . . . . . . . .	Number	 00000001h
 __UseQ . . . . . . . . . . . . .	Number	 00000001h   
 __UseX . . . . . . . . . . . . .	Number	 00000000h   
 __UseY . . . . . . . . . . . . .	Number	 00000000h   
-__UseZ . . . . . . . . . . . . .	Number	 00000001h   
+__UseZ . . . . . . . . . . . . .	Number	 00000000h   
 __VerifyRegs . . . . . . . . . .	Number	 00000001h   
 compile_time_options_INC . . . .	Text   	 1
 m32BCST  . . . . . . . . . . . .	Text   	 DWORD BCST

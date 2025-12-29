@@ -2,7 +2,11 @@
 <Project>
   <ProjectOutputs>
     <ProjectOutput>
+<<<<<<< HEAD
       <FullPath>C:\Users\John Lynch\source\repos\ui512\x64\Debug\ui512_unit_tests.dll</FullPath>
+=======
+      <FullPath>C:\Users\Surface Pro 4\OneDrive\My Projects\source\repos\ui512\x64\Debug\ui512_unit_tests.dll</FullPath>
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
     </ProjectOutput>
   </ProjectOutputs>
   <ContentFiles />

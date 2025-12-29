@@ -1,4 +1,4 @@
-Microsoft (R) Macro Assembler (x64) Version 14.50.35721.0   12/24/25 13:55:07
+Microsoft (R) Macro Assembler (x64) Version 14.50.35721.0   12/26/25 11:15:43
 ui512_shift.asm						     Page 1 - 1
 
 
@@ -114,7 +114,7 @@ ui512_shift.asm						     Page 1 - 1
 			      C ;	Note: This is intended to be a mutually exclusive choice (UseZ thru UseQ).
 			      C ;	However, the coding of the options selects the "highest" one used and ignores the rest ( If __UseZ ... ELSEIF __UseY ... )
 			      C 
- = 00000001		      C __UseZ			EQU				1									; Use AVX4 processor features (512 bit registers and instructions)
+ = 00000000		      C __UseZ			EQU				0									; Use AVX4 processor features (512 bit registers and instructions)
  = 00000000		      C __UseY			EQU				0									; Use AVX2 processor features (256 bit registers and instructions)
  = 00000000		      C __UseX			EQU				0									; Use SIMD/SSE processor features (128 bit registers and instructions)
  = 00000001		      C __UseQ			EQU				1									; Do not use extensions, use standard x64 bit registers and instructions
@@ -624,160 +624,6 @@ ui512_shift.asm						     Page 1 - 1
  00000000			ui512_shift		SEGMENT			PARA 'CODE'
 
 					IF __UseZ		; Only need these tables if using zmm regs
-
-				; Note: storage of qwords in ZMM regs is in 'reverse' order, with the lowest index holding the most significant qword
-				;			so index 0 holds bits 511-448, index 7 holds bits 63-0
-				; But when the ZMM reg is stored to memory, the order is 'normal', with the lowest address holding the most significant qword
-
-				; table of indices for permuting words in a zmm reg to achieve right shifts by words
-							;	PUBLIC			ShiftPermuteRt
-								ALIGN			16
- 00000000			ShiftPermuteRt	QWORD			0, 1, 2, 3, 4, 5, 6, 7			; identity permute for shift left/right by words
-	   0000000000000000
-	   0000000000000001
-	   0000000000000002
-	   0000000000000003
-	   0000000000000004
-	   0000000000000005
-	   0000000000000006
-	   0000000000000007
- 00000040  0000000000000000					QWORD			0, 0, 1, 2, 3, 4, 5, 6			; shift right by one word
-	   0000000000000000
-	   0000000000000001
-	   0000000000000002
-	   0000000000000003
-	   0000000000000004
-	   0000000000000005
-	   0000000000000006
- 00000080  0000000000000000					QWORD			0, 0, 0, 1, 2, 3, 4, 5			; shift right by two words
-	   0000000000000000
-	   0000000000000000
-	   0000000000000001
-	   0000000000000002
-	   0000000000000003
-	   0000000000000004
-	   0000000000000005
- 000000C0  0000000000000000					QWORD			0, 0, 0, 0, 1, 2, 3, 4			; shift right by three words
-	   0000000000000000
-	   0000000000000000
-	   0000000000000000
-	   0000000000000001
-	   0000000000000002
-	   0000000000000003
-	   0000000000000004
- 00000100  0000000000000000					QWORD			0, 0, 0, 0, 0, 1, 2, 3			; shift right by four words
-	   0000000000000000
-	   0000000000000000
-	   0000000000000000
-	   0000000000000000
-	   0000000000000001
-	   0000000000000002
-	   0000000000000003
- 00000140  0000000000000000					QWORD			0, 0, 0, 0, 0, 0, 1, 2			; shift right by five words
-	   0000000000000000
-	   0000000000000000
-	   0000000000000000
-	   0000000000000000
-	   0000000000000000
-	   0000000000000001
-	   0000000000000002
- 00000180  0000000000000000					QWORD			0, 0, 0, 0, 0, 0, 0, 1			; shift right by six words
-	   0000000000000000
-	   0000000000000000
-	   0000000000000000
-	   0000000000000000
-	   0000000000000000
-	   0000000000000000
-	   0000000000000001
- 000001C0  0000000000000000					QWORD			0, 0, 0, 0, 0, 0, 0, 0			; shift right by seven words
-	   0000000000000000
-	   0000000000000000
-	   0000000000000000
-	   0000000000000000
-	   0000000000000000
-	   0000000000000000
-	   0000000000000000
-
-				; table of indices for permuting words in a zmm reg to achieve left shifts by words
-							;	PUBLIC			ShiftPermuteLt
- 00000200			ShiftPermuteLt	QWORD			0, 1, 2, 3, 4, 5, 6, 7			; identity permute for shift left/right by words
-	   0000000000000000
-	   0000000000000001
-	   0000000000000002
-	   0000000000000003
-	   0000000000000004
-	   0000000000000005
-	   0000000000000006
-	   0000000000000007
- 00000240  0000000000000001					QWORD			1, 2, 3, 4, 5, 6, 7, 0			; shift left by one word
-	   0000000000000002
-	   0000000000000003
-	   0000000000000004
-	   0000000000000005
-	   0000000000000006
-	   0000000000000007
-	   0000000000000000
- 00000280  0000000000000002					QWORD			2, 3, 4, 5, 6, 7, 0, 0			; shift left by two words
-	   0000000000000003
-	   0000000000000004
-	   0000000000000005
-	   0000000000000006
-	   0000000000000007
-	   0000000000000000
-	   0000000000000000
- 000002C0  0000000000000003					QWORD			3, 4, 5, 6, 7, 0, 0, 0			; shift left by three words
-	   0000000000000004
-	   0000000000000005
-	   0000000000000006
-	   0000000000000007
-	   0000000000000000
-	   0000000000000000
-	   0000000000000000
- 00000300  0000000000000004					QWORD			4, 5, 6, 7, 0, 0, 0, 0			; shift left by four words
-	   0000000000000005
-	   0000000000000006
-	   0000000000000007
-	   0000000000000000
-	   0000000000000000
-	   0000000000000000
-	   0000000000000000
- 00000340  0000000000000005					QWORD			5, 6, 7, 0, 0, 0, 0, 0			; shift left by five words
-	   0000000000000006
-	   0000000000000007
-	   0000000000000000
-	   0000000000000000
-	   0000000000000000
-	   0000000000000000
-	   0000000000000000
- 00000380  0000000000000006					QWORD			6, 7, 0, 0, 0, 0, 0, 0			; shift left by six words
-	   0000000000000007
-	   0000000000000000
-	   0000000000000000
-	   0000000000000000
-	   0000000000000000
-	   0000000000000000
-	   0000000000000000
- 000003C0  0000000000000007					QWORD			7, 0, 0, 0, 0, 0, 0, 0			; shift left by seven words	
-	   0000000000000000
-	   0000000000000000
-	   0000000000000000
-	   0000000000000000
-	   0000000000000000
-	   0000000000000000
-	   0000000000000000
-
-					
-				; When shifting, some words become zero,table of masks for zeroing words when shifting right
-							;	PUBLIC			ShiftMaskRt
- 00000400 FF FE FC F8 F0	ShiftMaskRt		DB				0ffh, 0feh, 0fch, 0f8h, 0f0h, 0e0h, 0c0h, 080h
-	   E0 C0 80
-
-				; When shifting, some words become zero,table of masks for zeroing words when shifting left
-							;	PUBLIC			ShiftMaskLt
- 00000408 FF 7F 3F 1F 0F	ShiftMaskLt		DB				0ffh, 07fh, 03fh, 01fh, 0fh, 07h, 03h, 01h	
-	   07 03 01
-
-
 					ENDIF		; __UseZ
 
 				;--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -813,71 +659,250 @@ ui512_shift.asm						     Page 1 - 1
 				;			Note: unwound loop(s). More instructions, but fewer executed (no loop save, setup, compare loop), faster, fewer regs used
 
 				IF	__UseZ
-								Leaf_Entry		shr_u				; Declare code section, public proc, no prolog, no frame, exceptions handled by caller
- 00000410  00000006 [	     1					DB				6 DUP (0cch)
+					ELSE
+				;--------------------------------------------------------------------------------------------------------------------------------------------------------------
+				;			shr_u		-	shift supplied source 512bit (8 QWORDS) right, put in destination
+				;			Another version: this one without "z" support.
+				;			Enough different that a local frame is needed and a number of non-volatile regs
+				;			A local frame is set up with the 'locals' structure
+				;
+
+ 00000008			shr_u_Locals	STRUCT
+ 00000000  0000000000000000					QWORD			?
+				shr_u_Locals	ENDS
+
+				; Declare proc, save regs, set up frame
+								Proc_w_Local	shr_u, shr_u_Locals, R12, R13, R14, R15, RDI, RBX
+ = 00000040		     1	_shadowspace	EQU				40h								; stack space for caller (at top) and callee (at bottom)
+ = 00000040		     1	_alignspace		EQU				64								; amount of space that might get truncated to get frame space aligned on specified boundary (64)
+ 00000000  00000006 [	     1					DB				6 DUP (0cch)
 	    CC
 	   ]
- 00000420		     1	shr_u			PROC
-								CheckAlign		RCX								; (OUT) destination of shifted 8 QWORDs
-								CheckAlign		RDX								; (IN)	source of 8 QWORDS
+ 00000010		     1	shr_u		PROC			FRAME
+ 00000010  48/ 89 4C 24	     1					MOV				[ RSP + ( 1 * 8) ], RCX
+	   08
+ 00000015  55		     2					PUSH			RBP
+ 00000016  41/ 54	     3					PUSH			R12
+ 00000018  41/ 55	     3					PUSH			R13
+ 0000001A  41/ 56	     3					PUSH			R14
+ 0000001C  41/ 57	     3					PUSH			R15
+ 0000001E  57		     3					PUSH			RDI
+ 0000001F  53		     3					PUSH			RBX
+ 00000020  48/ 81 EC	     1					SUB				RSP, _allocspace				; set stack pointer down by space needed (locals+ (2 * shadowspace))
+	   000000C8
+ 00000027  48/ 8D AC 24	     1					LEA				RBP, ( _shadowspace + _alignspace ) [ RSP ]
+	   00000080
+ 0000002F  48/ 83 E5 C0	     1					AND				RBP, -_alignspace				; truncate low bits of base pointer to yield aligned pointer
+ 00000033  48/ 89 8C 24						MOV				RCXHome, RCX
+	   00000108
 
- 00000420  66| 41/ 81 F8					CMP				R8W, 512						; handle edge case, shift 512 or more bits
+ 0000003B  66| 41/ 81 F8					CMP				R8W, 512						; handle edge case, shift 512 or more bits
 	   0200
- 00000426  7C 0D						JL				@F
+ 00000041  7C 27						JL				@F
 								Zero512			RCX								; zero destination, return
- 00000428  62 01 85 40/ EF   1					VPXORQ			ZMM31, ZMM31, ZMM31
-	   FF
- 0000042E  62 61 FD 48/ 7F   1					VMOVDQA64		ZM_PTR [ RCX ], ZMM31
-	   39
- 00000434  C3							RET
+ 00000043  48/ 33 C0	     1					XOR				RAX, RAX
+ 00000046  48/ 89 01	     2					MOV				Q_PTR [ RCX ] [ 0 * 8 ], RAX
+ 00000049  48/ 89 41 08	     2					MOV				Q_PTR [ RCX ] [ 1 * 8 ], RAX
+ 0000004D  48/ 89 41 10	     2					MOV				Q_PTR [ RCX ] [ 2 * 8 ], RAX
+ 00000051  48/ 89 41 18	     2					MOV				Q_PTR [ RCX ] [ 3 * 8 ], RAX
+ 00000055  48/ 89 41 20	     2					MOV				Q_PTR [ RCX ] [ 4 * 8 ], RAX
+ 00000059  48/ 89 41 28	     2					MOV				Q_PTR [ RCX ] [ 5 * 8 ], RAX
+ 0000005D  48/ 89 41 30	     2					MOV				Q_PTR [ RCX ] [ 6 * 8 ], RAX
+ 00000061  48/ 89 41 38	     2					MOV				Q_PTR [ RCX ] [ 7 * 8 ], RAX
+ 00000065  E9 0000025F						JMP				@@R
 
- 00000435  49/ 81 E0		@@:				AND				R8, 511							; ensure no high bits above shift count
+ 0000006A  49/ 81 E0		@@:				AND				R8, 511							; ensure no high bits above shift count
 	   000001FF
- 0000043C  75 12						JNZ				@@shift							; handle edge case, zero bits to shift
- 0000043E  48/ 3B CA						CMP				RCX, RDX
- 00000441  74 0C						JE				@F								; destination is the same as the source: no copy needed
+ 00000071  75 4C						JNZ				@@shift							; handle edge case, zero bits to shift
+ 00000073  48/ 3B CA						CMP				RCX, RDX
+ 00000076  0F 84 0000024D					JE				@@R								; destination is the same as the source: no copy needed
 								Copy512			RCX, RDX						; no shift, just copy (destination, source already in regs), return
- 00000443  62 61 FD 48/ 6F   1					VMOVDQA64		ZMM31, ZM_PTR [ RDX ]
-	   3A
- 00000449  62 61 FD 48/ 7F   1					VMOVDQA64		ZM_PTR [ RCX ], ZMM31
-	   39
- 0000044F  C3			@@:				RET
+ 0000007C  48/ 8B 02	     2					MOV				RAX, Q_PTR [ RDX ] [ 0 * 8 ]
+ 0000007F  48/ 89 01	     2					MOV				Q_PTR [ RCX ] [ 0 * 8 ], RAX
+ 00000082  48/ 8B 42 08	     2					MOV				RAX, Q_PTR [ RDX ] [ 1 * 8 ]
+ 00000086  48/ 89 41 08	     2					MOV				Q_PTR [ RCX ] [ 1 * 8 ], RAX
+ 0000008A  48/ 8B 42 10	     2					MOV				RAX, Q_PTR [ RDX ] [ 2 * 8 ]
+ 0000008E  48/ 89 41 10	     2					MOV				Q_PTR [ RCX ] [ 2 * 8 ], RAX
+ 00000092  48/ 8B 42 18	     2					MOV				RAX, Q_PTR [ RDX ] [ 3 * 8 ]
+ 00000096  48/ 89 41 18	     2					MOV				Q_PTR [ RCX ] [ 3 * 8 ], RAX
+ 0000009A  48/ 8B 42 20	     2					MOV				RAX, Q_PTR [ RDX ] [ 4 * 8 ]
+ 0000009E  48/ 89 41 20	     2					MOV				Q_PTR [ RCX ] [ 4 * 8 ], RAX
+ 000000A2  48/ 8B 42 28	     2					MOV				RAX, Q_PTR [ RDX ] [ 5 * 8 ]
+ 000000A6  48/ 89 41 28	     2					MOV				Q_PTR [ RCX ] [ 5 * 8 ], RAX
+ 000000AA  48/ 8B 42 30	     2					MOV				RAX, Q_PTR [ RDX ] [ 6 * 8 ]
+ 000000AE  48/ 89 41 30	     2					MOV				Q_PTR [ RCX ] [ 6 * 8 ], RAX
+ 000000B2  48/ 8B 42 38	     2					MOV				RAX, Q_PTR [ RDX ] [ 7 * 8 ]
+ 000000B6  48/ 89 41 38	     2					MOV				Q_PTR [ RCX ] [ 7 * 8 ], RAX
+ 000000BA  E9 0000020A						JMP				@@R
 
- 00000450  62 61 FD 48/ 6F	@@shift:		VMOVDQA64		ZMM31, ZM_PTR [ RDX ]			; load the 8 qwords into zmm reg (note: word order)
-	   3A
- 00000456  49/ 8D 00						LEA				RAX, [ R8 ]
- 00000459  66| 83 E0 3F						AND				AX, 03fh						; limit shift count to 63 (shifting bits only here, not words)
- 0000045D  74 19						JZ				@F								; if true, must be multiple of 64 bits to shift, no bits, just words to shift
- 0000045F  62 62 FD 48/ 7C					VPBROADCASTQ	ZMM29, RAX						; Nr bits to shift right
-	   E8
- 00000465  62 01 9D 40/ EF					VPXORQ			ZMM28, ZMM28, ZMM28				; 
-	   E4
- 0000046B  62 03 85 40/ 03					VALIGNQ			ZMM30, ZMM31, ZMM28, 7			; shift copy of words left one word (to get low order bits aligned for shift)
-	   F4 07
- 00000472  62 02 8D 40/ 73					VPSHRDVQ		ZMM31, ZMM30, ZMM29				; shift, concatenating low bits of next word with each word to shift in
-	   FD
+				; load sequential regs with source 8 qwords
+ 000000BF  4C/ 8B 0A		@@shift:		MOV				R9, Q_PTR [ RDX ] [ 0 * 8 ]		; R9 holds source at index [0], most significant qword
+ 000000C2  4C/ 8B 52 08						MOV				R10, Q_PTR [ RDX ] [ 1 * 8 ]	; R10 <- [1]
+ 000000C6  4C/ 8B 5A 10						MOV				R11, Q_PTR [ RDX ] [ 2 * 8 ]	; R11 <- [2]
+ 000000CA  4C/ 8B 62 18						MOV				R12, Q_PTR [ RDX ] [ 3 * 8 ]	; R12 <- [3]
+ 000000CE  4C/ 8B 6A 20						MOV				R13, Q_PTR [ RDX ] [ 4 * 8 ]	; R13 <- [4]
+ 000000D2  4C/ 8B 72 28						MOV				R14, Q_PTR [ RDX ] [ 5 * 8 ]	; R14 <- [5]
+ 000000D6  4C/ 8B 7A 30						MOV				R15, Q_PTR [ RDX ] [ 6 * 8 ]	; R15 <- [6]
+ 000000DA  48/ 8B 7A 38						MOV				RDI, Q_PTR [ RDX ] [ 7 * 8 ]	; RDI holds source at index [7], least significant qword
 
-				; with the bits shifted within the words (if needed), if the desired shift is more than 64 bits, word shifts are required
- 00000478  48/ 8D 05		@@:				LEA				RAX, ShiftMaskRt	
-	   00000400 R
- 0000047F  66| 41/ C1 E8					SHR				R8W, 6							; divide Nr bits to shift by 64 giving Nr words to shift (can only be 0-7 based on above validation)
+				; determine if / how many bits to shift
+ 000000DE  49/ 8D 08						LEA				RCX, [ R8 ]						; R8 still carries users shift count.
+ 000000E1  48/ 83 E1 3F						AND				RCX, 03Fh						; Mask down to Nr of bits to shift right -> RCX
+ 000000E5  74 6B						JZ				@@nobits						; might be word shifts, but no bit shifts required
+ 000000E7  48/ 8D 1C 25						LEA				RBX, [ 64 ]
+	   00000040
+ 000000EF  48/ 2B D9						SUB				RBX, RCX						; Nr to shift left -> RBX
+
+				; Using Macro for repetitive ops. Reduces chance of typo, easier to maintain, but not used anywhere else
+								ShiftOrR		R15, RDI						; RDI is target to shift, but need bits from R15 to fill in high bits
+ 000000F2  C4 C2 E1/ F7 D7   1					SHLX			RDX, R15, RBX					; shift 'bottom' bits to top
+ 000000F7  C4 E2 F3/ F7 FF   1					SHRX			RDI, RDI, RCX					; shift target bits right (leaving zero filled bits at top)
+ 000000FC  48/ 0B FA	     1					OR				RDI, RDX						; OR in new 'top' bits
+								ShiftOrR		R14, R15						; now R15 is target, but need bits from R14
+ 000000FF  C4 C2 E1/ F7 D6   1					SHLX			RDX, R14, RBX					; shift 'bottom' bits to top
+ 00000104  C4 42 F3/ F7 FF   1					SHRX			R15, R15, RCX					; shift target bits right (leaving zero filled bits at top)
+ 00000109  4C/ 0B FA	     1					OR				R15, RDX						; OR in new 'top' bits
+								ShiftOrR		R13, R14						; and on ...
+ 0000010C  C4 C2 E1/ F7 D5   1					SHLX			RDX, R13, RBX					; shift 'bottom' bits to top
+ 00000111  C4 42 F3/ F7 F6   1					SHRX			R14, R14, RCX					; shift target bits right (leaving zero filled bits at top)
+ 00000116  4C/ 0B F2	     1					OR				R14, RDX						; OR in new 'top' bits
+								ShiftOrR		R12, R13
+ 00000119  C4 C2 E1/ F7 D4   1					SHLX			RDX, R12, RBX					; shift 'bottom' bits to top
+ 0000011E  C4 42 F3/ F7 ED   1					SHRX			R13, R13, RCX					; shift target bits right (leaving zero filled bits at top)
+ 00000123  4C/ 0B EA	     1					OR				R13, RDX						; OR in new 'top' bits
+								ShiftOrR		R11, R12
+ 00000126  C4 C2 E1/ F7 D3   1					SHLX			RDX, R11, RBX					; shift 'bottom' bits to top
+ 0000012B  C4 42 F3/ F7 E4   1					SHRX			R12, R12, RCX					; shift target bits right (leaving zero filled bits at top)
+ 00000130  4C/ 0B E2	     1					OR				R12, RDX						; OR in new 'top' bits
+								ShiftOrR		R10, R11
+ 00000133  C4 C2 E1/ F7 D2   1					SHLX			RDX, R10, RBX					; shift 'bottom' bits to top
+ 00000138  C4 42 F3/ F7 DB   1					SHRX			R11, R11, RCX					; shift target bits right (leaving zero filled bits at top)
+ 0000013D  4C/ 0B DA	     1					OR				R11, RDX						; OR in new 'top' bits
+								ShiftOrR		R9, R10				
+ 00000140  C4 C2 E1/ F7 D1   1					SHLX			RDX, R9, RBX					; shift 'bottom' bits to top
+ 00000145  C4 42 F3/ F7 D2   1					SHRX			R10, R10, RCX					; shift target bits right (leaving zero filled bits at top)
+ 0000014A  4C/ 0B D2	     1					OR				R10, RDX						; OR in new 'top' bits
+ 0000014D  C4 42 F3/ F7 C9					SHRX			R9, R9, RCX						; no bits to OR in on the index 0 (high order) word, just shift it.
+
+				; with the bits shifted within the words, if the desired shift is more than 64 bits, word shifts are required
+				; verify Nr of word shift is zero to seven, use it as index into jump table; jump to appropriate shift
+ 00000152  66| 41/ C1 E8	@@nobits:		SHR				R8W, 6							; divide bit shift count by 64 to get Nr words to shift
 	   06
- 00000484  4A/ 8D 04 00						LEA				RAX,  [ RAX ] [ R8 ]			; Add index to base address of mask table
- 00000488  C5 F9/ 90 08						KMOVB			K1, B_PTR [ RAX ]				; load mask for words to be zeroed
- 0000048C  48/ 8D 05						LEA				RAX, ShiftPermuteRt				; address of permute table
-	   00000000 R
- 00000493  66| 41/ C1 E0					SHL				R8W, 6							; multiply by 64 to get offset into permute table		
-	   06
- 00000498  62 41 FD 48/ 6F					VMOVDQA64		ZMM29, ZM_PTR [R8] [ RAX ]		; load permute indices (with calculated offset)
-	   2C 00
- 0000049F  62 02 95 C1/ 36					VPERMQ			ZMM31 {k1}{z}, ZMM29, ZMM31		; permute words in zmm31 to achieve word shift
-	   FF
- 000004A5  62 61 FD 48/ 7F					VMOVDQA64		ZM_PTR [ RCX ], ZMM31			; store result at callers destination
-	   39
- 000004AB  C3							RET
- 000004AC			shr_u			ENDP
+ 00000157  49/ 83 E0 07						AND				R8, 7							; mask out anything above seven (shouldnt happen, but . . . jump table, be sure)
+ 0000015B  66| 41/ C1 E0					SHL				R8W, 3							; multiply by 8 to get offset into jump table
+	   03
+ 00000160  48/ 8D 05						LEA				RAX, jtbl						; base address of jump table
+	   00000177 R
+ 00000167  4C/ 03 C0						ADD				R8, RAX							; add to offset
+ 0000016A  33 C0						XOR				EAX, EAX						; clear rax for use in zeroing words shifted "in"
+ 0000016C  48/ 8B 8C 24						MOV				RCX, RCXHome					; restore RCX
+	   00000108
+ 00000174  41/ FF 20						JMP				Q_PTR [ R8 ]
+ 00000177			jtbl:
+ 00000177  00000000000001B7 R					QWORD			S0, S1, S2, S3, S4, S5, S6, S7
+	   00000000000001DB R
+	   00000000000001FF R
+	   0000000000000223 R
+	   0000000000000247 R
+	   0000000000000268 R
+	   0000000000000289 R
+	   00000000000002AA R
+				; no word shift, just bits, so store words in destination in the same order as they are in the regs
+ 000001B7  4C/ 89 09		S0:				MOV				Q_PTR [ RCX ] [ 0 * 8 ], R9
+ 000001BA  4C/ 89 51 08						MOV				Q_PTR [ RCX ] [ 1 * 8 ], R10
+ 000001BE  4C/ 89 59 10						MOV				Q_PTR [ RCX ] [ 2 * 8 ], R11
+ 000001C2  4C/ 89 61 18						MOV				Q_PTR [ RCX ] [ 3 * 8 ], R12
+ 000001C6  4C/ 89 69 20						MOV				Q_PTR [ RCX ] [ 4 * 8 ], R13
+ 000001CA  4C/ 89 71 28						MOV				Q_PTR [ RCX ] [ 5 * 8 ], R14
+ 000001CE  4C/ 89 79 30						MOV				Q_PTR [ RCX ] [ 6 * 8 ], R15
+ 000001D2  48/ 89 79 38						MOV				Q_PTR [ RCX ] [ 7 * 8 ], RDI	
+ 000001D6  E9 000000EE						JMP				@@R
+				; one word shift, store from regs to callers destination offsetting one word (zeroing first, most significant, word)
+ 000001DB  48/ 89 01		S1:				MOV				Q_PTR [ RCX ] [ 0 * 8 ], RAX
+ 000001DE  4C/ 89 49 08						MOV				Q_PTR [ RCX ] [ 1 * 8 ], R9
+ 000001E2  4C/ 89 51 10						MOV				Q_PTR [ RCX ] [ 2 * 8 ], R10
+ 000001E6  4C/ 89 59 18						MOV				Q_PTR [ RCX ] [ 3 * 8 ], R11
+ 000001EA  4C/ 89 61 20						MOV				Q_PTR [ RCX ] [ 4 * 8 ], R12
+ 000001EE  4C/ 89 69 28						MOV				Q_PTR [ RCX ] [ 5 * 8 ], R13
+ 000001F2  4C/ 89 71 30						MOV				Q_PTR [ RCX ] [ 6 * 8 ], R14
+ 000001F6  4C/ 89 79 38						MOV				Q_PTR [ RCX ] [ 7 * 8 ], R15	
+ 000001FA  E9 000000CA						JMP				@@R
+				; two word shift
+ 000001FF  48/ 89 01		S2:				MOV				Q_PTR [ RCX ] [ 0 * 8 ], RAX
+ 00000202  48/ 89 41 08						MOV				Q_PTR [ RCX ] [ 1 * 8 ], RAX
+ 00000206  4C/ 89 49 10						MOV				Q_PTR [ RCX ] [ 2 * 8 ], R9
+ 0000020A  4C/ 89 51 18						MOV				Q_PTR [ RCX ] [ 3 * 8 ], R10
+ 0000020E  4C/ 89 59 20						MOV				Q_PTR [ RCX ] [ 4 * 8 ], R11
+ 00000212  4C/ 89 61 28						MOV				Q_PTR [ RCX ] [ 5 * 8 ], R12
+ 00000216  4C/ 89 69 30						MOV				Q_PTR [ RCX ] [ 6 * 8 ], R13
+ 0000021A  4C/ 89 71 38						MOV				Q_PTR [ RCX ] [ 7 * 8 ], R14	
+ 0000021E  E9 000000A6						JMP				@@R
 
-					ELSE
+ 00000223  48/ 89 01		S3:				MOV				Q_PTR [ RCX ] [ 0 * 8 ], RAX
+ 00000226  48/ 89 41 08						MOV				Q_PTR [ RCX ] [ 1 * 8 ], RAX
+ 0000022A  48/ 89 41 10						MOV				Q_PTR [ RCX ] [ 2 * 8 ], RAX
+ 0000022E  4C/ 89 49 18						MOV				Q_PTR [ RCX ] [ 3 * 8 ], R9
+ 00000232  4C/ 89 51 20						MOV				Q_PTR [ RCX ] [ 4 * 8 ], R10
+ 00000236  4C/ 89 59 28						MOV				Q_PTR [ RCX ] [ 5 * 8 ], R11
+ 0000023A  4C/ 89 61 30						MOV				Q_PTR [ RCX ] [ 6 * 8 ], R12
+ 0000023E  4C/ 89 69 38						MOV				Q_PTR [ RCX ] [ 7 * 8 ], R13	
+ 00000242  E9 00000082						JMP				@@R
+
+ 00000247  48/ 89 01		S4:				MOV				Q_PTR [ RCX ] [ 0 * 8 ], RAX
+ 0000024A  48/ 89 41 08						MOV				Q_PTR [ RCX ] [ 1 * 8 ], RAX
+ 0000024E  48/ 89 41 10						MOV				Q_PTR [ RCX ] [ 2 * 8 ], RAX
+ 00000252  48/ 89 41 18						MOV				Q_PTR [ RCX ] [ 3 * 8 ], RAX
+ 00000256  4C/ 89 49 20						MOV				Q_PTR [ RCX ] [ 4 * 8 ], R9
+ 0000025A  4C/ 89 51 28						MOV				Q_PTR [ RCX ] [ 5 * 8 ], R10
+ 0000025E  4C/ 89 59 30						MOV				Q_PTR [ RCX ] [ 6 * 8 ], R11
+ 00000262  4C/ 89 61 38						MOV				Q_PTR [ RCX ] [ 7 * 8 ], R12			
+ 00000266  EB 61						JMP				@@R
+
+ 00000268  48/ 89 01		S5:				MOV				Q_PTR [ RCX ] [ 0 * 8 ], RAX
+ 0000026B  48/ 89 41 08						MOV				Q_PTR [ RCX ] [ 1 * 8 ], RAX
+ 0000026F  48/ 89 41 10						MOV				Q_PTR [ RCX ] [ 2 * 8 ], RAX
+ 00000273  48/ 89 41 18						MOV				Q_PTR [ RCX ] [ 3 * 8 ], RAX
+ 00000277  48/ 89 41 20						MOV				Q_PTR [ RCX ] [ 4 * 8 ], RAX
+ 0000027B  4C/ 89 49 28						MOV				Q_PTR [ RCX ] [ 5 * 8 ], R9
+ 0000027F  4C/ 89 51 30						MOV				Q_PTR [ RCX ] [ 6 * 8 ], R10
+ 00000283  4C/ 89 59 38						MOV				Q_PTR [ RCX ] [ 7 * 8 ], R11	
+ 00000287  EB 40						JMP				@@R
+
+ 00000289  48/ 89 01		S6:				MOV				Q_PTR [ RCX ] [ 0 * 8 ], RAX
+ 0000028C  48/ 89 41 08						MOV				Q_PTR [ RCX ] [ 1 * 8 ], RAX
+ 00000290  48/ 89 41 10						MOV				Q_PTR [ RCX ] [ 2 * 8 ], RAX
+ 00000294  48/ 89 41 18						MOV				Q_PTR [ RCX ] [ 3 * 8 ], RAX
+ 00000298  48/ 89 41 20						MOV				Q_PTR [ RCX ] [ 4 * 8 ], RAX
+ 0000029C  48/ 89 41 28						MOV				Q_PTR [ RCX ] [ 5 * 8 ], RAX
+ 000002A0  4C/ 89 49 30						MOV				Q_PTR [ RCX ] [ 6 * 8 ], R9
+ 000002A4  4C/ 89 51 38						MOV				Q_PTR [ RCX ] [ 7 * 8 ], R10	
+ 000002A8  EB 1F						JMP				@@R
+
+ 000002AA  48/ 89 01		S7:				MOV				Q_PTR [ RCX ] [ 0 * 8 ], RAX
+ 000002AD  48/ 89 41 08						MOV				Q_PTR [ RCX ] [ 1 * 8 ], RAX
+ 000002B1  48/ 89 41 10						MOV				Q_PTR [ RCX ] [ 2 * 8 ], RAX
+ 000002B5  48/ 89 41 18						MOV				Q_PTR [ RCX ] [ 3 * 8 ], RAX
+ 000002B9  48/ 89 41 20						MOV				Q_PTR [ RCX ] [ 4 * 8 ], RAX
+ 000002BD  48/ 89 41 28						MOV				Q_PTR [ RCX ] [ 5 * 8 ], RAX
+ 000002C1  48/ 89 41 30						MOV				Q_PTR [ RCX ] [ 6 * 8 ], RAX
+ 000002C5  4C/ 89 49 38						MOV				Q_PTR [ RCX ] [ 7 * 8 ], R9		
+
+				; restore non-volatile regs to as-called condition
+ 000002C9			@@R:
+								Local_Exit		RBX, RDI, R15, R14, R13, R12
+ 000002C9  48/ 81 C4	     1					ADD				RSP,  _allocspace
+	   000000C8
+ 000002D0  5B		     2					POP				RBX
+ 000002D1  5F		     2					POP				RDI
+ 000002D2  41/ 5F	     2					POP				R15
+ 000002D4  41/ 5E	     2					POP				R14
+ 000002D6  41/ 5D	     2					POP				R13
+ 000002D8  41/ 5C	     2					POP				R12
+ 000002DA  5D		     1					POP				RBP
+ 000002DB  C3		     1					RET
+
+ 000002DC			shr_u			ENDP
+					
 				ENDIF
 				;--------------------------------------------------------------------------------------------------------------------------------------------------------------
 				;			shl_u		-	shift supplied source 512bit (8 QWORDS) left, put in destination
@@ -888,75 +913,263 @@ ui512_shift.asm						     Page 1 - 1
 				;			returns		-	nothing (0)
 
 				IF	__UseZ
-								Leaf_Entry		shl_u				; Declare code section, public proc, no prolog, no frame, exceptions handled by caller
- 000004AC  00000006 [	     1					DB				6 DUP (0cch)
+					ELSE
+				;--------------------------------------------------------------------------------------------------------------------------------------------------------------
+				;			shl_u		-	shift supplied source 512bit (8 QWORDS) left, put in destination
+				;			Another version: this one without "z" support.
+				;			Enough different that a local frame is needed and a number of non-volatile regs
+				;			A local frame is set up with the 'locals' structure
+				;
+
+
+ 00000008			shl_u_Locals	STRUCT
+ 00000000  0000000000000000					QWORD			?
+				shl_u_Locals	ENDS
+
+				; Declare proc, save regs, set up frame
+								Proc_w_Local	shl_u, shl_u_Locals, R12, R13, R14, R15, RDI, RBX
+ = 00000040		     1	_shadowspace	EQU				40h								; stack space for caller (at top) and callee (at bottom)
+ = 00000040		     1	_alignspace		EQU				64								; amount of space that might get truncated to get frame space aligned on specified boundary (64)
+ 000002DC  00000006 [	     1					DB				6 DUP (0cch)
 	    CC
 	   ]
- 000004C0		     1	shl_u			PROC
-								CheckAlign		RCX								; (OUT) destination of shifted 8 QWORDs
-								CheckAlign		RDX								; (IN)	source of 8 QWORDS
+ 000002F0		     1	shl_u		PROC			FRAME
+ 000002F0  48/ 89 4C 24	     1					MOV				[ RSP + ( 1 * 8) ], RCX
+	   08
+ 000002F5  55		     2					PUSH			RBP
+ 000002F6  41/ 54	     3					PUSH			R12
+ 000002F8  41/ 55	     3					PUSH			R13
+ 000002FA  41/ 56	     3					PUSH			R14
+ 000002FC  41/ 57	     3					PUSH			R15
+ 000002FE  57		     3					PUSH			RDI
+ 000002FF  53		     3					PUSH			RBX
+ 00000300  48/ 81 EC	     1					SUB				RSP, _allocspace				; set stack pointer down by space needed (locals+ (2 * shadowspace))
+	   000000C8
+ 00000307  48/ 8D AC 24	     1					LEA				RBP, ( _shadowspace + _alignspace ) [ RSP ]
+	   00000080
+ 0000030F  48/ 83 E5 C0	     1					AND				RBP, -_alignspace				; truncate low bits of base pointer to yield aligned pointer
+ 00000313  48/ 89 8C 24						MOV				RCXHome, RCX
+	   00000108
 
- 000004C0  66| 41/ 81 F8					CMP				R8W, 512						; handle edge case, shift 512 or more bits
+ 0000031B  66| 41/ 81 F8					CMP				R8W, 512						; handle edge case, shift 512 or more bits
 	   0200
- 000004C6  7C 0D						JL				@F
-								Zero512			RCX								; zero destination
- 000004C8  62 01 85 40/ EF   1					VPXORQ			ZMM31, ZMM31, ZMM31
-	   FF
- 000004CE  62 61 FD 48/ 7F   1					VMOVDQA64		ZM_PTR [ RCX ], ZMM31
-	   39
- 000004D4  C3							RET
- 000004D5  49/ 81 E0		@@:				AND				R8, 511							; mask out high bits above shift count, test for 0
-	   000001FF
- 000004DC  75 12						JNE				@F								; handle edge case, shift zero bits
- 000004DE  48/ 3B CA						CMP				RCX, RDX						; destination same as source?
- 000004E1  74 0C						JE				@@r								; no copy needed
-								Copy512			RCX, RDX						; no shift, just copy (destination, source already in regs)
- 000004E3  62 61 FD 48/ 6F   1					VMOVDQA64		ZMM31, ZM_PTR [ RDX ]
-	   3A
- 000004E9  62 61 FD 48/ 7F   1					VMOVDQA64		ZM_PTR [ RCX ], ZMM31
-	   39
- 000004EF  C3			@@r:			RET
- 000004F0  62 61 FD 48/ 6F	@@:				VMOVDQA64		ZMM31, ZM_PTR [ RDX ]			; load the 8 qwords into zmm reg (note: word order)
-	   3A
- 000004F6  49/ 8D 00						LEA				RAX, [ R8 ]
- 000004F9  66| 83 E0 3F						AND				AX, 03fh
- 000004FD  74 19						JZ				@F								; must be multiple of 64 bits to shift, no bits, just words to shift
+ 00000321  7C 27						JL				@F
+								Zero512			RCX								; zero destination, return
+ 00000323  48/ 33 C0	     1					XOR				RAX, RAX
+ 00000326  48/ 89 01	     2					MOV				Q_PTR [ RCX ] [ 0 * 8 ], RAX
+ 00000329  48/ 89 41 08	     2					MOV				Q_PTR [ RCX ] [ 1 * 8 ], RAX
+ 0000032D  48/ 89 41 10	     2					MOV				Q_PTR [ RCX ] [ 2 * 8 ], RAX
+ 00000331  48/ 89 41 18	     2					MOV				Q_PTR [ RCX ] [ 3 * 8 ], RAX
+ 00000335  48/ 89 41 20	     2					MOV				Q_PTR [ RCX ] [ 4 * 8 ], RAX
+ 00000339  48/ 89 41 28	     2					MOV				Q_PTR [ RCX ] [ 5 * 8 ], RAX
+ 0000033D  48/ 89 41 30	     2					MOV				Q_PTR [ RCX ] [ 6 * 8 ], RAX
+ 00000341  48/ 89 41 38	     2					MOV				Q_PTR [ RCX ] [ 7 * 8 ], RAX
+ 00000345  E9 0000025F						JMP				@@R
 
-				; Do the shift of bits within the 64 bit words
- 000004FF  62 62 FD 48/ 7C					VPBROADCASTQ	ZMM29, RAX						; Nr bits to shift left
-	   E8
- 00000505  62 01 9D 40/ EF					VPXORQ			ZMM28, ZMM28, ZMM28				; 
-	   E4
- 0000050B  62 03 9D 40/ 03					VALIGNQ			ZMM30, ZMM28, ZMM31, 1			; shift copy of words right one word (to get low order bits aligned for shift)
-	   F7 01
- 00000512  62 02 8D 40/ 71					VPSHLDVQ		ZMM31, ZMM30, ZMM29				; shift, concatenating low bits of next word with each word to shift in
-	   FD
+ 0000034A  49/ 81 E0		@@:				AND				R8, 511							; ensure no high bits above shift count
+	   000001FF
+ 00000351  75 4C						JNZ				@@shift							; handle edge case, zero bits to shift
+ 00000353  48/ 3B CA						CMP				RCX, RDX
+ 00000356  0F 84 0000024D					JE				@@R								; destination is the same as the source: no copy needed
+								Copy512			RCX, RDX						; no shift, just copy (destination, source already in regs), return
+ 0000035C  48/ 8B 02	     2					MOV				RAX, Q_PTR [ RDX ] [ 0 * 8 ]
+ 0000035F  48/ 89 01	     2					MOV				Q_PTR [ RCX ] [ 0 * 8 ], RAX
+ 00000362  48/ 8B 42 08	     2					MOV				RAX, Q_PTR [ RDX ] [ 1 * 8 ]
+ 00000366  48/ 89 41 08	     2					MOV				Q_PTR [ RCX ] [ 1 * 8 ], RAX
+ 0000036A  48/ 8B 42 10	     2					MOV				RAX, Q_PTR [ RDX ] [ 2 * 8 ]
+ 0000036E  48/ 89 41 10	     2					MOV				Q_PTR [ RCX ] [ 2 * 8 ], RAX
+ 00000372  48/ 8B 42 18	     2					MOV				RAX, Q_PTR [ RDX ] [ 3 * 8 ]
+ 00000376  48/ 89 41 18	     2					MOV				Q_PTR [ RCX ] [ 3 * 8 ], RAX
+ 0000037A  48/ 8B 42 20	     2					MOV				RAX, Q_PTR [ RDX ] [ 4 * 8 ]
+ 0000037E  48/ 89 41 20	     2					MOV				Q_PTR [ RCX ] [ 4 * 8 ], RAX
+ 00000382  48/ 8B 42 28	     2					MOV				RAX, Q_PTR [ RDX ] [ 5 * 8 ]
+ 00000386  48/ 89 41 28	     2					MOV				Q_PTR [ RCX ] [ 5 * 8 ], RAX
+ 0000038A  48/ 8B 42 30	     2					MOV				RAX, Q_PTR [ RDX ] [ 6 * 8 ]
+ 0000038E  48/ 89 41 30	     2					MOV				Q_PTR [ RCX ] [ 6 * 8 ], RAX
+ 00000392  48/ 8B 42 38	     2					MOV				RAX, Q_PTR [ RDX ] [ 7 * 8 ]
+ 00000396  48/ 89 41 38	     2					MOV				Q_PTR [ RCX ] [ 7 * 8 ], RAX
+ 0000039A  E9 0000020A						JMP				@@R
+
+				; load sequential regs with source 8 qwords
+ 0000039F  4C/ 8B 0A		@@shift:		MOV				R9, Q_PTR [ RDX ] [ 0 * 8 ]		; R9 holds source at index [0], most significant qword
+ 000003A2  4C/ 8B 52 08						MOV				R10, Q_PTR [ RDX ] [ 1 * 8 ]	; R10 <- [1]
+ 000003A6  4C/ 8B 5A 10						MOV				R11, Q_PTR [ RDX ] [ 2 * 8 ]	; R11 <- [2]
+ 000003AA  4C/ 8B 62 18						MOV				R12, Q_PTR [ RDX ] [ 3 * 8 ]	; R12 <- [3]
+ 000003AE  4C/ 8B 6A 20						MOV				R13, Q_PTR [ RDX ] [ 4 * 8 ]	; R13 <- [4]
+ 000003B2  4C/ 8B 72 28						MOV				R14, Q_PTR [ RDX ] [ 5 * 8 ]	; R14 <- [5]
+ 000003B6  4C/ 8B 7A 30						MOV				R15, Q_PTR [ RDX ] [ 6 * 8 ]	; R15 <- [6]
+ 000003BA  48/ 8B 7A 38						MOV				RDI, Q_PTR [ RDX ] [ 7 * 8 ]	; RDI holds source at index [7], least significant qword
+
+				; determine if / how many bits to shift
+ 000003BE  49/ 8D 08						LEA				RCX, [ R8 ]						; R8 still carries users shift count.
+ 000003C1  48/ 83 E1 3F						AND				RCX, 03Fh						; Mask down to Nr of bits to shift left -> RCX
+ 000003C5  74 6B						JZ				@@nobits						; might be word shifts, but no bit shifts required
+ 000003C7  48/ 8D 1C 25						LEA				RBX, [ 64 ]
+	   00000040
+ 000003CF  48/ 2B D9						SUB				RBX, RCX						; Nr to shift right -> RBX
+
+				; Macro for repetitive ops. Reduces chance of typo, easier to maintain, but not used anywhere else
+								ShiftOrL		R10, R9							; R9 is target to shift, but need bits from R10 to fill in low bits
+ 000003D2  C4 C2 E3/ F7 D2   1					SHRX			RDX, R10, RBX					; shift 'top' bits to bottom
+ 000003D7  C4 42 F1/ F7 C9   1					SHLX			R9, R9, RCX					; shift target bits left (leaving zero filled bits at bottom)
+ 000003DC  4C/ 0B CA	     1					OR				R9, RDX						; OR in new 'bottom' bits
+								ShiftOrL		R11, R10
+ 000003DF  C4 C2 E3/ F7 D3   1					SHRX			RDX, R11, RBX					; shift 'top' bits to bottom
+ 000003E4  C4 42 F1/ F7 D2   1					SHLX			R10, R10, RCX					; shift target bits left (leaving zero filled bits at bottom)
+ 000003E9  4C/ 0B D2	     1					OR				R10, RDX						; OR in new 'bottom' bits
+								ShiftOrL		R12, R11
+ 000003EC  C4 C2 E3/ F7 D4   1					SHRX			RDX, R12, RBX					; shift 'top' bits to bottom
+ 000003F1  C4 42 F1/ F7 DB   1					SHLX			R11, R11, RCX					; shift target bits left (leaving zero filled bits at bottom)
+ 000003F6  4C/ 0B DA	     1					OR				R11, RDX						; OR in new 'bottom' bits
+								ShiftOrL		R13, R12
+ 000003F9  C4 C2 E3/ F7 D5   1					SHRX			RDX, R13, RBX					; shift 'top' bits to bottom
+ 000003FE  C4 42 F1/ F7 E4   1					SHLX			R12, R12, RCX					; shift target bits left (leaving zero filled bits at bottom)
+ 00000403  4C/ 0B E2	     1					OR				R12, RDX						; OR in new 'bottom' bits
+								ShiftOrL		R14, R13
+ 00000406  C4 C2 E3/ F7 D6   1					SHRX			RDX, R14, RBX					; shift 'top' bits to bottom
+ 0000040B  C4 42 F1/ F7 ED   1					SHLX			R13, R13, RCX					; shift target bits left (leaving zero filled bits at bottom)
+ 00000410  4C/ 0B EA	     1					OR				R13, RDX						; OR in new 'bottom' bits
+								ShiftOrL		R15, R14
+ 00000413  C4 C2 E3/ F7 D7   1					SHRX			RDX, R15, RBX					; shift 'top' bits to bottom
+ 00000418  C4 42 F1/ F7 F6   1					SHLX			R14, R14, RCX					; shift target bits left (leaving zero filled bits at bottom)
+ 0000041D  4C/ 0B F2	     1					OR				R14, RDX						; OR in new 'bottom' bits
+								ShiftOrL		RDI, R15				
+ 00000420  C4 E2 E3/ F7 D7   1					SHRX			RDX, RDI, RBX					; shift 'top' bits to bottom
+ 00000425  C4 42 F1/ F7 FF   1					SHLX			R15, R15, RCX					; shift target bits left (leaving zero filled bits at bottom)
+ 0000042A  4C/ 0B FA	     1					OR				R15, RDX						; OR in new 'bottom' bits
+ 0000042D  C4 E2 F1/ F7 FF					SHLX			RDI, RDI, RCX					; no bits to OR in on the index 0 (high order) word, just shift it.
 
 				; with the bits shifted within the words, if the desired shift is more than 64 bits, word shifts are required
- 00000518  48/ 8D 05		@@:				LEA				RAX, ShiftMaskLt	
-	   00000408 R
- 0000051F  66| 41/ C1 E8					SHR				R8W, 6							; divide Nr bits to shift by 64 giving Nr words to shift (can only be 0-7 based on above validation)
+				; verify Nr of word shift is zero to seven, use it as index into jump table; jump to appropriate shift
+ 00000432  66| 41/ C1 E8	@@nobits:		SHR				R8W, 6
 	   06
- 00000524  4A/ 8D 04 00						LEA				RAX, [ RAX ] [ R8 ]				; Add index to base address of mask table
- 00000528  C5 F9/ 90 08						KMOVB			K1, B_PTR [ RAX ]				; create mask for words to be zeroed
- 0000052C  48/ 8D 05						LEA				RAX, ShiftPermuteLt				; address of permute table
-	   00000200 R
- 00000533  66| 41/ C1 E0					SHL				R8W, 6							; multiply by 64 to get offset into permute table		
-	   06
- 00000538  62 41 FD 48/ 6F					VMOVDQA64		ZMM29, ZM_PTR [ R8 ] [ RAX ]	; load permute indices (with calculated offset)
-	   2C 00
- 0000053F  62 02 95 C1/ 36					VPERMQ			ZMM31 {k1}{z}, ZMM29, ZMM31		; permute words in zmm31 to achieve word shift
-	   FF
- 00000545  62 61 FD 48/ 7F					VMOVDQA64		ZM_PTR [ RCX ], ZMM31			; store result at callers destination
-	   39
- 0000054B  C3							RET
- 0000054C			shl_u			ENDP			
-					ELSE
+ 00000437  49/ 83 E0 07						AND				R8, 07h 
+ 0000043B  66| 41/ C1 E0					SHL				R8W, 3
+	   03
+ 00000440  48/ 8D 05						LEA				RAX, @@jtbl
+	   00000457 R
+ 00000447  4C/ 03 C0						ADD				R8, RAX
+ 0000044A  33 C0						XOR				EAX, EAX						; clear rax for use as zeroing words shifted "in"
+ 0000044C  48/ 8B 8C 24						MOV				RCX, RCXHome					; restore RCX, destination address
+	   00000108
+ 00000454  41/ FF 20						JMP				Q_PTR [ R8 ]
+
+ 00000457			@@jtbl:
+ 00000457  0000000000000497 R					QWORD			@@0, @@1, @@2, @@3, @@4, @@5, @@6, @@7
+	   00000000000004BB R
+	   00000000000004DF R
+	   0000000000000503 R
+	   0000000000000527 R
+	   0000000000000548 R
+	   0000000000000569 R
+	   000000000000058A R
+
+				; no word shift, just bits, so store words in destination in the same order as they are
+ 00000497  4C/ 89 09		@@0:			MOV				Q_PTR [ RCX ] [ 0 * 8 ], R9
+ 0000049A  4C/ 89 51 08						MOV				Q_PTR [ RCX ] [ 1 * 8 ], R10
+ 0000049E  4C/ 89 59 10						MOV				Q_PTR [ RCX ] [ 2 * 8 ], R11
+ 000004A2  4C/ 89 61 18						MOV				Q_PTR [ RCX ] [ 3 * 8 ], R12
+ 000004A6  4C/ 89 69 20						MOV				Q_PTR [ RCX ] [ 4 * 8 ], R13
+ 000004AA  4C/ 89 71 28						MOV				Q_PTR [ RCX ] [ 5 * 8 ], R14
+ 000004AE  4C/ 89 79 30						MOV				Q_PTR [ RCX ] [ 6 * 8 ], R15
+ 000004B2  48/ 89 79 38						MOV				Q_PTR [ RCX ] [ 7 * 8 ], RDI	
+ 000004B6  E9 000000EE						JMP				@@R
+
+				; one word shift, shifting one word (64+ bits) so store words in destination shifted left one, fill with zero
+ 000004BB  4C/ 89 11		@@1:			MOV				Q_PTR [ RCX ] [ 0 * 8 ], R10
+ 000004BE  4C/ 89 59 08						MOV				Q_PTR [ RCX ] [ 1 * 8 ], R11
+ 000004C2  4C/ 89 61 10						MOV				Q_PTR [ RCX ] [ 2 * 8 ], R12
+ 000004C6  4C/ 89 69 18						MOV				Q_PTR [ RCX ] [ 3 * 8 ], R13
+ 000004CA  4C/ 89 71 20						MOV				Q_PTR [ RCX ] [ 4 * 8 ], R14
+ 000004CE  4C/ 89 79 28						MOV				Q_PTR [ RCX ] [ 5 * 8 ], R15
+ 000004D2  48/ 89 79 30						MOV				Q_PTR [ RCX ] [ 6 * 8 ], RDI
+ 000004D6  48/ 89 41 38						MOV				Q_PTR [ RCX ] [ 7 * 8 ], RAX	
+ 000004DA  E9 000000CA						JMP				@@R
+
+				; two word shift
+ 000004DF  4C/ 89 19		@@2:			MOV				Q_PTR [ RCX ] [ 0 * 8], R11
+ 000004E2  4C/ 89 61 08						MOV				Q_PTR [ RCX ] [ 1 * 8], R12
+ 000004E6  4C/ 89 69 10						MOV				Q_PTR [ RCX ] [ 2 * 8], R13
+ 000004EA  4C/ 89 71 18						MOV				Q_PTR [ RCX ] [ 3 * 8], R14
+ 000004EE  4C/ 89 79 20						MOV				Q_PTR [ RCX ] [ 4 * 8], R15
+ 000004F2  48/ 89 79 28						MOV				Q_PTR [ RCX ] [ 5 * 8], RDI
+ 000004F6  48/ 89 41 30						MOV				Q_PTR [ RCX ] [ 6 * 8], RAX
+ 000004FA  48/ 89 41 38						MOV				Q_PTR [ RCX ] [ 7 * 8], RAX	
+ 000004FE  E9 000000A6						JMP				@@R
+
+				; three word shift
+ 00000503  4C/ 89 21		@@3:			MOV				Q_PTR [ RCX ] [ 0 * 8 ], R12
+ 00000506  4C/ 89 69 08						MOV				Q_PTR [ RCX ] [ 1 * 8 ], R13
+ 0000050A  4C/ 89 71 10						MOV				Q_PTR [ RCX ] [ 2 * 8 ], R14
+ 0000050E  4C/ 89 79 18						MOV				Q_PTR [ RCX ] [ 3 * 8 ], R15
+ 00000512  48/ 89 79 20						MOV				Q_PTR [ RCX ] [ 4 * 8 ], RDI
+ 00000516  48/ 89 41 28						MOV				Q_PTR [ RCX ] [ 5 * 8 ], RAX
+ 0000051A  48/ 89 41 30						MOV				Q_PTR [ RCX ] [ 6 * 8 ], RAX
+ 0000051E  48/ 89 41 38						MOV				Q_PTR [ RCX ] [ 7 * 8 ], RAX	
+ 00000522  E9 00000082						JMP				@@R
+
+				; four word shift
+ 00000527  4C/ 89 29		@@4:			MOV				Q_PTR [ RCX ] [ 0 * 8 ], R13
+ 0000052A  4C/ 89 71 08						MOV				Q_PTR [ RCX ] [ 1 * 8 ], R14
+ 0000052E  4C/ 89 79 10						MOV				Q_PTR [ RCX ] [ 2 * 8 ], R15
+ 00000532  48/ 89 79 18						MOV				Q_PTR [ RCX ] [ 3 * 8 ], RDI
+ 00000536  48/ 89 41 20						MOV				Q_PTR [ RCX ] [ 4 * 8 ], RAX
+ 0000053A  48/ 89 41 28						MOV				Q_PTR [ RCX ] [ 5 * 8 ], RAX
+ 0000053E  48/ 89 41 30						MOV				Q_PTR [ RCX ] [ 6 * 8 ], RAX
+ 00000542  48/ 89 41 38						MOV				Q_PTR [ RCX ] [ 7 * 8 ], RAX	
+ 00000546  EB 61						JMP				@@R
+
+				; five word shift
+ 00000548  4C/ 89 31		@@5:			MOV				Q_PTR [ RCX ] [ 0 * 8 ], R14
+ 0000054B  4C/ 89 79 08						MOV				Q_PTR [ RCX ] [ 1 * 8 ], R15
+ 0000054F  48/ 89 79 10						MOV				Q_PTR [ RCX ] [ 2 * 8 ], RDI
+ 00000553  48/ 89 41 18						MOV				Q_PTR [ RCX ] [ 3 * 8 ], RAX
+ 00000557  48/ 89 41 20						MOV				Q_PTR [ RCX ] [ 4 * 8 ], RAX
+ 0000055B  48/ 89 41 28						MOV				Q_PTR [ RCX ] [ 5 * 8 ], RAX
+ 0000055F  48/ 89 41 30						MOV				Q_PTR [ RCX ] [ 6 * 8 ], RAX
+ 00000563  48/ 89 41 38						MOV				Q_PTR [ RCX ] [ 7 * 8 ], RAX	
+ 00000567  EB 40						JMP				@@R
+
+				; six word shift
+ 00000569  4C/ 89 39		@@6:			MOV				Q_PTR [ RCX ] [ 0 * 8], R15
+ 0000056C  48/ 89 79 08						MOV				Q_PTR [ RCX ] [ 1 * 8], RDI
+ 00000570  48/ 89 41 10						MOV				Q_PTR [ RCX ] [ 2 * 8], RAX
+ 00000574  48/ 89 41 18						MOV				Q_PTR [ RCX ] [ 3 * 8], RAX
+ 00000578  48/ 89 41 20						MOV				Q_PTR [ RCX ] [ 4 * 8], RAX
+ 0000057C  48/ 89 41 28						MOV				Q_PTR [ RCX ] [ 5 * 8], RAX
+ 00000580  48/ 89 41 30						MOV				Q_PTR [ RCX ] [ 6 * 8], RAX
+ 00000584  48/ 89 41 38						MOV				Q_PTR [ RCX ] [ 7 * 8], RAX	
+ 00000588  EB 1F						JMP				@@R
+
+				; seven word shift
+ 0000058A  48/ 89 39		@@7:			MOV				Q_PTR [ RCX ] [ 0 * 8 ], RDI
+ 0000058D  48/ 89 41 08						MOV				Q_PTR [ RCX ] [ 1 * 8 ], RAX
+ 00000591  48/ 89 41 10						MOV				Q_PTR [ RCX ] [ 2 * 8 ], RAX
+ 00000595  48/ 89 41 18						MOV				Q_PTR [ RCX ] [ 3 * 8 ], RAX
+ 00000599  48/ 89 41 20						MOV				Q_PTR [ RCX ] [ 4 * 8 ], RAX
+ 0000059D  48/ 89 41 28						MOV				Q_PTR [ RCX ] [ 5 * 8 ], RAX
+ 000005A1  48/ 89 41 30						MOV				Q_PTR [ RCX ] [ 6 * 8 ], RAX
+ 000005A5  48/ 89 41 38						MOV				Q_PTR [ RCX ] [ 7 * 8 ], RAX
+
+				;	restore non-volatile regs to as-called condition
+ 000005A9			@@R:			Local_Exit		RBX, RDI, R15, R14, R13, R12
+ 000005A9  48/ 81 C4	     1					ADD				RSP,  _allocspace
+	   000000C8
+ 000005B0  5B		     2					POP				RBX
+ 000005B1  5F		     2					POP				RDI
+ 000005B2  41/ 5F	     2					POP				R15
+ 000005B4  41/ 5E	     2					POP				R14
+ 000005B6  41/ 5D	     2					POP				R13
+ 000005B8  41/ 5C	     2					POP				R12
+ 000005BA  5D		     1					POP				RBP
+ 000005BB  C3		     1					RET
+ 000005BC  C3							RET
+ 000005BD			shl_u			ENDP
 					ENDIF
 
- 0000054C			ui512_shift		ENDS												; end of section
+ 000005BD			ui512_shift		ENDS												; end of section
 								END													; end of module
-Microsoft (R) Macro Assembler (x64) Version 14.50.35721.0   12/24/25 13:55:07
+Microsoft (R) Macro Assembler (x64) Version 14.50.35721.0   12/26/25 11:15:43
 ui512_shift.asm						     Symbols 2 - 1
 
 
@@ -980,6 +1193,15 @@ VerifyRegs . . . . . . . . . . .	Proc
 Zero512Q . . . . . . . . . . . .	Proc
 Zero512  . . . . . . . . . . . .	Proc
 push_reg . . . . . . . . . . . .	Proc
+
+
+Structures and Unions:
+
+                N a m e                  Size
+                                         Offset      Type
+
+shl_u_Locals . . . . . . . . . .	 00000008
+shr_u_Locals . . . . . . . . . .	 00000008
 
 
 Records:
@@ -1010,23 +1232,46 @@ Segments:
 
                 N a m e                  Length   Align   Class
 
-ui512_shift  . . . . . . . . . .	 0000054C 16	  'CODE'	
+ui512_shift  . . . . . . . . . .	 000005BD 16	  'CODE'	
 
 
 Procedures, parameters, and locals:
 
                 N a m e                 Type     Value    Attr
 
-shl_u  . . . . . . . . . . . . .	P 	 000004C0 ui512_shift	Length= 0000008C Public
-  @@r  . . . . . . . . . . . . .	L 	 000004EF ui512_shift	
-shr_u  . . . . . . . . . . . . .	P 	 00000420 ui512_shift	Length= 0000008C Public
-  @@shift  . . . . . . . . . . .	L 	 00000450 ui512_shift	
+shl_u  . . . . . . . . . . . . .	P 	 000002F0 ui512_shift	Length= 000002CD Public
+  @@shift  . . . . . . . . . . .	L 	 0000039F ui512_shift	
+  @@nobits . . . . . . . . . . .	L 	 00000432 ui512_shift	
+  @@jtbl . . . . . . . . . . . .	L 	 00000457 ui512_shift	
+  @@0  . . . . . . . . . . . . .	L 	 00000497 ui512_shift	
+  @@1  . . . . . . . . . . . . .	L 	 000004BB ui512_shift	
+  @@2  . . . . . . . . . . . . .	L 	 000004DF ui512_shift	
+  @@3  . . . . . . . . . . . . .	L 	 00000503 ui512_shift	
+  @@4  . . . . . . . . . . . . .	L 	 00000527 ui512_shift	
+  @@5  . . . . . . . . . . . . .	L 	 00000548 ui512_shift	
+  @@6  . . . . . . . . . . . . .	L 	 00000569 ui512_shift	
+  @@7  . . . . . . . . . . . . .	L 	 0000058A ui512_shift	
+  @@R  . . . . . . . . . . . . .	L 	 000005A9 ui512_shift	
+shr_u  . . . . . . . . . . . . .	P 	 00000010 ui512_shift	Length= 000002CC Public
+  @@shift  . . . . . . . . . . .	L 	 000000BF ui512_shift	
+  @@nobits . . . . . . . . . . .	L 	 00000152 ui512_shift	
+  jtbl . . . . . . . . . . . . .	L 	 00000177 ui512_shift	
+  S0 . . . . . . . . . . . . . .	L 	 000001B7 ui512_shift	
+  S1 . . . . . . . . . . . . . .	L 	 000001DB ui512_shift	
+  S2 . . . . . . . . . . . . . .	L 	 000001FF ui512_shift	
+  S3 . . . . . . . . . . . . . .	L 	 00000223 ui512_shift	
+  S4 . . . . . . . . . . . . . .	L 	 00000247 ui512_shift	
+  S5 . . . . . . . . . . . . . .	L 	 00000268 ui512_shift	
+  S6 . . . . . . . . . . . . . .	L 	 00000289 ui512_shift	
+  S7 . . . . . . . . . . . . . .	L 	 000002AA ui512_shift	
+  @@R  . . . . . . . . . . . . .	L 	 000002C9 ui512_shift	
 
 
 Symbols:
 
                 N a m e                 Type     Value    Attr
 
+$xdatasym  . . . . . . . . . . .	Byte	 00000000 _XDATA	
 B_PTR  . . . . . . . . . . . . .	Text   	 BYTE PTR
 CPEQ . . . . . . . . . . . . . .	Number	 00000000h   
 CPFALSE  . . . . . . . . . . . .	Number	 00000003h   
@@ -1038,14 +1283,10 @@ CPNE . . . . . . . . . . . . . .	Number	 00000004h
 CPTRUE . . . . . . . . . . . . .	Number	 00000007h   
 D_PTR  . . . . . . . . . . . . .	Text   	 DWORD PTR
 Q_PTR  . . . . . . . . . . . . .	Text   	 QWORD PTR
-R8Home . . . . . . . . . . . . .	Text   	 Q_PTR [ RSP + ( 3 * 8 ) ]
-R9Home . . . . . . . . . . . . .	Text   	 Q_PTR [ RSP + ( 4 * 8 ) ]
-RCXHome  . . . . . . . . . . . .	Text   	 Q_PTR [ RSP + ( 1 * 8 ) ]
-RDXHome  . . . . . . . . . . . .	Text   	 Q_PTR [ RSP + ( 2 * 8 ) ]
-ShiftMaskLt  . . . . . . . . . .	Byte	 00000408 ui512_shift	
-ShiftMaskRt  . . . . . . . . . .	Byte	 00000400 ui512_shift	
-ShiftPermuteLt . . . . . . . . .	QWord	 00000200 ui512_shift	
-ShiftPermuteRt . . . . . . . . .	QWord	 00000000 ui512_shift	
+R8Home . . . . . . . . . . . . .	Text   	 Q_PTR  [ RSP + ( _allocspace + ( ( nRegs + 3 ) * 8 ) ) ]
+R9Home . . . . . . . . . . . . .	Text   	 Q_PTR  [ RSP + ( _allocspace + ( ( nRegs + 4 ) * 8 ) ) ]
+RCXHome  . . . . . . . . . . . .	Text   	 Q_PTR  [ RSP + ( _allocspace + ( ( nRegs + 1 ) * 8 ) ) ]
+RDXHome  . . . . . . . . . . . .	Text   	 Q_PTR  [ RSP + ( _allocspace + ( ( nRegs + 2 ) * 8 ) ) ]
 W_PTR  . . . . . . . . . . . . .	Text   	 WORD PTR
 XM_PTR . . . . . . . . . . . . .	Text   	 XMMWORD PTR
 YM_PTR . . . . . . . . . . . . .	Text   	 YMMWORD PTR
@@ -1055,8 +1296,12 @@ __UseBMI2  . . . . . . . . . . .	Number	 00000001h
 __UseQ . . . . . . . . . . . . .	Number	 00000001h   
 __UseX . . . . . . . . . . . . .	Number	 00000000h   
 __UseY . . . . . . . . . . . . .	Number	 00000000h   
-__UseZ . . . . . . . . . . . . .	Number	 00000001h   
+__UseZ . . . . . . . . . . . . .	Number	 00000000h   
 __VerifyRegs . . . . . . . . . .	Number	 00000001h   
+_alignspace  . . . . . . . . . .	Number	 00000040h   
+_allocspace  . . . . . . . . . .	Number	 000000C8h   
+_localspace  . . . . . . . . . .	Number	 00000008h   
+_shadowspace . . . . . . . . . .	Number	 00000040h   
 add_uT64 . . . . . . . . . . . .	L 	 00000000 External
 add_u_wc . . . . . . . . . . . .	L 	 00000000 External
 add_u  . . . . . . . . . . . . .	L 	 00000000 External
@@ -1067,6 +1312,7 @@ compile_time_options_INC . . . .	Text   	 1
 copy_u . . . . . . . . . . . . .	L 	 00000000 External
 div_uT64 . . . . . . . . . . . .	L 	 00000000 External
 div_u  . . . . . . . . . . . . .	L 	 00000000 External
+l_Ptr  . . . . . . . . . . . . .	Text   	 [RBP] + shl_u_Locals
 lsb_u  . . . . . . . . . . . . .	L 	 00000000 External
 m32BCST  . . . . . . . . . . . .	Text   	 DWORD BCST
 m64BCST  . . . . . . . . . . . .	Text   	 QWORD BCST
@@ -1082,6 +1328,7 @@ mskB6  . . . . . . . . . . . . .	DWord	 00000000 External
 mskB7  . . . . . . . . . . . . .	DWord	 00000000 External
 mult_uT64  . . . . . . . . . . .	L 	 00000000 External
 mult_u . . . . . . . . . . . . .	L 	 00000000 External
+nRegs  . . . . . . . . . . . . .	Number	 00000007h   
 not_u  . . . . . . . . . . . . .	L 	 00000000 External
 or_u . . . . . . . . . . . . . .	L 	 00000000 External
 qOnes  . . . . . . . . . . . . .	QWord	 00000000 External

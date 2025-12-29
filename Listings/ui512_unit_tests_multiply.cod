@@ -11,9 +11,15 @@ _BSS	SEGMENT
 _Avx2WmemEnabledWeakValue DD 01H DUP (?)
 _BSS	ENDS
 msvcjmc	SEGMENT
+<<<<<<< HEAD
 __BCDB5C9F_ui512_unit_tests@pch DB 01H
 __4F9DAAF3_predefined C++ types (compiler internal) DB 01H
 __5E836398_CommonTypeDefs@h DB 01H
+=======
+__67805D5D_ui512_unit_tests@pch DB 01H
+__8524D803_predefined C++ types (compiler internal) DB 01H
+__6C4E5558_CommonTypeDefs@h DB 01H
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
 __20193517_vector DB 01H
 __D1A2D489_xsmf_control@h DB 01H
 __AE5FB554_optional DB 01H
@@ -42,8 +48,13 @@ __2B08D9FB___msvc_print@hpp DB 01H
 __85E81555___msvc_formatter@hpp DB 01H
 __DAF60B2D___msvc_format_ucd_tables@hpp DB 01H
 __E5CD0F93_format DB 01H
+<<<<<<< HEAD
 __73AE2530_ui512_unit_tests@h DB 01H
 __44F99598_ui512_unit_tests_multiply@cpp DB 01H
+=======
+__77EE552A_ui512_unit_tests@h DB 01H
+__A43181B2_ui512_unit_tests_multiply@cpp DB 01H
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
 __92E676FC_CppUnitTestLogger@h DB 01H
 __FFBDF365_locale@h DB 01H
 __7A237B76_clocale DB 01H
@@ -158,8 +169,13 @@ __E98FA7A7_cstdlib DB 01H
 __12FEDF4E_sdkddkver@h DB 01H
 __DA6CE5E7_CppUnitTestCommon@h DB 01H
 __A9AD3190_CppUnitTest@h DB 01H
+<<<<<<< HEAD
 __BFCD2E3E_pch@h DB 01H
 __EE7C4E54_pch@cpp DB 01H
+=======
+__E31EC421_pch@h DB 01H
+__63F9177F_pch@cpp DB 01H
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
 msvcjmc	ENDS
 PUBLIC	?__empty_global_delete@@YAXPEAX@Z		; __empty_global_delete
 PUBLIC	?__empty_global_delete@@YAXPEAX_K@Z		; __empty_global_delete
@@ -612,7 +628,11 @@ PUBLIC	??_C@_1BO@LIDJJEMN@?$AAT?$AAe?$AAs?$AAt?$AAM?$AAe?$AAt?$AAh?$AAo?$AAd?$AA
 PUBLIC	??_C@_1BO@DFKIAHNL@?$AAu?$AAi?$AA5?$AA1?$AA2?$AAm?$AAd?$AA_?$AA0?$AA1?$AA_?$AAm?$AAu?$AAl@ ; `string'
 PUBLIC	??_C@_0FA@BADJDBJA@ui512_Unit_Tests?3?3ui512_unit_te@ ; `string'
 PUBLIC	??_C@_0JH@CHBBFFCA@?$DP__GetTestMethodInfo_ui512md_01@ ; `string'
+<<<<<<< HEAD
 PUBLIC	??_C@_1KM@EKOMBFD@?$AAC?$AA?3?$AA?2?$AAU?$AAs?$AAe?$AAr?$AAs?$AA?2?$AAJ?$AAo?$AAh?$AAn?$AA?5?$AAL@ ; `string'
+=======
+PUBLIC	??_C@_1NM@NPJLABLH@?$AAC?$AA?3?$AA?2?$AAU?$AAs?$AAe?$AAr?$AAs?$AA?2?$AAS?$AAu?$AAr?$AAf?$AAa?$AAc@ ; `string'
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
 PUBLIC	?s_Info@?1??__GetTestMethodInfo_ui512md_01_mul@ui512_unit_tests_multiply@ui512_Unit_Tests@@CAPEBUMemberMethodInfo@CppUnitTestFramework@VisualStudio@Microsoft@@XZ@4U4567@A ; `ui512_Unit_Tests::ui512_unit_tests_multiply::__GetTestMethodInfo_ui512md_01_mul'::`2'::s_Info
 PUBLIC	??_C@_0BO@HOJJFGAK@?5failed?5zero?5times?5zero?5test?4@ ; `string'
 PUBLIC	??_C@_1CE@LLGJAJA@?$AAP?$AAr?$AAo?$AAd?$AAu?$AAc?$AAt?$AA?5?$AAa?$AAt?$AA?5?$AAw?$AAo?$AAr?$AAd@ ; `string'
@@ -5311,7 +5331,11 @@ testdata$_B_method	SEGMENT
 	DQ	FLAT:??_C@_1EI@IEDDOJJJ@?$AAu?$AAi?$AA5?$AA1?$AA2?$AAm?$AAd?$AA_?$AA0?$AA2?$AA_?$AAm?$AAu?$AAl?$AA6@
 	DQ	FLAT:??_C@_0GF@DIEIGAHO@ui512_Unit_Tests?3?3ui512_unit_te@
 	DQ	FLAT:??_C@_0KM@EJONMFFJ@?$DP__GetTestMethodInfo_ui512md_02@
+<<<<<<< HEAD
 	DQ	FLAT:??_C@_1KM@EKOMBFD@?$AAC?$AA?3?$AA?2?$AAU?$AAs?$AAe?$AAr?$AAs?$AA?2?$AAJ?$AAo?$AAh?$AAn?$AA?5?$AAL@
+=======
+	DQ	FLAT:??_C@_1NM@NPJLABLH@?$AAC?$AA?3?$AA?2?$AAU?$AAs?$AAe?$AAr?$AAs?$AA?2?$AAS?$AAu?$AAr?$AAf?$AAa?$AAc@
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
 	DD	0322H
 	ORG $+4
 testdata$_B_method	ENDS
@@ -5480,7 +5504,11 @@ testdata$_B_method	SEGMENT
 	DQ	FLAT:??_C@_1CC@EANFOFGL@?$AAu?$AAi?$AA5?$AA1?$AA2?$AAm?$AAd?$AA_?$AA0?$AA2?$AA_?$AAm?$AAu?$AAl?$AA6@
 	DQ	FLAT:??_C@_0FC@DFNMPHCP@ui512_Unit_Tests?3?3ui512_unit_te@
 	DQ	FLAT:??_C@_0JJ@FMKFMGJO@?$DP__GetTestMethodInfo_ui512md_02@
+<<<<<<< HEAD
 	DQ	FLAT:??_C@_1KM@EKOMBFD@?$AAC?$AA?3?$AA?2?$AAU?$AAs?$AAe?$AAr?$AAs?$AA?2?$AAJ?$AAo?$AAh?$AAn?$AA?5?$AAL@
+=======
+	DQ	FLAT:??_C@_1NM@NPJLABLH@?$AAC?$AA?3?$AA?2?$AAU?$AAs?$AAe?$AAr?$AAs?$AA?2?$AAS?$AAu?$AAr?$AAf?$AAa?$AAc@
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
 	DD	01f5H
 	ORG $+4
 testdata$_B_method	ENDS
@@ -5549,7 +5577,11 @@ testdata$_B_method	SEGMENT
 	DQ	FLAT:??_C@_1EE@KDHLPJLL@?$AAu?$AAi?$AA5?$AA1?$AA2?$AAm?$AAd?$AA_?$AA0?$AA1?$AA_?$AAm?$AAu?$AAl?$AA_@
 	DQ	FLAT:??_C@_0GD@JODLJPJL@ui512_Unit_Tests?3?3ui512_unit_te@
 	DQ	FLAT:??_C@_0KK@GNMCPOHO@?$DP__GetTestMethodInfo_ui512md_01@
+<<<<<<< HEAD
 	DQ	FLAT:??_C@_1KM@EKOMBFD@?$AAC?$AA?3?$AA?2?$AAU?$AAs?$AAe?$AAr?$AAs?$AA?2?$AAJ?$AAo?$AAh?$AAn?$AA?5?$AAL@
+=======
+	DQ	FLAT:??_C@_1NM@NPJLABLH@?$AAC?$AA?3?$AA?2?$AAU?$AAs?$AAe?$AAr?$AAs?$AA?2?$AAS?$AAu?$AAr?$AAf?$AAa?$AAc@
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
 	DD	01deH
 	ORG $+4
 testdata$_B_method	ENDS
@@ -5813,6 +5845,7 @@ _DATA	SEGMENT
 	DQ	0000000000000000H
 	DQ	FLAT:?s_Metadata@?1??__GetTestMethodInfo_ui512md_01_mul@ui512_unit_tests_multiply@ui512_Unit_Tests@@CAPEBUMemberMethodInfo@CppUnitTestFramework@VisualStudio@Microsoft@@XZ@4UMethodMetadata@567@B
 _DATA	ENDS
+<<<<<<< HEAD
 ;	COMDAT ??_C@_1KM@EKOMBFD@?$AAC?$AA?3?$AA?2?$AAU?$AAs?$AAe?$AAr?$AAs?$AA?2?$AAJ?$AAo?$AAh?$AAn?$AA?5?$AAL@
 CONST	SEGMENT
 ??_C@_1KM@EKOMBFD@?$AAC?$AA?3?$AA?2?$AAU?$AAs?$AAe?$AAr?$AAs?$AA?2?$AAJ?$AAo?$AAh?$AAn?$AA?5?$AAL@ DB 'C'
@@ -5830,6 +5863,28 @@ CONST	SEGMENT
 	DB	'_', 00H, 'm', 00H, 'u', 00H, 'l', 00H, 't', 00H, 'i', 00H, 'p'
 	DB	00H, 'l', 00H, 'y', 00H, '.', 00H, 'c', 00H, 'p', 00H, 'p', 00H
 	DB	00H, 00H					; `string'
+=======
+;	COMDAT ??_C@_1NM@NPJLABLH@?$AAC?$AA?3?$AA?2?$AAU?$AAs?$AAe?$AAr?$AAs?$AA?2?$AAS?$AAu?$AAr?$AAf?$AAa?$AAc@
+CONST	SEGMENT
+??_C@_1NM@NPJLABLH@?$AAC?$AA?3?$AA?2?$AAU?$AAs?$AAe?$AAr?$AAs?$AA?2?$AAS?$AAu?$AAr?$AAf?$AAa?$AAc@ DB 'C'
+	DB	00H, ':', 00H, '\', 00H, 'U', 00H, 's', 00H, 'e', 00H, 'r', 00H
+	DB	's', 00H, '\', 00H, 'S', 00H, 'u', 00H, 'r', 00H, 'f', 00H, 'a'
+	DB	00H, 'c', 00H, 'e', 00H, ' ', 00H, 'P', 00H, 'r', 00H, 'o', 00H
+	DB	' ', 00H, '4', 00H, '\', 00H, 'O', 00H, 'n', 00H, 'e', 00H, 'D'
+	DB	00H, 'r', 00H, 'i', 00H, 'v', 00H, 'e', 00H, '\', 00H, 'M', 00H
+	DB	'y', 00H, ' ', 00H, 'P', 00H, 'r', 00H, 'o', 00H, 'j', 00H, 'e'
+	DB	00H, 'c', 00H, 't', 00H, 's', 00H, '\', 00H, 's', 00H, 'o', 00H
+	DB	'u', 00H, 'r', 00H, 'c', 00H, 'e', 00H, '\', 00H, 'r', 00H, 'e'
+	DB	00H, 'p', 00H, 'o', 00H, 's', 00H, '\', 00H, 'u', 00H, 'i', 00H
+	DB	'5', 00H, '1', 00H, '2', 00H, '\', 00H, 'u', 00H, 'i', 00H, '5'
+	DB	00H, '1', 00H, '2', 00H, '_', 00H, 'u', 00H, 'n', 00H, 'i', 00H
+	DB	't', 00H, '_', 00H, 't', 00H, 'e', 00H, 's', 00H, 't', 00H, 's'
+	DB	00H, '\', 00H, 'u', 00H, 'i', 00H, '5', 00H, '1', 00H, '2', 00H
+	DB	'_', 00H, 'u', 00H, 'n', 00H, 'i', 00H, 't', 00H, '_', 00H, 't'
+	DB	00H, 'e', 00H, 's', 00H, 't', 00H, 's', 00H, '_', 00H, 'm', 00H
+	DB	'u', 00H, 'l', 00H, 't', 00H, 'i', 00H, 'p', 00H, 'l', 00H, 'y'
+	DB	00H, '.', 00H, 'c', 00H, 'p', 00H, 'p', 00H, 00H, 00H ; `string'
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
 CONST	ENDS
 ;	COMDAT ??_C@_0JH@CHBBFFCA@?$DP__GetTestMethodInfo_ui512md_01@
 CONST	SEGMENT
@@ -5864,7 +5919,11 @@ testdata$_B_method	SEGMENT
 	DQ	FLAT:??_C@_1BO@DFKIAHNL@?$AAu?$AAi?$AA5?$AA1?$AA2?$AAm?$AAd?$AA_?$AA0?$AA1?$AA_?$AAm?$AAu?$AAl@
 	DQ	FLAT:??_C@_0FA@BADJDBJA@ui512_Unit_Tests?3?3ui512_unit_te@
 	DQ	FLAT:??_C@_0JH@CHBBFFCA@?$DP__GetTestMethodInfo_ui512md_01@
+<<<<<<< HEAD
 	DQ	FLAT:??_C@_1KM@EKOMBFD@?$AAC?$AA?3?$AA?2?$AAU?$AAs?$AAe?$AAr?$AAs?$AA?2?$AAJ?$AAo?$AAh?$AAn?$AA?5?$AAL@
+=======
+	DQ	FLAT:??_C@_1NM@NPJLABLH@?$AAC?$AA?3?$AA?2?$AAU?$AAs?$AAe?$AAr?$AAs?$AA?2?$AAS?$AAu?$AAr?$AAf?$AAa?$AAc@
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
 	DD	033H
 	ORG $+4
 testdata$_B_method	ENDS
@@ -24785,7 +24844,11 @@ $LN4:
 ??$end@D$0BF@@std@@YAPEADAEAY0BF@D@Z ENDP		; std::end<char,21>
 _TEXT	ENDS
 ; Function compile flags: /Odtp /RTCsu /ZI
+<<<<<<< HEAD
 ; File C:\Users\John Lynch\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+=======
+; File C:\Users\Surface Pro 4\OneDrive\My Projects\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
 ;	COMDAT ??R<lambda_20>@?DN@??ui512md_02_mul64@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEBA@XZ
 _TEXT	SEGMENT
 _s$ = 16
@@ -24821,7 +24884,11 @@ $LN6:
   00042	c7 85 e4 01 00
 	00 00 00 00 00	 mov	 DWORD PTR $T4[rbp], 0
   0004c	48 8d 0d 00 00
+<<<<<<< HEAD
 	00 00		 lea	 rcx, OFFSET FLAT:__44F99598_ui512_unit_tests_multiply@cpp
+=======
+	00 00		 lea	 rcx, OFFSET FLAT:__A43181B2_ui512_unit_tests_multiply@cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
   00053	e8 00 00 00 00	 call	 __CheckForDebuggerJustMyCode
   00058	90		 npad	 1
   00059	ba f8 00 00 00	 mov	 edx, 248		; 000000f8H
@@ -24910,7 +24977,11 @@ __$ReturnUdt$ = 568
 ?dtor$0@?0???R<lambda_20>@?DN@??ui512md_02_mul64@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEBA@XZ@4HA ENDP ; ``ui512_Unit_Tests::ui512_unit_tests_multiply::ui512md_02_mul64'::`61'::<lambda_20>::operator()'::`1'::dtor$0
 text$x	ENDS
 ; Function compile flags: /Odtp /RTCsu /ZI
+<<<<<<< HEAD
 ; File C:\Users\John Lynch\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+=======
+; File C:\Users\Surface Pro 4\OneDrive\My Projects\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
 ;	COMDAT ??0<lambda_19>@?CH@??ui512md_02_mul64@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEAA@AEAH@Z
 _TEXT	SEGMENT
 this$ = 224
@@ -24928,7 +24999,11 @@ $LN4:
 	00 00		 sub	 rsp, 232		; 000000e8H
   00013	48 8d 6c 24 20	 lea	 rbp, QWORD PTR [rsp+32]
   00018	48 8d 0d 00 00
+<<<<<<< HEAD
 	00 00		 lea	 rcx, OFFSET FLAT:__44F99598_ui512_unit_tests_multiply@cpp
+=======
+	00 00		 lea	 rcx, OFFSET FLAT:__A43181B2_ui512_unit_tests_multiply@cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
   0001f	e8 00 00 00 00	 call	 __CheckForDebuggerJustMyCode
   00024	90		 npad	 1
   00025	48 8b 85 e0 00
@@ -24946,7 +25021,11 @@ $LN4:
 ??0<lambda_19>@?CH@??ui512md_02_mul64@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEAA@AEAH@Z ENDP ; `ui512_Unit_Tests::ui512_unit_tests_multiply::ui512md_02_mul64'::`39'::<lambda_19>::<lambda_19>
 _TEXT	ENDS
 ; Function compile flags: /Odtp /RTCsu /ZI
+<<<<<<< HEAD
 ; File C:\Users\John Lynch\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+=======
+; File C:\Users\Surface Pro 4\OneDrive\My Projects\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
 ;	COMDAT ??R<lambda_19>@?CH@??ui512md_02_mul64@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEBA@XZ
 _TEXT	SEGMENT
 _s$ = 16
@@ -24982,7 +25061,11 @@ $LN6:
   00042	c7 85 e4 01 00
 	00 00 00 00 00	 mov	 DWORD PTR $T4[rbp], 0
   0004c	48 8d 0d 00 00
+<<<<<<< HEAD
 	00 00		 lea	 rcx, OFFSET FLAT:__44F99598_ui512_unit_tests_multiply@cpp
+=======
+	00 00		 lea	 rcx, OFFSET FLAT:__A43181B2_ui512_unit_tests_multiply@cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
   00053	e8 00 00 00 00	 call	 __CheckForDebuggerJustMyCode
   00058	90		 npad	 1
   00059	ba f8 00 00 00	 mov	 edx, 248		; 000000f8H
@@ -25069,7 +25152,11 @@ __$ReturnUdt$ = 568
 ?dtor$0@?0???R<lambda_19>@?CH@??ui512md_02_mul64@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEBA@XZ@4HA ENDP ; ``ui512_Unit_Tests::ui512_unit_tests_multiply::ui512md_02_mul64'::`39'::<lambda_19>::operator()'::`1'::dtor$0
 text$x	ENDS
 ; Function compile flags: /Odtp /RTCsu /ZI
+<<<<<<< HEAD
 ; File C:\Users\John Lynch\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+=======
+; File C:\Users\Surface Pro 4\OneDrive\My Projects\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
 ;	COMDAT ??0<lambda_18>@?DM@??ui512md_02_mul64@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEAA@AEAH0AEA_K@Z
 _TEXT	SEGMENT
 this$ = 224
@@ -25091,7 +25178,11 @@ $LN4:
 	00 00		 sub	 rsp, 232		; 000000e8H
   0001d	48 8d 6c 24 20	 lea	 rbp, QWORD PTR [rsp+32]
   00022	48 8d 0d 00 00
+<<<<<<< HEAD
 	00 00		 lea	 rcx, OFFSET FLAT:__44F99598_ui512_unit_tests_multiply@cpp
+=======
+	00 00		 lea	 rcx, OFFSET FLAT:__A43181B2_ui512_unit_tests_multiply@cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
   00029	e8 00 00 00 00	 call	 __CheckForDebuggerJustMyCode
   0002e	90		 npad	 1
   0002f	48 8b 85 e0 00
@@ -25119,7 +25210,11 @@ $LN4:
 ??0<lambda_18>@?DM@??ui512md_02_mul64@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEAA@AEAH0AEA_K@Z ENDP ; `ui512_Unit_Tests::ui512_unit_tests_multiply::ui512md_02_mul64'::`60'::<lambda_18>::<lambda_18>
 _TEXT	ENDS
 ; Function compile flags: /Odtp /RTCsu /ZI
+<<<<<<< HEAD
 ; File C:\Users\John Lynch\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+=======
+; File C:\Users\Surface Pro 4\OneDrive\My Projects\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
 ;	COMDAT ??R<lambda_18>@?DM@??ui512md_02_mul64@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEBA@XZ
 _TEXT	SEGMENT
 _s$ = 16
@@ -25159,7 +25254,11 @@ $LN6:
   00042	c7 85 e4 01 00
 	00 00 00 00 00	 mov	 DWORD PTR $T4[rbp], 0
   0004c	48 8d 0d 00 00
+<<<<<<< HEAD
 	00 00		 lea	 rcx, OFFSET FLAT:__44F99598_ui512_unit_tests_multiply@cpp
+=======
+	00 00		 lea	 rcx, OFFSET FLAT:__A43181B2_ui512_unit_tests_multiply@cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
   00053	e8 00 00 00 00	 call	 __CheckForDebuggerJustMyCode
   00058	90		 npad	 1
   00059	ba f8 00 00 00	 mov	 edx, 248		; 000000f8H
@@ -25476,7 +25575,11 @@ $LN1@fill_n:
 ??$fill_n@PEAGGH@std@@YAPEAGPEAGGAEBH@Z ENDP		; std::fill_n<unsigned short *,unsigned short,int>
 _TEXT	ENDS
 ; Function compile flags: /Odtp /RTCsu /ZI
+<<<<<<< HEAD
 ; File C:\Users\John Lynch\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+=======
+; File C:\Users\Surface Pro 4\OneDrive\My Projects\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
 ;	COMDAT ??0<lambda_17>@?CD@??ui512md_02_mul64@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEAA@AEAGAEAH@Z
 _TEXT	SEGMENT
 this$ = 224
@@ -25496,7 +25599,11 @@ $LN4:
 	00 00		 sub	 rsp, 232		; 000000e8H
   00018	48 8d 6c 24 20	 lea	 rbp, QWORD PTR [rsp+32]
   0001d	48 8d 0d 00 00
+<<<<<<< HEAD
 	00 00		 lea	 rcx, OFFSET FLAT:__44F99598_ui512_unit_tests_multiply@cpp
+=======
+	00 00		 lea	 rcx, OFFSET FLAT:__A43181B2_ui512_unit_tests_multiply@cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
   00024	e8 00 00 00 00	 call	 __CheckForDebuggerJustMyCode
   00029	90		 npad	 1
   0002a	48 8b 85 e0 00
@@ -25519,7 +25626,11 @@ $LN4:
 ??0<lambda_17>@?CD@??ui512md_02_mul64@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEAA@AEAGAEAH@Z ENDP ; `ui512_Unit_Tests::ui512_unit_tests_multiply::ui512md_02_mul64'::`35'::<lambda_17>::<lambda_17>
 _TEXT	ENDS
 ; Function compile flags: /Odtp /RTCsu /ZI
+<<<<<<< HEAD
 ; File C:\Users\John Lynch\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+=======
+; File C:\Users\Surface Pro 4\OneDrive\My Projects\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
 ;	COMDAT ??R<lambda_17>@?CD@??ui512md_02_mul64@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEBA@XZ
 _TEXT	SEGMENT
 _s$ = 16
@@ -25557,7 +25668,11 @@ $LN6:
   00042	c7 85 e4 01 00
 	00 00 00 00 00	 mov	 DWORD PTR $T4[rbp], 0
   0004c	48 8d 0d 00 00
+<<<<<<< HEAD
 	00 00		 lea	 rcx, OFFSET FLAT:__44F99598_ui512_unit_tests_multiply@cpp
+=======
+	00 00		 lea	 rcx, OFFSET FLAT:__A43181B2_ui512_unit_tests_multiply@cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
   00053	e8 00 00 00 00	 call	 __CheckForDebuggerJustMyCode
   00058	90		 npad	 1
   00059	ba f8 00 00 00	 mov	 edx, 248		; 000000f8H
@@ -25664,7 +25779,11 @@ __$ReturnUdt$ = 584
 ?dtor$0@?0???R<lambda_17>@?CD@??ui512md_02_mul64@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEBA@XZ@4HA ENDP ; ``ui512_Unit_Tests::ui512_unit_tests_multiply::ui512md_02_mul64'::`35'::<lambda_17>::operator()'::`1'::dtor$0
 text$x	ENDS
 ; Function compile flags: /Odtp /RTCsu /ZI
+<<<<<<< HEAD
 ; File C:\Users\John Lynch\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+=======
+; File C:\Users\Surface Pro 4\OneDrive\My Projects\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
 ;	COMDAT ??0<lambda_16>@?CF@??ui512md_02_mul64@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEAA@AEAHAEAG0@Z
 _TEXT	SEGMENT
 this$ = 224
@@ -25686,7 +25805,11 @@ $LN4:
 	00 00		 sub	 rsp, 232		; 000000e8H
   0001d	48 8d 6c 24 20	 lea	 rbp, QWORD PTR [rsp+32]
   00022	48 8d 0d 00 00
+<<<<<<< HEAD
 	00 00		 lea	 rcx, OFFSET FLAT:__44F99598_ui512_unit_tests_multiply@cpp
+=======
+	00 00		 lea	 rcx, OFFSET FLAT:__A43181B2_ui512_unit_tests_multiply@cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
   00029	e8 00 00 00 00	 call	 __CheckForDebuggerJustMyCode
   0002e	90		 npad	 1
   0002f	48 8b 85 e0 00
@@ -25714,7 +25837,11 @@ $LN4:
 ??0<lambda_16>@?CF@??ui512md_02_mul64@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEAA@AEAHAEAG0@Z ENDP ; `ui512_Unit_Tests::ui512_unit_tests_multiply::ui512md_02_mul64'::`37'::<lambda_16>::<lambda_16>
 _TEXT	ENDS
 ; Function compile flags: /Odtp /RTCsu /ZI
+<<<<<<< HEAD
 ; File C:\Users\John Lynch\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+=======
+; File C:\Users\Surface Pro 4\OneDrive\My Projects\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
 ;	COMDAT ??R<lambda_16>@?CF@??ui512md_02_mul64@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEBA@XZ
 _TEXT	SEGMENT
 _s$ = 16
@@ -25754,7 +25881,11 @@ $LN6:
   00042	c7 85 e4 01 00
 	00 00 00 00 00	 mov	 DWORD PTR $T4[rbp], 0
   0004c	48 8d 0d 00 00
+<<<<<<< HEAD
 	00 00		 lea	 rcx, OFFSET FLAT:__44F99598_ui512_unit_tests_multiply@cpp
+=======
+	00 00		 lea	 rcx, OFFSET FLAT:__A43181B2_ui512_unit_tests_multiply@cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
   00053	e8 00 00 00 00	 call	 __CheckForDebuggerJustMyCode
   00058	90		 npad	 1
   00059	ba f8 00 00 00	 mov	 edx, 248		; 000000f8H
@@ -25938,7 +26069,11 @@ $LN5:
 ??$?HDU?$char_traits@D@std@@V?$allocator@D@1@@std@@YA?AV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@0@QEBD$$QEAV10@@Z ENDP ; std::operator+<char,std::char_traits<char>,std::allocator<char> >
 _TEXT	ENDS
 ; Function compile flags: /Odtp /RTCsu /ZI
+<<<<<<< HEAD
 ; File C:\Users\John Lynch\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+=======
+; File C:\Users\Surface Pro 4\OneDrive\My Projects\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
 ;	COMDAT ??0<lambda_15>@?BP@??ui512md_02_mul64@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEAA@AEAH0@Z
 _TEXT	SEGMENT
 this$ = 224
@@ -25958,7 +26093,11 @@ $LN4:
 	00 00		 sub	 rsp, 232		; 000000e8H
   00018	48 8d 6c 24 20	 lea	 rbp, QWORD PTR [rsp+32]
   0001d	48 8d 0d 00 00
+<<<<<<< HEAD
 	00 00		 lea	 rcx, OFFSET FLAT:__44F99598_ui512_unit_tests_multiply@cpp
+=======
+	00 00		 lea	 rcx, OFFSET FLAT:__A43181B2_ui512_unit_tests_multiply@cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
   00024	e8 00 00 00 00	 call	 __CheckForDebuggerJustMyCode
   00029	90		 npad	 1
   0002a	48 8b 85 e0 00
@@ -25981,7 +26120,11 @@ $LN4:
 ??0<lambda_15>@?BP@??ui512md_02_mul64@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEAA@AEAH0@Z ENDP ; `ui512_Unit_Tests::ui512_unit_tests_multiply::ui512md_02_mul64'::`31'::<lambda_15>::<lambda_15>
 _TEXT	ENDS
 ; Function compile flags: /Odtp /RTCsu /ZI
+<<<<<<< HEAD
 ; File C:\Users\John Lynch\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+=======
+; File C:\Users\Surface Pro 4\OneDrive\My Projects\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
 ;	COMDAT ??R<lambda_15>@?BP@??ui512md_02_mul64@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEBA@XZ
 _TEXT	SEGMENT
 _s$ = 16
@@ -26019,7 +26162,11 @@ $LN6:
   00042	c7 85 e4 01 00
 	00 00 00 00 00	 mov	 DWORD PTR $T4[rbp], 0
   0004c	48 8d 0d 00 00
+<<<<<<< HEAD
 	00 00		 lea	 rcx, OFFSET FLAT:__44F99598_ui512_unit_tests_multiply@cpp
+=======
+	00 00		 lea	 rcx, OFFSET FLAT:__A43181B2_ui512_unit_tests_multiply@cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
   00053	e8 00 00 00 00	 call	 __CheckForDebuggerJustMyCode
   00058	90		 npad	 1
   00059	ba f8 00 00 00	 mov	 edx, 248		; 000000f8H
@@ -26126,7 +26273,11 @@ __$ReturnUdt$ = 584
 ?dtor$0@?0???R<lambda_15>@?BP@??ui512md_02_mul64@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEBA@XZ@4HA ENDP ; ``ui512_Unit_Tests::ui512_unit_tests_multiply::ui512md_02_mul64'::`31'::<lambda_15>::operator()'::`1'::dtor$0
 text$x	ENDS
 ; Function compile flags: /Odtp /RTCsu /ZI
+<<<<<<< HEAD
 ; File C:\Users\John Lynch\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+=======
+; File C:\Users\Surface Pro 4\OneDrive\My Projects\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
 ;	COMDAT ??0<lambda_14>@?BL@??ui512md_02_mul64@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEAA@AEAH@Z
 _TEXT	SEGMENT
 this$ = 224
@@ -26144,7 +26295,11 @@ $LN4:
 	00 00		 sub	 rsp, 232		; 000000e8H
   00013	48 8d 6c 24 20	 lea	 rbp, QWORD PTR [rsp+32]
   00018	48 8d 0d 00 00
+<<<<<<< HEAD
 	00 00		 lea	 rcx, OFFSET FLAT:__44F99598_ui512_unit_tests_multiply@cpp
+=======
+	00 00		 lea	 rcx, OFFSET FLAT:__A43181B2_ui512_unit_tests_multiply@cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
   0001f	e8 00 00 00 00	 call	 __CheckForDebuggerJustMyCode
   00024	90		 npad	 1
   00025	48 8b 85 e0 00
@@ -26162,7 +26317,11 @@ $LN4:
 ??0<lambda_14>@?BL@??ui512md_02_mul64@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEAA@AEAH@Z ENDP ; `ui512_Unit_Tests::ui512_unit_tests_multiply::ui512md_02_mul64'::`27'::<lambda_14>::<lambda_14>
 _TEXT	ENDS
 ; Function compile flags: /Odtp /RTCsu /ZI
+<<<<<<< HEAD
 ; File C:\Users\John Lynch\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+=======
+; File C:\Users\Surface Pro 4\OneDrive\My Projects\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
 ;	COMDAT ??R<lambda_14>@?BL@??ui512md_02_mul64@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEBA@XZ
 _TEXT	SEGMENT
 _s$ = 16
@@ -26198,7 +26357,11 @@ $LN6:
   00042	c7 85 e4 01 00
 	00 00 00 00 00	 mov	 DWORD PTR $T4[rbp], 0
   0004c	48 8d 0d 00 00
+<<<<<<< HEAD
 	00 00		 lea	 rcx, OFFSET FLAT:__44F99598_ui512_unit_tests_multiply@cpp
+=======
+	00 00		 lea	 rcx, OFFSET FLAT:__A43181B2_ui512_unit_tests_multiply@cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
   00053	e8 00 00 00 00	 call	 __CheckForDebuggerJustMyCode
   00058	90		 npad	 1
   00059	ba f8 00 00 00	 mov	 edx, 248		; 000000f8H
@@ -26285,7 +26448,11 @@ __$ReturnUdt$ = 568
 ?dtor$0@?0???R<lambda_14>@?BL@??ui512md_02_mul64@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEBA@XZ@4HA ENDP ; ``ui512_Unit_Tests::ui512_unit_tests_multiply::ui512md_02_mul64'::`27'::<lambda_14>::operator()'::`1'::dtor$0
 text$x	ENDS
 ; Function compile flags: /Odtp /RTCsu /ZI
+<<<<<<< HEAD
 ; File C:\Users\John Lynch\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+=======
+; File C:\Users\Surface Pro 4\OneDrive\My Projects\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
 ;	COMDAT ??R<lambda_13>@?BJ@??ui512md_02_mul64@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEBA@XZ
 _TEXT	SEGMENT
 _s$ = 16
@@ -26321,7 +26488,11 @@ $LN6:
   00042	c7 85 e4 01 00
 	00 00 00 00 00	 mov	 DWORD PTR $T4[rbp], 0
   0004c	48 8d 0d 00 00
+<<<<<<< HEAD
 	00 00		 lea	 rcx, OFFSET FLAT:__44F99598_ui512_unit_tests_multiply@cpp
+=======
+	00 00		 lea	 rcx, OFFSET FLAT:__A43181B2_ui512_unit_tests_multiply@cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
   00053	e8 00 00 00 00	 call	 __CheckForDebuggerJustMyCode
   00058	90		 npad	 1
   00059	ba f8 00 00 00	 mov	 edx, 248		; 000000f8H
@@ -26410,7 +26581,11 @@ __$ReturnUdt$ = 568
 ?dtor$0@?0???R<lambda_13>@?BJ@??ui512md_02_mul64@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEBA@XZ@4HA ENDP ; ``ui512_Unit_Tests::ui512_unit_tests_multiply::ui512md_02_mul64'::`25'::<lambda_13>::operator()'::`1'::dtor$0
 text$x	ENDS
 ; Function compile flags: /Odtp /RTCsu /ZI
+<<<<<<< HEAD
 ; File C:\Users\John Lynch\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+=======
+; File C:\Users\Surface Pro 4\OneDrive\My Projects\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
 ;	COMDAT ??0<lambda_12>@?BI@??ui512md_02_mul64@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEAA@AEAH0@Z
 _TEXT	SEGMENT
 this$ = 224
@@ -26430,7 +26605,11 @@ $LN4:
 	00 00		 sub	 rsp, 232		; 000000e8H
   00018	48 8d 6c 24 20	 lea	 rbp, QWORD PTR [rsp+32]
   0001d	48 8d 0d 00 00
+<<<<<<< HEAD
 	00 00		 lea	 rcx, OFFSET FLAT:__44F99598_ui512_unit_tests_multiply@cpp
+=======
+	00 00		 lea	 rcx, OFFSET FLAT:__A43181B2_ui512_unit_tests_multiply@cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
   00024	e8 00 00 00 00	 call	 __CheckForDebuggerJustMyCode
   00029	90		 npad	 1
   0002a	48 8b 85 e0 00
@@ -26453,7 +26632,11 @@ $LN4:
 ??0<lambda_12>@?BI@??ui512md_02_mul64@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEAA@AEAH0@Z ENDP ; `ui512_Unit_Tests::ui512_unit_tests_multiply::ui512md_02_mul64'::`24'::<lambda_12>::<lambda_12>
 _TEXT	ENDS
 ; Function compile flags: /Odtp /RTCsu /ZI
+<<<<<<< HEAD
 ; File C:\Users\John Lynch\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+=======
+; File C:\Users\Surface Pro 4\OneDrive\My Projects\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
 ;	COMDAT ??R<lambda_12>@?BI@??ui512md_02_mul64@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEBA@XZ
 _TEXT	SEGMENT
 _s$ = 16
@@ -26491,7 +26674,11 @@ $LN6:
   00042	c7 85 e4 01 00
 	00 00 00 00 00	 mov	 DWORD PTR $T4[rbp], 0
   0004c	48 8d 0d 00 00
+<<<<<<< HEAD
 	00 00		 lea	 rcx, OFFSET FLAT:__44F99598_ui512_unit_tests_multiply@cpp
+=======
+	00 00		 lea	 rcx, OFFSET FLAT:__A43181B2_ui512_unit_tests_multiply@cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
   00053	e8 00 00 00 00	 call	 __CheckForDebuggerJustMyCode
   00058	90		 npad	 1
   00059	ba f8 00 00 00	 mov	 edx, 248		; 000000f8H
@@ -26598,7 +26785,11 @@ __$ReturnUdt$ = 584
 ?dtor$0@?0???R<lambda_12>@?BI@??ui512md_02_mul64@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEBA@XZ@4HA ENDP ; ``ui512_Unit_Tests::ui512_unit_tests_multiply::ui512md_02_mul64'::`24'::<lambda_12>::operator()'::`1'::dtor$0
 text$x	ENDS
 ; Function compile flags: /Odtp /RTCsu /ZI
+<<<<<<< HEAD
 ; File C:\Users\John Lynch\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+=======
+; File C:\Users\Surface Pro 4\OneDrive\My Projects\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
 ;	COMDAT ??0<lambda_11>@?BG@??ui512md_02_mul64@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEAA@AEAH@Z
 _TEXT	SEGMENT
 this$ = 224
@@ -26616,7 +26807,11 @@ $LN4:
 	00 00		 sub	 rsp, 232		; 000000e8H
   00013	48 8d 6c 24 20	 lea	 rbp, QWORD PTR [rsp+32]
   00018	48 8d 0d 00 00
+<<<<<<< HEAD
 	00 00		 lea	 rcx, OFFSET FLAT:__44F99598_ui512_unit_tests_multiply@cpp
+=======
+	00 00		 lea	 rcx, OFFSET FLAT:__A43181B2_ui512_unit_tests_multiply@cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
   0001f	e8 00 00 00 00	 call	 __CheckForDebuggerJustMyCode
   00024	90		 npad	 1
   00025	48 8b 85 e0 00
@@ -26634,7 +26829,11 @@ $LN4:
 ??0<lambda_11>@?BG@??ui512md_02_mul64@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEAA@AEAH@Z ENDP ; `ui512_Unit_Tests::ui512_unit_tests_multiply::ui512md_02_mul64'::`22'::<lambda_11>::<lambda_11>
 _TEXT	ENDS
 ; Function compile flags: /Odtp /RTCsu /ZI
+<<<<<<< HEAD
 ; File C:\Users\John Lynch\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+=======
+; File C:\Users\Surface Pro 4\OneDrive\My Projects\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
 ;	COMDAT ??R<lambda_11>@?BG@??ui512md_02_mul64@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEBA@XZ
 _TEXT	SEGMENT
 _s$ = 16
@@ -26670,7 +26869,11 @@ $LN6:
   00042	c7 85 e4 01 00
 	00 00 00 00 00	 mov	 DWORD PTR $T4[rbp], 0
   0004c	48 8d 0d 00 00
+<<<<<<< HEAD
 	00 00		 lea	 rcx, OFFSET FLAT:__44F99598_ui512_unit_tests_multiply@cpp
+=======
+	00 00		 lea	 rcx, OFFSET FLAT:__A43181B2_ui512_unit_tests_multiply@cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
   00053	e8 00 00 00 00	 call	 __CheckForDebuggerJustMyCode
   00058	90		 npad	 1
   00059	ba f8 00 00 00	 mov	 edx, 248		; 000000f8H
@@ -26757,7 +26960,11 @@ __$ReturnUdt$ = 568
 ?dtor$0@?0???R<lambda_11>@?BG@??ui512md_02_mul64@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEBA@XZ@4HA ENDP ; ``ui512_Unit_Tests::ui512_unit_tests_multiply::ui512md_02_mul64'::`22'::<lambda_11>::operator()'::`1'::dtor$0
 text$x	ENDS
 ; Function compile flags: /Odtp /RTCsu /ZI
+<<<<<<< HEAD
 ; File C:\Users\John Lynch\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+=======
+; File C:\Users\Surface Pro 4\OneDrive\My Projects\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
 ;	COMDAT ??0<lambda_10>@?BE@??ui512md_02_mul64@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEAA@AEAH0@Z
 _TEXT	SEGMENT
 this$ = 224
@@ -26777,7 +26984,11 @@ $LN4:
 	00 00		 sub	 rsp, 232		; 000000e8H
   00018	48 8d 6c 24 20	 lea	 rbp, QWORD PTR [rsp+32]
   0001d	48 8d 0d 00 00
+<<<<<<< HEAD
 	00 00		 lea	 rcx, OFFSET FLAT:__44F99598_ui512_unit_tests_multiply@cpp
+=======
+	00 00		 lea	 rcx, OFFSET FLAT:__A43181B2_ui512_unit_tests_multiply@cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
   00024	e8 00 00 00 00	 call	 __CheckForDebuggerJustMyCode
   00029	90		 npad	 1
   0002a	48 8b 85 e0 00
@@ -26800,7 +27011,11 @@ $LN4:
 ??0<lambda_10>@?BE@??ui512md_02_mul64@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEAA@AEAH0@Z ENDP ; `ui512_Unit_Tests::ui512_unit_tests_multiply::ui512md_02_mul64'::`20'::<lambda_10>::<lambda_10>
 _TEXT	ENDS
 ; Function compile flags: /Odtp /RTCsu /ZI
+<<<<<<< HEAD
 ; File C:\Users\John Lynch\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+=======
+; File C:\Users\Surface Pro 4\OneDrive\My Projects\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
 ;	COMDAT ??R<lambda_10>@?BE@??ui512md_02_mul64@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEBA@XZ
 _TEXT	SEGMENT
 _s$ = 16
@@ -26838,7 +27053,11 @@ $LN6:
   00042	c7 85 e4 01 00
 	00 00 00 00 00	 mov	 DWORD PTR $T4[rbp], 0
   0004c	48 8d 0d 00 00
+<<<<<<< HEAD
 	00 00		 lea	 rcx, OFFSET FLAT:__44F99598_ui512_unit_tests_multiply@cpp
+=======
+	00 00		 lea	 rcx, OFFSET FLAT:__A43181B2_ui512_unit_tests_multiply@cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
   00053	e8 00 00 00 00	 call	 __CheckForDebuggerJustMyCode
   00058	90		 npad	 1
   00059	ba f8 00 00 00	 mov	 edx, 248		; 000000f8H
@@ -26945,7 +27164,11 @@ __$ReturnUdt$ = 584
 ?dtor$0@?0???R<lambda_10>@?BE@??ui512md_02_mul64@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEBA@XZ@4HA ENDP ; ``ui512_Unit_Tests::ui512_unit_tests_multiply::ui512md_02_mul64'::`20'::<lambda_10>::operator()'::`1'::dtor$0
 text$x	ENDS
 ; Function compile flags: /Odtp /RTCsu /ZI
+<<<<<<< HEAD
 ; File C:\Users\John Lynch\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+=======
+; File C:\Users\Surface Pro 4\OneDrive\My Projects\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
 ;	COMDAT ??0<lambda_9>@?BC@??ui512md_02_mul64@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEAA@AEAH@Z
 _TEXT	SEGMENT
 this$ = 224
@@ -26963,7 +27186,11 @@ $LN4:
 	00 00		 sub	 rsp, 232		; 000000e8H
   00013	48 8d 6c 24 20	 lea	 rbp, QWORD PTR [rsp+32]
   00018	48 8d 0d 00 00
+<<<<<<< HEAD
 	00 00		 lea	 rcx, OFFSET FLAT:__44F99598_ui512_unit_tests_multiply@cpp
+=======
+	00 00		 lea	 rcx, OFFSET FLAT:__A43181B2_ui512_unit_tests_multiply@cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
   0001f	e8 00 00 00 00	 call	 __CheckForDebuggerJustMyCode
   00024	90		 npad	 1
   00025	48 8b 85 e0 00
@@ -26981,7 +27208,11 @@ $LN4:
 ??0<lambda_9>@?BC@??ui512md_02_mul64@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEAA@AEAH@Z ENDP ; `ui512_Unit_Tests::ui512_unit_tests_multiply::ui512md_02_mul64'::`18'::<lambda_9>::<lambda_9>
 _TEXT	ENDS
 ; Function compile flags: /Odtp /RTCsu /ZI
+<<<<<<< HEAD
 ; File C:\Users\John Lynch\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+=======
+; File C:\Users\Surface Pro 4\OneDrive\My Projects\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
 ;	COMDAT ??R<lambda_9>@?BC@??ui512md_02_mul64@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEBA@XZ
 _TEXT	SEGMENT
 _s$ = 16
@@ -27017,7 +27248,11 @@ $LN6:
   00042	c7 85 e4 01 00
 	00 00 00 00 00	 mov	 DWORD PTR $T4[rbp], 0
   0004c	48 8d 0d 00 00
+<<<<<<< HEAD
 	00 00		 lea	 rcx, OFFSET FLAT:__44F99598_ui512_unit_tests_multiply@cpp
+=======
+	00 00		 lea	 rcx, OFFSET FLAT:__A43181B2_ui512_unit_tests_multiply@cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
   00053	e8 00 00 00 00	 call	 __CheckForDebuggerJustMyCode
   00058	90		 npad	 1
   00059	ba f8 00 00 00	 mov	 edx, 248		; 000000f8H
@@ -27104,7 +27339,11 @@ __$ReturnUdt$ = 568
 ?dtor$0@?0???R<lambda_9>@?BC@??ui512md_02_mul64@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEBA@XZ@4HA ENDP ; ``ui512_Unit_Tests::ui512_unit_tests_multiply::ui512md_02_mul64'::`18'::<lambda_9>::operator()'::`1'::dtor$0
 text$x	ENDS
 ; Function compile flags: /Odtp /RTCsu /ZI
+<<<<<<< HEAD
 ; File C:\Users\John Lynch\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+=======
+; File C:\Users\Surface Pro 4\OneDrive\My Projects\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
 ;	COMDAT ??0<lambda_8>@?BA@??ui512md_02_mul64@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEAA@AEAH0@Z
 _TEXT	SEGMENT
 this$ = 224
@@ -27124,7 +27363,11 @@ $LN4:
 	00 00		 sub	 rsp, 232		; 000000e8H
   00018	48 8d 6c 24 20	 lea	 rbp, QWORD PTR [rsp+32]
   0001d	48 8d 0d 00 00
+<<<<<<< HEAD
 	00 00		 lea	 rcx, OFFSET FLAT:__44F99598_ui512_unit_tests_multiply@cpp
+=======
+	00 00		 lea	 rcx, OFFSET FLAT:__A43181B2_ui512_unit_tests_multiply@cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
   00024	e8 00 00 00 00	 call	 __CheckForDebuggerJustMyCode
   00029	90		 npad	 1
   0002a	48 8b 85 e0 00
@@ -27147,7 +27390,11 @@ $LN4:
 ??0<lambda_8>@?BA@??ui512md_02_mul64@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEAA@AEAH0@Z ENDP ; `ui512_Unit_Tests::ui512_unit_tests_multiply::ui512md_02_mul64'::`16'::<lambda_8>::<lambda_8>
 _TEXT	ENDS
 ; Function compile flags: /Odtp /RTCsu /ZI
+<<<<<<< HEAD
 ; File C:\Users\John Lynch\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+=======
+; File C:\Users\Surface Pro 4\OneDrive\My Projects\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
 ;	COMDAT ??R<lambda_8>@?BA@??ui512md_02_mul64@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEBA@XZ
 _TEXT	SEGMENT
 _s$ = 16
@@ -27185,7 +27432,11 @@ $LN6:
   00042	c7 85 e4 01 00
 	00 00 00 00 00	 mov	 DWORD PTR $T4[rbp], 0
   0004c	48 8d 0d 00 00
+<<<<<<< HEAD
 	00 00		 lea	 rcx, OFFSET FLAT:__44F99598_ui512_unit_tests_multiply@cpp
+=======
+	00 00		 lea	 rcx, OFFSET FLAT:__A43181B2_ui512_unit_tests_multiply@cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
   00053	e8 00 00 00 00	 call	 __CheckForDebuggerJustMyCode
   00058	90		 npad	 1
   00059	ba f8 00 00 00	 mov	 edx, 248		; 000000f8H
@@ -27292,7 +27543,11 @@ __$ReturnUdt$ = 584
 ?dtor$0@?0???R<lambda_8>@?BA@??ui512md_02_mul64@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEBA@XZ@4HA ENDP ; ``ui512_Unit_Tests::ui512_unit_tests_multiply::ui512md_02_mul64'::`16'::<lambda_8>::operator()'::`1'::dtor$0
 text$x	ENDS
 ; Function compile flags: /Odtp /RTCsu /ZI
+<<<<<<< HEAD
 ; File C:\Users\John Lynch\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+=======
+; File C:\Users\Surface Pro 4\OneDrive\My Projects\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
 ;	COMDAT ??0<lambda_7>@?O@??ui512md_02_mul64@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEAA@AEAH@Z
 _TEXT	SEGMENT
 this$ = 224
@@ -27310,7 +27565,11 @@ $LN4:
 	00 00		 sub	 rsp, 232		; 000000e8H
   00013	48 8d 6c 24 20	 lea	 rbp, QWORD PTR [rsp+32]
   00018	48 8d 0d 00 00
+<<<<<<< HEAD
 	00 00		 lea	 rcx, OFFSET FLAT:__44F99598_ui512_unit_tests_multiply@cpp
+=======
+	00 00		 lea	 rcx, OFFSET FLAT:__A43181B2_ui512_unit_tests_multiply@cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
   0001f	e8 00 00 00 00	 call	 __CheckForDebuggerJustMyCode
   00024	90		 npad	 1
   00025	48 8b 85 e0 00
@@ -27328,7 +27587,11 @@ $LN4:
 ??0<lambda_7>@?O@??ui512md_02_mul64@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEAA@AEAH@Z ENDP ; `ui512_Unit_Tests::ui512_unit_tests_multiply::ui512md_02_mul64'::`14'::<lambda_7>::<lambda_7>
 _TEXT	ENDS
 ; Function compile flags: /Odtp /RTCsu /ZI
+<<<<<<< HEAD
 ; File C:\Users\John Lynch\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+=======
+; File C:\Users\Surface Pro 4\OneDrive\My Projects\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
 ;	COMDAT ??R<lambda_7>@?O@??ui512md_02_mul64@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEBA@XZ
 _TEXT	SEGMENT
 _s$ = 16
@@ -27364,7 +27627,11 @@ $LN6:
   00042	c7 85 e4 01 00
 	00 00 00 00 00	 mov	 DWORD PTR $T4[rbp], 0
   0004c	48 8d 0d 00 00
+<<<<<<< HEAD
 	00 00		 lea	 rcx, OFFSET FLAT:__44F99598_ui512_unit_tests_multiply@cpp
+=======
+	00 00		 lea	 rcx, OFFSET FLAT:__A43181B2_ui512_unit_tests_multiply@cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
   00053	e8 00 00 00 00	 call	 __CheckForDebuggerJustMyCode
   00058	90		 npad	 1
   00059	ba f8 00 00 00	 mov	 edx, 248		; 000000f8H
@@ -27451,7 +27718,11 @@ __$ReturnUdt$ = 568
 ?dtor$0@?0???R<lambda_7>@?O@??ui512md_02_mul64@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEBA@XZ@4HA ENDP ; ``ui512_Unit_Tests::ui512_unit_tests_multiply::ui512md_02_mul64'::`14'::<lambda_7>::operator()'::`1'::dtor$0
 text$x	ENDS
 ; Function compile flags: /Odtp /RTCsu /ZI
+<<<<<<< HEAD
 ; File C:\Users\John Lynch\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+=======
+; File C:\Users\Surface Pro 4\OneDrive\My Projects\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
 ;	COMDAT ??0<lambda_6>@?M@??ui512md_02_mul64@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEAA@AEAH0@Z
 _TEXT	SEGMENT
 this$ = 224
@@ -27471,7 +27742,11 @@ $LN4:
 	00 00		 sub	 rsp, 232		; 000000e8H
   00018	48 8d 6c 24 20	 lea	 rbp, QWORD PTR [rsp+32]
   0001d	48 8d 0d 00 00
+<<<<<<< HEAD
 	00 00		 lea	 rcx, OFFSET FLAT:__44F99598_ui512_unit_tests_multiply@cpp
+=======
+	00 00		 lea	 rcx, OFFSET FLAT:__A43181B2_ui512_unit_tests_multiply@cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
   00024	e8 00 00 00 00	 call	 __CheckForDebuggerJustMyCode
   00029	90		 npad	 1
   0002a	48 8b 85 e0 00
@@ -27494,7 +27769,11 @@ $LN4:
 ??0<lambda_6>@?M@??ui512md_02_mul64@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEAA@AEAH0@Z ENDP ; `ui512_Unit_Tests::ui512_unit_tests_multiply::ui512md_02_mul64'::`12'::<lambda_6>::<lambda_6>
 _TEXT	ENDS
 ; Function compile flags: /Odtp /RTCsu /ZI
+<<<<<<< HEAD
 ; File C:\Users\John Lynch\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+=======
+; File C:\Users\Surface Pro 4\OneDrive\My Projects\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
 ;	COMDAT ??R<lambda_6>@?M@??ui512md_02_mul64@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEBA@XZ
 _TEXT	SEGMENT
 _s$ = 16
@@ -27532,7 +27811,11 @@ $LN6:
   00042	c7 85 e4 01 00
 	00 00 00 00 00	 mov	 DWORD PTR $T4[rbp], 0
   0004c	48 8d 0d 00 00
+<<<<<<< HEAD
 	00 00		 lea	 rcx, OFFSET FLAT:__44F99598_ui512_unit_tests_multiply@cpp
+=======
+	00 00		 lea	 rcx, OFFSET FLAT:__A43181B2_ui512_unit_tests_multiply@cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
   00053	e8 00 00 00 00	 call	 __CheckForDebuggerJustMyCode
   00058	90		 npad	 1
   00059	ba f8 00 00 00	 mov	 edx, 248		; 000000f8H
@@ -27639,7 +27922,11 @@ __$ReturnUdt$ = 584
 ?dtor$0@?0???R<lambda_6>@?M@??ui512md_02_mul64@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEBA@XZ@4HA ENDP ; ``ui512_Unit_Tests::ui512_unit_tests_multiply::ui512md_02_mul64'::`12'::<lambda_6>::operator()'::`1'::dtor$0
 text$x	ENDS
 ; Function compile flags: /Odtp /RTCsu /ZI
+<<<<<<< HEAD
 ; File C:\Users\John Lynch\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+=======
+; File C:\Users\Surface Pro 4\OneDrive\My Projects\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
 ;	COMDAT ??0<lambda_5>@?9??ui512md_02_mul64@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEAA@AEAH@Z
 _TEXT	SEGMENT
 this$ = 224
@@ -27657,7 +27944,11 @@ $LN4:
 	00 00		 sub	 rsp, 232		; 000000e8H
   00013	48 8d 6c 24 20	 lea	 rbp, QWORD PTR [rsp+32]
   00018	48 8d 0d 00 00
+<<<<<<< HEAD
 	00 00		 lea	 rcx, OFFSET FLAT:__44F99598_ui512_unit_tests_multiply@cpp
+=======
+	00 00		 lea	 rcx, OFFSET FLAT:__A43181B2_ui512_unit_tests_multiply@cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
   0001f	e8 00 00 00 00	 call	 __CheckForDebuggerJustMyCode
   00024	90		 npad	 1
   00025	48 8b 85 e0 00
@@ -27675,7 +27966,11 @@ $LN4:
 ??0<lambda_5>@?9??ui512md_02_mul64@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEAA@AEAH@Z ENDP ; `ui512_Unit_Tests::ui512_unit_tests_multiply::ui512md_02_mul64'::`10'::<lambda_5>::<lambda_5>
 _TEXT	ENDS
 ; Function compile flags: /Odtp /RTCsu /ZI
+<<<<<<< HEAD
 ; File C:\Users\John Lynch\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+=======
+; File C:\Users\Surface Pro 4\OneDrive\My Projects\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
 ;	COMDAT ??R<lambda_5>@?9??ui512md_02_mul64@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEBA@XZ
 _TEXT	SEGMENT
 _s$ = 16
@@ -27711,7 +28006,11 @@ $LN6:
   00042	c7 85 e4 01 00
 	00 00 00 00 00	 mov	 DWORD PTR $T4[rbp], 0
   0004c	48 8d 0d 00 00
+<<<<<<< HEAD
 	00 00		 lea	 rcx, OFFSET FLAT:__44F99598_ui512_unit_tests_multiply@cpp
+=======
+	00 00		 lea	 rcx, OFFSET FLAT:__A43181B2_ui512_unit_tests_multiply@cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
   00053	e8 00 00 00 00	 call	 __CheckForDebuggerJustMyCode
   00058	90		 npad	 1
   00059	ba f8 00 00 00	 mov	 edx, 248		; 000000f8H
@@ -27798,7 +28097,11 @@ __$ReturnUdt$ = 568
 ?dtor$0@?0???R<lambda_5>@?9??ui512md_02_mul64@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEBA@XZ@4HA ENDP ; ``ui512_Unit_Tests::ui512_unit_tests_multiply::ui512md_02_mul64'::`10'::<lambda_5>::operator()'::`1'::dtor$0
 text$x	ENDS
 ; Function compile flags: /Odtp /RTCsu /ZI
+<<<<<<< HEAD
 ; File C:\Users\John Lynch\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+=======
+; File C:\Users\Surface Pro 4\OneDrive\My Projects\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
 ;	COMDAT ??0<lambda_4>@?7??ui512md_02_mul64@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEAA@AEAH@Z
 _TEXT	SEGMENT
 this$ = 224
@@ -27816,7 +28119,11 @@ $LN4:
 	00 00		 sub	 rsp, 232		; 000000e8H
   00013	48 8d 6c 24 20	 lea	 rbp, QWORD PTR [rsp+32]
   00018	48 8d 0d 00 00
+<<<<<<< HEAD
 	00 00		 lea	 rcx, OFFSET FLAT:__44F99598_ui512_unit_tests_multiply@cpp
+=======
+	00 00		 lea	 rcx, OFFSET FLAT:__A43181B2_ui512_unit_tests_multiply@cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
   0001f	e8 00 00 00 00	 call	 __CheckForDebuggerJustMyCode
   00024	90		 npad	 1
   00025	48 8b 85 e0 00
@@ -27834,7 +28141,11 @@ $LN4:
 ??0<lambda_4>@?7??ui512md_02_mul64@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEAA@AEAH@Z ENDP ; `ui512_Unit_Tests::ui512_unit_tests_multiply::ui512md_02_mul64'::`8'::<lambda_4>::<lambda_4>
 _TEXT	ENDS
 ; Function compile flags: /Odtp /RTCsu /ZI
+<<<<<<< HEAD
 ; File C:\Users\John Lynch\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+=======
+; File C:\Users\Surface Pro 4\OneDrive\My Projects\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
 ;	COMDAT ??R<lambda_4>@?7??ui512md_02_mul64@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEBA@XZ
 _TEXT	SEGMENT
 _s$ = 16
@@ -27870,7 +28181,11 @@ $LN6:
   00042	c7 85 e4 01 00
 	00 00 00 00 00	 mov	 DWORD PTR $T4[rbp], 0
   0004c	48 8d 0d 00 00
+<<<<<<< HEAD
 	00 00		 lea	 rcx, OFFSET FLAT:__44F99598_ui512_unit_tests_multiply@cpp
+=======
+	00 00		 lea	 rcx, OFFSET FLAT:__A43181B2_ui512_unit_tests_multiply@cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
   00053	e8 00 00 00 00	 call	 __CheckForDebuggerJustMyCode
   00058	90		 npad	 1
   00059	ba f8 00 00 00	 mov	 edx, 248		; 000000f8H
@@ -27961,7 +28276,11 @@ __$ReturnUdt$ = 568
 ?dtor$0@?0???R<lambda_4>@?7??ui512md_02_mul64@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEBA@XZ@4HA ENDP ; ``ui512_Unit_Tests::ui512_unit_tests_multiply::ui512md_02_mul64'::`8'::<lambda_4>::operator()'::`1'::dtor$0
 text$x	ENDS
 ; Function compile flags: /Odtp /RTCsu /ZI
+<<<<<<< HEAD
 ; File C:\Users\John Lynch\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+=======
+; File C:\Users\Surface Pro 4\OneDrive\My Projects\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
 ;	COMDAT ??R<lambda_3>@?5??ui512md_02_mul64@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEBA@XZ
 _TEXT	SEGMENT
 _s$ = 16
@@ -27995,7 +28314,11 @@ $LN6:
   00042	c7 85 e4 01 00
 	00 00 00 00 00	 mov	 DWORD PTR $T4[rbp], 0
   0004c	48 8d 0d 00 00
+<<<<<<< HEAD
 	00 00		 lea	 rcx, OFFSET FLAT:__44F99598_ui512_unit_tests_multiply@cpp
+=======
+	00 00		 lea	 rcx, OFFSET FLAT:__A43181B2_ui512_unit_tests_multiply@cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
   00053	e8 00 00 00 00	 call	 __CheckForDebuggerJustMyCode
   00058	90		 npad	 1
   00059	ba f8 00 00 00	 mov	 edx, 248		; 000000f8H
@@ -28066,7 +28389,11 @@ __$ReturnUdt$ = 552
 ?dtor$0@?0???R<lambda_3>@?5??ui512md_02_mul64@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEBA@XZ@4HA ENDP ; ``ui512_Unit_Tests::ui512_unit_tests_multiply::ui512md_02_mul64'::`6'::<lambda_3>::operator()'::`1'::dtor$0
 text$x	ENDS
 ; Function compile flags: /Odtp /RTCsu /ZI
+<<<<<<< HEAD
 ; File C:\Users\John Lynch\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+=======
+; File C:\Users\Surface Pro 4\OneDrive\My Projects\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
 ;	COMDAT ??R<lambda_2>@?2??ui512md_02_mul64@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEBA@XZ
 _TEXT	SEGMENT
 _s$ = 16
@@ -28100,7 +28427,11 @@ $LN6:
   00042	c7 85 e4 01 00
 	00 00 00 00 00	 mov	 DWORD PTR $T4[rbp], 0
   0004c	48 8d 0d 00 00
+<<<<<<< HEAD
 	00 00		 lea	 rcx, OFFSET FLAT:__44F99598_ui512_unit_tests_multiply@cpp
+=======
+	00 00		 lea	 rcx, OFFSET FLAT:__A43181B2_ui512_unit_tests_multiply@cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
   00053	e8 00 00 00 00	 call	 __CheckForDebuggerJustMyCode
   00058	90		 npad	 1
   00059	ba f8 00 00 00	 mov	 edx, 248		; 000000f8H
@@ -28171,7 +28502,11 @@ __$ReturnUdt$ = 552
 ?dtor$0@?0???R<lambda_2>@?2??ui512md_02_mul64@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEBA@XZ@4HA ENDP ; ``ui512_Unit_Tests::ui512_unit_tests_multiply::ui512md_02_mul64'::`3'::<lambda_2>::operator()'::`1'::dtor$0
 text$x	ENDS
 ; Function compile flags: /Odtp /RTCsu /ZI
+<<<<<<< HEAD
 ; File C:\Users\John Lynch\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+=======
+; File C:\Users\Surface Pro 4\OneDrive\My Projects\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
 ;	COMDAT ??0<lambda_1>@?4??ui512md_02_mul64@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEAA@AEAH@Z
 _TEXT	SEGMENT
 this$ = 224
@@ -28189,7 +28524,11 @@ $LN4:
 	00 00		 sub	 rsp, 232		; 000000e8H
   00013	48 8d 6c 24 20	 lea	 rbp, QWORD PTR [rsp+32]
   00018	48 8d 0d 00 00
+<<<<<<< HEAD
 	00 00		 lea	 rcx, OFFSET FLAT:__44F99598_ui512_unit_tests_multiply@cpp
+=======
+	00 00		 lea	 rcx, OFFSET FLAT:__A43181B2_ui512_unit_tests_multiply@cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
   0001f	e8 00 00 00 00	 call	 __CheckForDebuggerJustMyCode
   00024	90		 npad	 1
   00025	48 8b 85 e0 00
@@ -28207,7 +28546,11 @@ $LN4:
 ??0<lambda_1>@?4??ui512md_02_mul64@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEAA@AEAH@Z ENDP ; `ui512_Unit_Tests::ui512_unit_tests_multiply::ui512md_02_mul64'::`5'::<lambda_1>::<lambda_1>
 _TEXT	ENDS
 ; Function compile flags: /Odtp /RTCsu /ZI
+<<<<<<< HEAD
 ; File C:\Users\John Lynch\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+=======
+; File C:\Users\Surface Pro 4\OneDrive\My Projects\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
 ;	COMDAT ??R<lambda_1>@?4??ui512md_02_mul64@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEBA@XZ
 _TEXT	SEGMENT
 _s$ = 16
@@ -28243,7 +28586,11 @@ $LN6:
   00042	c7 85 e4 01 00
 	00 00 00 00 00	 mov	 DWORD PTR $T4[rbp], 0
   0004c	48 8d 0d 00 00
+<<<<<<< HEAD
 	00 00		 lea	 rcx, OFFSET FLAT:__44F99598_ui512_unit_tests_multiply@cpp
+=======
+	00 00		 lea	 rcx, OFFSET FLAT:__A43181B2_ui512_unit_tests_multiply@cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
   00053	e8 00 00 00 00	 call	 __CheckForDebuggerJustMyCode
   00058	90		 npad	 1
   00059	ba f8 00 00 00	 mov	 edx, 248		; 000000f8H
@@ -28420,7 +28767,11 @@ $LN2@operator:
 ??A?$vector@Uperf_stats@ui512_Unit_Tests@@V?$allocator@Uperf_stats@ui512_Unit_Tests@@@std@@@std@@QEAAAEAUperf_stats@ui512_Unit_Tests@@_K@Z ENDP ; std::vector<ui512_Unit_Tests::perf_stats,std::allocator<ui512_Unit_Tests::perf_stats> >::operator[]
 _TEXT	ENDS
 ; Function compile flags: /Odtp /RTCsu /ZI
+<<<<<<< HEAD
 ; File C:\Users\John Lynch\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+=======
+; File C:\Users\Surface Pro 4\OneDrive\My Projects\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
 ;	COMDAT ??R<lambda_28>@?GH@??ui512md_01_mul@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEBA@XZ
 _TEXT	SEGMENT
 _s$ = 16
@@ -28456,7 +28807,11 @@ $LN6:
   00042	c7 85 e4 01 00
 	00 00 00 00 00	 mov	 DWORD PTR $T4[rbp], 0
   0004c	48 8d 0d 00 00
+<<<<<<< HEAD
 	00 00		 lea	 rcx, OFFSET FLAT:__44F99598_ui512_unit_tests_multiply@cpp
+=======
+	00 00		 lea	 rcx, OFFSET FLAT:__A43181B2_ui512_unit_tests_multiply@cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
   00053	e8 00 00 00 00	 call	 __CheckForDebuggerJustMyCode
   00058	90		 npad	 1
   00059	ba f8 00 00 00	 mov	 edx, 248		; 000000f8H
@@ -28545,7 +28900,11 @@ __$ReturnUdt$ = 568
 ?dtor$0@?0???R<lambda_28>@?GH@??ui512md_01_mul@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEBA@XZ@4HA ENDP ; ``ui512_Unit_Tests::ui512_unit_tests_multiply::ui512md_01_mul'::`103'::<lambda_28>::operator()'::`1'::dtor$0
 text$x	ENDS
 ; Function compile flags: /Odtp /RTCsu /ZI
+<<<<<<< HEAD
 ; File C:\Users\John Lynch\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+=======
+; File C:\Users\Surface Pro 4\OneDrive\My Projects\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
 ;	COMDAT ??0<lambda_27>@?GA@??ui512md_01_mul@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEAA@AEAH0@Z
 _TEXT	SEGMENT
 this$ = 224
@@ -28565,7 +28924,11 @@ $LN4:
 	00 00		 sub	 rsp, 232		; 000000e8H
   00018	48 8d 6c 24 20	 lea	 rbp, QWORD PTR [rsp+32]
   0001d	48 8d 0d 00 00
+<<<<<<< HEAD
 	00 00		 lea	 rcx, OFFSET FLAT:__44F99598_ui512_unit_tests_multiply@cpp
+=======
+	00 00		 lea	 rcx, OFFSET FLAT:__A43181B2_ui512_unit_tests_multiply@cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
   00024	e8 00 00 00 00	 call	 __CheckForDebuggerJustMyCode
   00029	90		 npad	 1
   0002a	48 8b 85 e0 00
@@ -28588,7 +28951,11 @@ $LN4:
 ??0<lambda_27>@?GA@??ui512md_01_mul@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEAA@AEAH0@Z ENDP ; `ui512_Unit_Tests::ui512_unit_tests_multiply::ui512md_01_mul'::`96'::<lambda_27>::<lambda_27>
 _TEXT	ENDS
 ; Function compile flags: /Odtp /RTCsu /ZI
+<<<<<<< HEAD
 ; File C:\Users\John Lynch\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+=======
+; File C:\Users\Surface Pro 4\OneDrive\My Projects\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
 ;	COMDAT ??R<lambda_27>@?GA@??ui512md_01_mul@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEBA@XZ
 _TEXT	SEGMENT
 _s$ = 16
@@ -28626,7 +28993,11 @@ $LN6:
   00042	c7 85 e4 01 00
 	00 00 00 00 00	 mov	 DWORD PTR $T4[rbp], 0
   0004c	48 8d 0d 00 00
+<<<<<<< HEAD
 	00 00		 lea	 rcx, OFFSET FLAT:__44F99598_ui512_unit_tests_multiply@cpp
+=======
+	00 00		 lea	 rcx, OFFSET FLAT:__A43181B2_ui512_unit_tests_multiply@cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
   00053	e8 00 00 00 00	 call	 __CheckForDebuggerJustMyCode
   00058	90		 npad	 1
   00059	ba f8 00 00 00	 mov	 edx, 248		; 000000f8H
@@ -28733,7 +29104,11 @@ __$ReturnUdt$ = 584
 ?dtor$0@?0???R<lambda_27>@?GA@??ui512md_01_mul@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEBA@XZ@4HA ENDP ; ``ui512_Unit_Tests::ui512_unit_tests_multiply::ui512md_01_mul'::`96'::<lambda_27>::operator()'::`1'::dtor$0
 text$x	ENDS
 ; Function compile flags: /Odtp /RTCsu /ZI
+<<<<<<< HEAD
 ; File C:\Users\John Lynch\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+=======
+; File C:\Users\Surface Pro 4\OneDrive\My Projects\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
 ;	COMDAT ??0<lambda_26>@?GA@??ui512md_01_mul@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEAA@AEAH0@Z
 _TEXT	SEGMENT
 this$ = 224
@@ -28753,7 +29128,11 @@ $LN4:
 	00 00		 sub	 rsp, 232		; 000000e8H
   00018	48 8d 6c 24 20	 lea	 rbp, QWORD PTR [rsp+32]
   0001d	48 8d 0d 00 00
+<<<<<<< HEAD
 	00 00		 lea	 rcx, OFFSET FLAT:__44F99598_ui512_unit_tests_multiply@cpp
+=======
+	00 00		 lea	 rcx, OFFSET FLAT:__A43181B2_ui512_unit_tests_multiply@cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
   00024	e8 00 00 00 00	 call	 __CheckForDebuggerJustMyCode
   00029	90		 npad	 1
   0002a	48 8b 85 e0 00
@@ -28776,7 +29155,11 @@ $LN4:
 ??0<lambda_26>@?GA@??ui512md_01_mul@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEAA@AEAH0@Z ENDP ; `ui512_Unit_Tests::ui512_unit_tests_multiply::ui512md_01_mul'::`96'::<lambda_26>::<lambda_26>
 _TEXT	ENDS
 ; Function compile flags: /Odtp /RTCsu /ZI
+<<<<<<< HEAD
 ; File C:\Users\John Lynch\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+=======
+; File C:\Users\Surface Pro 4\OneDrive\My Projects\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
 ;	COMDAT ??R<lambda_26>@?GA@??ui512md_01_mul@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEBA@XZ
 _TEXT	SEGMENT
 _s$ = 16
@@ -28814,7 +29197,11 @@ $LN6:
   00042	c7 85 e4 01 00
 	00 00 00 00 00	 mov	 DWORD PTR $T4[rbp], 0
   0004c	48 8d 0d 00 00
+<<<<<<< HEAD
 	00 00		 lea	 rcx, OFFSET FLAT:__44F99598_ui512_unit_tests_multiply@cpp
+=======
+	00 00		 lea	 rcx, OFFSET FLAT:__A43181B2_ui512_unit_tests_multiply@cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
   00053	e8 00 00 00 00	 call	 __CheckForDebuggerJustMyCode
   00058	90		 npad	 1
   00059	ba f8 00 00 00	 mov	 edx, 248		; 000000f8H
@@ -28921,7 +29308,11 @@ __$ReturnUdt$ = 584
 ?dtor$0@?0???R<lambda_26>@?GA@??ui512md_01_mul@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEBA@XZ@4HA ENDP ; ``ui512_Unit_Tests::ui512_unit_tests_multiply::ui512md_01_mul'::`96'::<lambda_26>::operator()'::`1'::dtor$0
 text$x	ENDS
 ; Function compile flags: /Odtp /RTCsu /ZI
+<<<<<<< HEAD
 ; File C:\Users\John Lynch\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+=======
+; File C:\Users\Surface Pro 4\OneDrive\My Projects\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
 ;	COMDAT ??R<lambda_25>@?EL@??ui512md_01_mul@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEBA@XZ
 _TEXT	SEGMENT
 _s$ = 16
@@ -28957,7 +29348,11 @@ $LN6:
   00042	c7 85 e4 01 00
 	00 00 00 00 00	 mov	 DWORD PTR $T4[rbp], 0
   0004c	48 8d 0d 00 00
+<<<<<<< HEAD
 	00 00		 lea	 rcx, OFFSET FLAT:__44F99598_ui512_unit_tests_multiply@cpp
+=======
+	00 00		 lea	 rcx, OFFSET FLAT:__A43181B2_ui512_unit_tests_multiply@cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
   00053	e8 00 00 00 00	 call	 __CheckForDebuggerJustMyCode
   00058	90		 npad	 1
   00059	ba f8 00 00 00	 mov	 edx, 248		; 000000f8H
@@ -29046,7 +29441,11 @@ __$ReturnUdt$ = 568
 ?dtor$0@?0???R<lambda_25>@?EL@??ui512md_01_mul@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEBA@XZ@4HA ENDP ; ``ui512_Unit_Tests::ui512_unit_tests_multiply::ui512md_01_mul'::`75'::<lambda_25>::operator()'::`1'::dtor$0
 text$x	ENDS
 ; Function compile flags: /Odtp /RTCsu /ZI
+<<<<<<< HEAD
 ; File C:\Users\John Lynch\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+=======
+; File C:\Users\Surface Pro 4\OneDrive\My Projects\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
 ;	COMDAT ??0<lambda_24>@?EE@??ui512md_01_mul@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEAA@AEAH0@Z
 _TEXT	SEGMENT
 this$ = 224
@@ -29066,7 +29465,11 @@ $LN4:
 	00 00		 sub	 rsp, 232		; 000000e8H
   00018	48 8d 6c 24 20	 lea	 rbp, QWORD PTR [rsp+32]
   0001d	48 8d 0d 00 00
+<<<<<<< HEAD
 	00 00		 lea	 rcx, OFFSET FLAT:__44F99598_ui512_unit_tests_multiply@cpp
+=======
+	00 00		 lea	 rcx, OFFSET FLAT:__A43181B2_ui512_unit_tests_multiply@cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
   00024	e8 00 00 00 00	 call	 __CheckForDebuggerJustMyCode
   00029	90		 npad	 1
   0002a	48 8b 85 e0 00
@@ -29089,7 +29492,11 @@ $LN4:
 ??0<lambda_24>@?EE@??ui512md_01_mul@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEAA@AEAH0@Z ENDP ; `ui512_Unit_Tests::ui512_unit_tests_multiply::ui512md_01_mul'::`68'::<lambda_24>::<lambda_24>
 _TEXT	ENDS
 ; Function compile flags: /Odtp /RTCsu /ZI
+<<<<<<< HEAD
 ; File C:\Users\John Lynch\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+=======
+; File C:\Users\Surface Pro 4\OneDrive\My Projects\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
 ;	COMDAT ??R<lambda_24>@?EE@??ui512md_01_mul@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEBA@XZ
 _TEXT	SEGMENT
 _s$ = 16
@@ -29127,7 +29534,11 @@ $LN6:
   00042	c7 85 e4 01 00
 	00 00 00 00 00	 mov	 DWORD PTR $T4[rbp], 0
   0004c	48 8d 0d 00 00
+<<<<<<< HEAD
 	00 00		 lea	 rcx, OFFSET FLAT:__44F99598_ui512_unit_tests_multiply@cpp
+=======
+	00 00		 lea	 rcx, OFFSET FLAT:__A43181B2_ui512_unit_tests_multiply@cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
   00053	e8 00 00 00 00	 call	 __CheckForDebuggerJustMyCode
   00058	90		 npad	 1
   00059	ba f8 00 00 00	 mov	 edx, 248		; 000000f8H
@@ -29234,7 +29645,11 @@ __$ReturnUdt$ = 584
 ?dtor$0@?0???R<lambda_24>@?EE@??ui512md_01_mul@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEBA@XZ@4HA ENDP ; ``ui512_Unit_Tests::ui512_unit_tests_multiply::ui512md_01_mul'::`68'::<lambda_24>::operator()'::`1'::dtor$0
 text$x	ENDS
 ; Function compile flags: /Odtp /RTCsu /ZI
+<<<<<<< HEAD
 ; File C:\Users\John Lynch\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+=======
+; File C:\Users\Surface Pro 4\OneDrive\My Projects\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
 ;	COMDAT ??0<lambda_23>@?EE@??ui512md_01_mul@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEAA@AEAH0@Z
 _TEXT	SEGMENT
 this$ = 224
@@ -29254,7 +29669,11 @@ $LN4:
 	00 00		 sub	 rsp, 232		; 000000e8H
   00018	48 8d 6c 24 20	 lea	 rbp, QWORD PTR [rsp+32]
   0001d	48 8d 0d 00 00
+<<<<<<< HEAD
 	00 00		 lea	 rcx, OFFSET FLAT:__44F99598_ui512_unit_tests_multiply@cpp
+=======
+	00 00		 lea	 rcx, OFFSET FLAT:__A43181B2_ui512_unit_tests_multiply@cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
   00024	e8 00 00 00 00	 call	 __CheckForDebuggerJustMyCode
   00029	90		 npad	 1
   0002a	48 8b 85 e0 00
@@ -29277,7 +29696,11 @@ $LN4:
 ??0<lambda_23>@?EE@??ui512md_01_mul@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEAA@AEAH0@Z ENDP ; `ui512_Unit_Tests::ui512_unit_tests_multiply::ui512md_01_mul'::`68'::<lambda_23>::<lambda_23>
 _TEXT	ENDS
 ; Function compile flags: /Odtp /RTCsu /ZI
+<<<<<<< HEAD
 ; File C:\Users\John Lynch\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+=======
+; File C:\Users\Surface Pro 4\OneDrive\My Projects\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
 ;	COMDAT ??R<lambda_23>@?EE@??ui512md_01_mul@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEBA@XZ
 _TEXT	SEGMENT
 _s$ = 16
@@ -29315,7 +29738,11 @@ $LN6:
   00042	c7 85 e4 01 00
 	00 00 00 00 00	 mov	 DWORD PTR $T4[rbp], 0
   0004c	48 8d 0d 00 00
+<<<<<<< HEAD
 	00 00		 lea	 rcx, OFFSET FLAT:__44F99598_ui512_unit_tests_multiply@cpp
+=======
+	00 00		 lea	 rcx, OFFSET FLAT:__A43181B2_ui512_unit_tests_multiply@cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
   00053	e8 00 00 00 00	 call	 __CheckForDebuggerJustMyCode
   00058	90		 npad	 1
   00059	ba f8 00 00 00	 mov	 edx, 248		; 000000f8H
@@ -29422,7 +29849,11 @@ __$ReturnUdt$ = 584
 ?dtor$0@?0???R<lambda_23>@?EE@??ui512md_01_mul@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEBA@XZ@4HA ENDP ; ``ui512_Unit_Tests::ui512_unit_tests_multiply::ui512md_01_mul'::`68'::<lambda_23>::operator()'::`1'::dtor$0
 text$x	ENDS
 ; Function compile flags: /Odtp /RTCsu /ZI
+<<<<<<< HEAD
 ; File C:\Users\John Lynch\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+=======
+; File C:\Users\Surface Pro 4\OneDrive\My Projects\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
 ;	COMDAT ??0<lambda_22>@?DM@??ui512md_01_mul@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEAA@AEAH0@Z
 _TEXT	SEGMENT
 this$ = 224
@@ -29442,7 +29873,11 @@ $LN4:
 	00 00		 sub	 rsp, 232		; 000000e8H
   00018	48 8d 6c 24 20	 lea	 rbp, QWORD PTR [rsp+32]
   0001d	48 8d 0d 00 00
+<<<<<<< HEAD
 	00 00		 lea	 rcx, OFFSET FLAT:__44F99598_ui512_unit_tests_multiply@cpp
+=======
+	00 00		 lea	 rcx, OFFSET FLAT:__A43181B2_ui512_unit_tests_multiply@cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
   00024	e8 00 00 00 00	 call	 __CheckForDebuggerJustMyCode
   00029	90		 npad	 1
   0002a	48 8b 85 e0 00
@@ -29465,7 +29900,11 @@ $LN4:
 ??0<lambda_22>@?DM@??ui512md_01_mul@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEAA@AEAH0@Z ENDP ; `ui512_Unit_Tests::ui512_unit_tests_multiply::ui512md_01_mul'::`60'::<lambda_22>::<lambda_22>
 _TEXT	ENDS
 ; Function compile flags: /Odtp /RTCsu /ZI
+<<<<<<< HEAD
 ; File C:\Users\John Lynch\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+=======
+; File C:\Users\Surface Pro 4\OneDrive\My Projects\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
 ;	COMDAT ??R<lambda_22>@?DM@??ui512md_01_mul@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEBA@XZ
 _TEXT	SEGMENT
 _s$ = 16
@@ -29503,7 +29942,11 @@ $LN6:
   00042	c7 85 e4 01 00
 	00 00 00 00 00	 mov	 DWORD PTR $T4[rbp], 0
   0004c	48 8d 0d 00 00
+<<<<<<< HEAD
 	00 00		 lea	 rcx, OFFSET FLAT:__44F99598_ui512_unit_tests_multiply@cpp
+=======
+	00 00		 lea	 rcx, OFFSET FLAT:__A43181B2_ui512_unit_tests_multiply@cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
   00053	e8 00 00 00 00	 call	 __CheckForDebuggerJustMyCode
   00058	90		 npad	 1
   00059	ba f8 00 00 00	 mov	 edx, 248		; 000000f8H
@@ -29610,7 +30053,11 @@ __$ReturnUdt$ = 584
 ?dtor$0@?0???R<lambda_22>@?DM@??ui512md_01_mul@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEBA@XZ@4HA ENDP ; ``ui512_Unit_Tests::ui512_unit_tests_multiply::ui512md_01_mul'::`60'::<lambda_22>::operator()'::`1'::dtor$0
 text$x	ENDS
 ; Function compile flags: /Odtp /RTCsu /ZI
+<<<<<<< HEAD
 ; File C:\Users\John Lynch\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+=======
+; File C:\Users\Surface Pro 4\OneDrive\My Projects\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
 ;	COMDAT ??0<lambda_21>@?DM@??ui512md_01_mul@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEAA@AEAH0@Z
 _TEXT	SEGMENT
 this$ = 224
@@ -29630,7 +30077,11 @@ $LN4:
 	00 00		 sub	 rsp, 232		; 000000e8H
   00018	48 8d 6c 24 20	 lea	 rbp, QWORD PTR [rsp+32]
   0001d	48 8d 0d 00 00
+<<<<<<< HEAD
 	00 00		 lea	 rcx, OFFSET FLAT:__44F99598_ui512_unit_tests_multiply@cpp
+=======
+	00 00		 lea	 rcx, OFFSET FLAT:__A43181B2_ui512_unit_tests_multiply@cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
   00024	e8 00 00 00 00	 call	 __CheckForDebuggerJustMyCode
   00029	90		 npad	 1
   0002a	48 8b 85 e0 00
@@ -29653,7 +30104,11 @@ $LN4:
 ??0<lambda_21>@?DM@??ui512md_01_mul@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEAA@AEAH0@Z ENDP ; `ui512_Unit_Tests::ui512_unit_tests_multiply::ui512md_01_mul'::`60'::<lambda_21>::<lambda_21>
 _TEXT	ENDS
 ; Function compile flags: /Odtp /RTCsu /ZI
+<<<<<<< HEAD
 ; File C:\Users\John Lynch\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+=======
+; File C:\Users\Surface Pro 4\OneDrive\My Projects\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
 ;	COMDAT ??R<lambda_21>@?DM@??ui512md_01_mul@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEBA@XZ
 _TEXT	SEGMENT
 _s$ = 16
@@ -29691,7 +30146,11 @@ $LN6:
   00042	c7 85 e4 01 00
 	00 00 00 00 00	 mov	 DWORD PTR $T4[rbp], 0
   0004c	48 8d 0d 00 00
+<<<<<<< HEAD
 	00 00		 lea	 rcx, OFFSET FLAT:__44F99598_ui512_unit_tests_multiply@cpp
+=======
+	00 00		 lea	 rcx, OFFSET FLAT:__A43181B2_ui512_unit_tests_multiply@cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
   00053	e8 00 00 00 00	 call	 __CheckForDebuggerJustMyCode
   00058	90		 npad	 1
   00059	ba f8 00 00 00	 mov	 edx, 248		; 000000f8H
@@ -29798,7 +30257,11 @@ __$ReturnUdt$ = 584
 ?dtor$0@?0???R<lambda_21>@?DM@??ui512md_01_mul@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEBA@XZ@4HA ENDP ; ``ui512_Unit_Tests::ui512_unit_tests_multiply::ui512md_01_mul'::`60'::<lambda_21>::operator()'::`1'::dtor$0
 text$x	ENDS
 ; Function compile flags: /Odtp /RTCsu /ZI
+<<<<<<< HEAD
 ; File C:\Users\John Lynch\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+=======
+; File C:\Users\Surface Pro 4\OneDrive\My Projects\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
 ;	COMDAT ??R<lambda_20>@?CE@??ui512md_01_mul@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEBA@XZ
 _TEXT	SEGMENT
 _s$ = 16
@@ -29834,7 +30297,11 @@ $LN6:
   00042	c7 85 e4 01 00
 	00 00 00 00 00	 mov	 DWORD PTR $T4[rbp], 0
   0004c	48 8d 0d 00 00
+<<<<<<< HEAD
 	00 00		 lea	 rcx, OFFSET FLAT:__44F99598_ui512_unit_tests_multiply@cpp
+=======
+	00 00		 lea	 rcx, OFFSET FLAT:__A43181B2_ui512_unit_tests_multiply@cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
   00053	e8 00 00 00 00	 call	 __CheckForDebuggerJustMyCode
   00058	90		 npad	 1
   00059	ba f8 00 00 00	 mov	 edx, 248		; 000000f8H
@@ -29923,7 +30390,11 @@ __$ReturnUdt$ = 568
 ?dtor$0@?0???R<lambda_20>@?CE@??ui512md_01_mul@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEBA@XZ@4HA ENDP ; ``ui512_Unit_Tests::ui512_unit_tests_multiply::ui512md_01_mul'::`36'::<lambda_20>::operator()'::`1'::dtor$0
 text$x	ENDS
 ; Function compile flags: /Odtp /RTCsu /ZI
+<<<<<<< HEAD
 ; File C:\Users\John Lynch\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+=======
+; File C:\Users\Surface Pro 4\OneDrive\My Projects\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
 ;	COMDAT ??0<lambda_19>@?CD@??ui512md_01_mul@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEAA@AEAH0@Z
 _TEXT	SEGMENT
 this$ = 224
@@ -29943,7 +30414,11 @@ $LN4:
 	00 00		 sub	 rsp, 232		; 000000e8H
   00018	48 8d 6c 24 20	 lea	 rbp, QWORD PTR [rsp+32]
   0001d	48 8d 0d 00 00
+<<<<<<< HEAD
 	00 00		 lea	 rcx, OFFSET FLAT:__44F99598_ui512_unit_tests_multiply@cpp
+=======
+	00 00		 lea	 rcx, OFFSET FLAT:__A43181B2_ui512_unit_tests_multiply@cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
   00024	e8 00 00 00 00	 call	 __CheckForDebuggerJustMyCode
   00029	90		 npad	 1
   0002a	48 8b 85 e0 00
@@ -29966,7 +30441,11 @@ $LN4:
 ??0<lambda_19>@?CD@??ui512md_01_mul@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEAA@AEAH0@Z ENDP ; `ui512_Unit_Tests::ui512_unit_tests_multiply::ui512md_01_mul'::`35'::<lambda_19>::<lambda_19>
 _TEXT	ENDS
 ; Function compile flags: /Odtp /RTCsu /ZI
+<<<<<<< HEAD
 ; File C:\Users\John Lynch\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+=======
+; File C:\Users\Surface Pro 4\OneDrive\My Projects\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
 ;	COMDAT ??R<lambda_19>@?CD@??ui512md_01_mul@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEBA@XZ
 _TEXT	SEGMENT
 _s$ = 16
@@ -30004,7 +30483,11 @@ $LN6:
   00042	c7 85 e4 01 00
 	00 00 00 00 00	 mov	 DWORD PTR $T4[rbp], 0
   0004c	48 8d 0d 00 00
+<<<<<<< HEAD
 	00 00		 lea	 rcx, OFFSET FLAT:__44F99598_ui512_unit_tests_multiply@cpp
+=======
+	00 00		 lea	 rcx, OFFSET FLAT:__A43181B2_ui512_unit_tests_multiply@cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
   00053	e8 00 00 00 00	 call	 __CheckForDebuggerJustMyCode
   00058	90		 npad	 1
   00059	ba f8 00 00 00	 mov	 edx, 248		; 000000f8H
@@ -30111,7 +30594,11 @@ __$ReturnUdt$ = 584
 ?dtor$0@?0???R<lambda_19>@?CD@??ui512md_01_mul@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEBA@XZ@4HA ENDP ; ``ui512_Unit_Tests::ui512_unit_tests_multiply::ui512md_01_mul'::`35'::<lambda_19>::operator()'::`1'::dtor$0
 text$x	ENDS
 ; Function compile flags: /Odtp /RTCsu /ZI
+<<<<<<< HEAD
 ; File C:\Users\John Lynch\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+=======
+; File C:\Users\Surface Pro 4\OneDrive\My Projects\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
 ;	COMDAT ??0<lambda_18>@?CD@??ui512md_01_mul@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEAA@AEAH0@Z
 _TEXT	SEGMENT
 this$ = 224
@@ -30131,7 +30618,11 @@ $LN4:
 	00 00		 sub	 rsp, 232		; 000000e8H
   00018	48 8d 6c 24 20	 lea	 rbp, QWORD PTR [rsp+32]
   0001d	48 8d 0d 00 00
+<<<<<<< HEAD
 	00 00		 lea	 rcx, OFFSET FLAT:__44F99598_ui512_unit_tests_multiply@cpp
+=======
+	00 00		 lea	 rcx, OFFSET FLAT:__A43181B2_ui512_unit_tests_multiply@cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
   00024	e8 00 00 00 00	 call	 __CheckForDebuggerJustMyCode
   00029	90		 npad	 1
   0002a	48 8b 85 e0 00
@@ -30154,7 +30645,11 @@ $LN4:
 ??0<lambda_18>@?CD@??ui512md_01_mul@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEAA@AEAH0@Z ENDP ; `ui512_Unit_Tests::ui512_unit_tests_multiply::ui512md_01_mul'::`35'::<lambda_18>::<lambda_18>
 _TEXT	ENDS
 ; Function compile flags: /Odtp /RTCsu /ZI
+<<<<<<< HEAD
 ; File C:\Users\John Lynch\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+=======
+; File C:\Users\Surface Pro 4\OneDrive\My Projects\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
 ;	COMDAT ??R<lambda_18>@?CD@??ui512md_01_mul@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEBA@XZ
 _TEXT	SEGMENT
 _s$ = 16
@@ -30192,7 +30687,11 @@ $LN6:
   00042	c7 85 e4 01 00
 	00 00 00 00 00	 mov	 DWORD PTR $T4[rbp], 0
   0004c	48 8d 0d 00 00
+<<<<<<< HEAD
 	00 00		 lea	 rcx, OFFSET FLAT:__44F99598_ui512_unit_tests_multiply@cpp
+=======
+	00 00		 lea	 rcx, OFFSET FLAT:__A43181B2_ui512_unit_tests_multiply@cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
   00053	e8 00 00 00 00	 call	 __CheckForDebuggerJustMyCode
   00058	90		 npad	 1
   00059	ba f8 00 00 00	 mov	 edx, 248		; 000000f8H
@@ -30299,7 +30798,11 @@ __$ReturnUdt$ = 584
 ?dtor$0@?0???R<lambda_18>@?CD@??ui512md_01_mul@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEBA@XZ@4HA ENDP ; ``ui512_Unit_Tests::ui512_unit_tests_multiply::ui512md_01_mul'::`35'::<lambda_18>::operator()'::`1'::dtor$0
 text$x	ENDS
 ; Function compile flags: /Odtp /RTCsu /ZI
+<<<<<<< HEAD
 ; File C:\Users\John Lynch\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+=======
+; File C:\Users\Surface Pro 4\OneDrive\My Projects\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
 ;	COMDAT ??R<lambda_17>@?BP@??ui512md_01_mul@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEBA@XZ
 _TEXT	SEGMENT
 _s$ = 16
@@ -30335,7 +30838,11 @@ $LN6:
   00042	c7 85 e4 01 00
 	00 00 00 00 00	 mov	 DWORD PTR $T4[rbp], 0
   0004c	48 8d 0d 00 00
+<<<<<<< HEAD
 	00 00		 lea	 rcx, OFFSET FLAT:__44F99598_ui512_unit_tests_multiply@cpp
+=======
+	00 00		 lea	 rcx, OFFSET FLAT:__A43181B2_ui512_unit_tests_multiply@cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
   00053	e8 00 00 00 00	 call	 __CheckForDebuggerJustMyCode
   00058	90		 npad	 1
   00059	ba f8 00 00 00	 mov	 edx, 248		; 000000f8H
@@ -30424,7 +30931,11 @@ __$ReturnUdt$ = 568
 ?dtor$0@?0???R<lambda_17>@?BP@??ui512md_01_mul@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEBA@XZ@4HA ENDP ; ``ui512_Unit_Tests::ui512_unit_tests_multiply::ui512md_01_mul'::`31'::<lambda_17>::operator()'::`1'::dtor$0
 text$x	ENDS
 ; Function compile flags: /Odtp /RTCsu /ZI
+<<<<<<< HEAD
 ; File C:\Users\John Lynch\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+=======
+; File C:\Users\Surface Pro 4\OneDrive\My Projects\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
 ;	COMDAT ??0<lambda_16>@?BO@??ui512md_01_mul@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEAA@AEAH0@Z
 _TEXT	SEGMENT
 this$ = 224
@@ -30444,7 +30955,11 @@ $LN4:
 	00 00		 sub	 rsp, 232		; 000000e8H
   00018	48 8d 6c 24 20	 lea	 rbp, QWORD PTR [rsp+32]
   0001d	48 8d 0d 00 00
+<<<<<<< HEAD
 	00 00		 lea	 rcx, OFFSET FLAT:__44F99598_ui512_unit_tests_multiply@cpp
+=======
+	00 00		 lea	 rcx, OFFSET FLAT:__A43181B2_ui512_unit_tests_multiply@cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
   00024	e8 00 00 00 00	 call	 __CheckForDebuggerJustMyCode
   00029	90		 npad	 1
   0002a	48 8b 85 e0 00
@@ -30467,7 +30982,11 @@ $LN4:
 ??0<lambda_16>@?BO@??ui512md_01_mul@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEAA@AEAH0@Z ENDP ; `ui512_Unit_Tests::ui512_unit_tests_multiply::ui512md_01_mul'::`30'::<lambda_16>::<lambda_16>
 _TEXT	ENDS
 ; Function compile flags: /Odtp /RTCsu /ZI
+<<<<<<< HEAD
 ; File C:\Users\John Lynch\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+=======
+; File C:\Users\Surface Pro 4\OneDrive\My Projects\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
 ;	COMDAT ??R<lambda_16>@?BO@??ui512md_01_mul@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEBA@XZ
 _TEXT	SEGMENT
 _s$ = 16
@@ -30505,7 +31024,11 @@ $LN6:
   00042	c7 85 e4 01 00
 	00 00 00 00 00	 mov	 DWORD PTR $T4[rbp], 0
   0004c	48 8d 0d 00 00
+<<<<<<< HEAD
 	00 00		 lea	 rcx, OFFSET FLAT:__44F99598_ui512_unit_tests_multiply@cpp
+=======
+	00 00		 lea	 rcx, OFFSET FLAT:__A43181B2_ui512_unit_tests_multiply@cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
   00053	e8 00 00 00 00	 call	 __CheckForDebuggerJustMyCode
   00058	90		 npad	 1
   00059	ba f8 00 00 00	 mov	 edx, 248		; 000000f8H
@@ -30612,7 +31135,11 @@ __$ReturnUdt$ = 584
 ?dtor$0@?0???R<lambda_16>@?BO@??ui512md_01_mul@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEBA@XZ@4HA ENDP ; ``ui512_Unit_Tests::ui512_unit_tests_multiply::ui512md_01_mul'::`30'::<lambda_16>::operator()'::`1'::dtor$0
 text$x	ENDS
 ; Function compile flags: /Odtp /RTCsu /ZI
+<<<<<<< HEAD
 ; File C:\Users\John Lynch\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+=======
+; File C:\Users\Surface Pro 4\OneDrive\My Projects\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
 ;	COMDAT ??0<lambda_15>@?BO@??ui512md_01_mul@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEAA@AEAH0@Z
 _TEXT	SEGMENT
 this$ = 224
@@ -30632,7 +31159,11 @@ $LN4:
 	00 00		 sub	 rsp, 232		; 000000e8H
   00018	48 8d 6c 24 20	 lea	 rbp, QWORD PTR [rsp+32]
   0001d	48 8d 0d 00 00
+<<<<<<< HEAD
 	00 00		 lea	 rcx, OFFSET FLAT:__44F99598_ui512_unit_tests_multiply@cpp
+=======
+	00 00		 lea	 rcx, OFFSET FLAT:__A43181B2_ui512_unit_tests_multiply@cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
   00024	e8 00 00 00 00	 call	 __CheckForDebuggerJustMyCode
   00029	90		 npad	 1
   0002a	48 8b 85 e0 00
@@ -30655,7 +31186,11 @@ $LN4:
 ??0<lambda_15>@?BO@??ui512md_01_mul@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEAA@AEAH0@Z ENDP ; `ui512_Unit_Tests::ui512_unit_tests_multiply::ui512md_01_mul'::`30'::<lambda_15>::<lambda_15>
 _TEXT	ENDS
 ; Function compile flags: /Odtp /RTCsu /ZI
+<<<<<<< HEAD
 ; File C:\Users\John Lynch\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+=======
+; File C:\Users\Surface Pro 4\OneDrive\My Projects\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
 ;	COMDAT ??R<lambda_15>@?BO@??ui512md_01_mul@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEBA@XZ
 _TEXT	SEGMENT
 _s$ = 16
@@ -30693,7 +31228,11 @@ $LN6:
   00042	c7 85 e4 01 00
 	00 00 00 00 00	 mov	 DWORD PTR $T4[rbp], 0
   0004c	48 8d 0d 00 00
+<<<<<<< HEAD
 	00 00		 lea	 rcx, OFFSET FLAT:__44F99598_ui512_unit_tests_multiply@cpp
+=======
+	00 00		 lea	 rcx, OFFSET FLAT:__A43181B2_ui512_unit_tests_multiply@cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
   00053	e8 00 00 00 00	 call	 __CheckForDebuggerJustMyCode
   00058	90		 npad	 1
   00059	ba f8 00 00 00	 mov	 edx, 248		; 000000f8H
@@ -30800,7 +31339,11 @@ __$ReturnUdt$ = 584
 ?dtor$0@?0???R<lambda_15>@?BO@??ui512md_01_mul@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEBA@XZ@4HA ENDP ; ``ui512_Unit_Tests::ui512_unit_tests_multiply::ui512md_01_mul'::`30'::<lambda_15>::operator()'::`1'::dtor$0
 text$x	ENDS
 ; Function compile flags: /Odtp /RTCsu /ZI
+<<<<<<< HEAD
 ; File C:\Users\John Lynch\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+=======
+; File C:\Users\Surface Pro 4\OneDrive\My Projects\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
 ;	COMDAT ??R<lambda_14>@?BK@??ui512md_01_mul@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEBA@XZ
 _TEXT	SEGMENT
 _s$ = 16
@@ -30836,7 +31379,11 @@ $LN6:
   00042	c7 85 e4 01 00
 	00 00 00 00 00	 mov	 DWORD PTR $T4[rbp], 0
   0004c	48 8d 0d 00 00
+<<<<<<< HEAD
 	00 00		 lea	 rcx, OFFSET FLAT:__44F99598_ui512_unit_tests_multiply@cpp
+=======
+	00 00		 lea	 rcx, OFFSET FLAT:__A43181B2_ui512_unit_tests_multiply@cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
   00053	e8 00 00 00 00	 call	 __CheckForDebuggerJustMyCode
   00058	90		 npad	 1
   00059	ba f8 00 00 00	 mov	 edx, 248		; 000000f8H
@@ -30925,7 +31472,11 @@ __$ReturnUdt$ = 568
 ?dtor$0@?0???R<lambda_14>@?BK@??ui512md_01_mul@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEBA@XZ@4HA ENDP ; ``ui512_Unit_Tests::ui512_unit_tests_multiply::ui512md_01_mul'::`26'::<lambda_14>::operator()'::`1'::dtor$0
 text$x	ENDS
 ; Function compile flags: /Odtp /RTCsu /ZI
+<<<<<<< HEAD
 ; File C:\Users\John Lynch\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+=======
+; File C:\Users\Surface Pro 4\OneDrive\My Projects\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
 ;	COMDAT ??0<lambda_13>@?BJ@??ui512md_01_mul@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEAA@AEAH0@Z
 _TEXT	SEGMENT
 this$ = 224
@@ -30945,7 +31496,11 @@ $LN4:
 	00 00		 sub	 rsp, 232		; 000000e8H
   00018	48 8d 6c 24 20	 lea	 rbp, QWORD PTR [rsp+32]
   0001d	48 8d 0d 00 00
+<<<<<<< HEAD
 	00 00		 lea	 rcx, OFFSET FLAT:__44F99598_ui512_unit_tests_multiply@cpp
+=======
+	00 00		 lea	 rcx, OFFSET FLAT:__A43181B2_ui512_unit_tests_multiply@cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
   00024	e8 00 00 00 00	 call	 __CheckForDebuggerJustMyCode
   00029	90		 npad	 1
   0002a	48 8b 85 e0 00
@@ -30968,7 +31523,11 @@ $LN4:
 ??0<lambda_13>@?BJ@??ui512md_01_mul@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEAA@AEAH0@Z ENDP ; `ui512_Unit_Tests::ui512_unit_tests_multiply::ui512md_01_mul'::`25'::<lambda_13>::<lambda_13>
 _TEXT	ENDS
 ; Function compile flags: /Odtp /RTCsu /ZI
+<<<<<<< HEAD
 ; File C:\Users\John Lynch\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+=======
+; File C:\Users\Surface Pro 4\OneDrive\My Projects\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
 ;	COMDAT ??R<lambda_13>@?BJ@??ui512md_01_mul@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEBA@XZ
 _TEXT	SEGMENT
 _s$ = 16
@@ -31006,7 +31565,11 @@ $LN6:
   00042	c7 85 e4 01 00
 	00 00 00 00 00	 mov	 DWORD PTR $T4[rbp], 0
   0004c	48 8d 0d 00 00
+<<<<<<< HEAD
 	00 00		 lea	 rcx, OFFSET FLAT:__44F99598_ui512_unit_tests_multiply@cpp
+=======
+	00 00		 lea	 rcx, OFFSET FLAT:__A43181B2_ui512_unit_tests_multiply@cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
   00053	e8 00 00 00 00	 call	 __CheckForDebuggerJustMyCode
   00058	90		 npad	 1
   00059	ba f8 00 00 00	 mov	 edx, 248		; 000000f8H
@@ -31113,7 +31676,11 @@ __$ReturnUdt$ = 584
 ?dtor$0@?0???R<lambda_13>@?BJ@??ui512md_01_mul@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEBA@XZ@4HA ENDP ; ``ui512_Unit_Tests::ui512_unit_tests_multiply::ui512md_01_mul'::`25'::<lambda_13>::operator()'::`1'::dtor$0
 text$x	ENDS
 ; Function compile flags: /Odtp /RTCsu /ZI
+<<<<<<< HEAD
 ; File C:\Users\John Lynch\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+=======
+; File C:\Users\Surface Pro 4\OneDrive\My Projects\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
 ;	COMDAT ??0<lambda_12>@?BJ@??ui512md_01_mul@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEAA@AEAH0@Z
 _TEXT	SEGMENT
 this$ = 224
@@ -31133,7 +31700,11 @@ $LN4:
 	00 00		 sub	 rsp, 232		; 000000e8H
   00018	48 8d 6c 24 20	 lea	 rbp, QWORD PTR [rsp+32]
   0001d	48 8d 0d 00 00
+<<<<<<< HEAD
 	00 00		 lea	 rcx, OFFSET FLAT:__44F99598_ui512_unit_tests_multiply@cpp
+=======
+	00 00		 lea	 rcx, OFFSET FLAT:__A43181B2_ui512_unit_tests_multiply@cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
   00024	e8 00 00 00 00	 call	 __CheckForDebuggerJustMyCode
   00029	90		 npad	 1
   0002a	48 8b 85 e0 00
@@ -31156,7 +31727,11 @@ $LN4:
 ??0<lambda_12>@?BJ@??ui512md_01_mul@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEAA@AEAH0@Z ENDP ; `ui512_Unit_Tests::ui512_unit_tests_multiply::ui512md_01_mul'::`25'::<lambda_12>::<lambda_12>
 _TEXT	ENDS
 ; Function compile flags: /Odtp /RTCsu /ZI
+<<<<<<< HEAD
 ; File C:\Users\John Lynch\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+=======
+; File C:\Users\Surface Pro 4\OneDrive\My Projects\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
 ;	COMDAT ??R<lambda_12>@?BJ@??ui512md_01_mul@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEBA@XZ
 _TEXT	SEGMENT
 _s$ = 16
@@ -31194,7 +31769,11 @@ $LN6:
   00042	c7 85 e4 01 00
 	00 00 00 00 00	 mov	 DWORD PTR $T4[rbp], 0
   0004c	48 8d 0d 00 00
+<<<<<<< HEAD
 	00 00		 lea	 rcx, OFFSET FLAT:__44F99598_ui512_unit_tests_multiply@cpp
+=======
+	00 00		 lea	 rcx, OFFSET FLAT:__A43181B2_ui512_unit_tests_multiply@cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
   00053	e8 00 00 00 00	 call	 __CheckForDebuggerJustMyCode
   00058	90		 npad	 1
   00059	ba f8 00 00 00	 mov	 edx, 248		; 000000f8H
@@ -31865,7 +32444,11 @@ __catch$??$?6U?$char_traits@D@std@@@std@@YAAEAV?$basic_ostream@DU?$char_traits@D
 ?catch$1@?0???$?6U?$char_traits@D@std@@@std@@YAAEAV?$basic_ostream@DU?$char_traits@D@std@@@0@AEAV10@PEBD@Z@4HA ENDP ; `std::operator<<<std::char_traits<char> >'::`1'::catch$1
 text$x	ENDS
 ; Function compile flags: /Odtp /RTCsu /ZI
+<<<<<<< HEAD
 ; File C:\Users\John Lynch\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+=======
+; File C:\Users\Surface Pro 4\OneDrive\My Projects\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
 ;	COMDAT ??R<lambda_11>@?BF@??ui512md_01_mul@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEBA@XZ
 _TEXT	SEGMENT
 _s$ = 16
@@ -31901,7 +32484,11 @@ $LN6:
   00042	c7 85 e4 01 00
 	00 00 00 00 00	 mov	 DWORD PTR $T4[rbp], 0
   0004c	48 8d 0d 00 00
+<<<<<<< HEAD
 	00 00		 lea	 rcx, OFFSET FLAT:__44F99598_ui512_unit_tests_multiply@cpp
+=======
+	00 00		 lea	 rcx, OFFSET FLAT:__A43181B2_ui512_unit_tests_multiply@cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
   00053	e8 00 00 00 00	 call	 __CheckForDebuggerJustMyCode
   00058	90		 npad	 1
   00059	ba f8 00 00 00	 mov	 edx, 248		; 000000f8H
@@ -32385,7 +32972,11 @@ $initVBases$ = 264
 ?dtor$1@?0???0?$basic_stringstream@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@QEAA@XZ@4HA ENDP ; `std::basic_stringstream<char,std::char_traits<char>,std::allocator<char> >::basic_stringstream<char,std::char_traits<char>,std::allocator<char> >'::`1'::dtor$1
 text$x	ENDS
 ; Function compile flags: /Odtp /RTCsu /ZI
+<<<<<<< HEAD
 ; File C:\Users\John Lynch\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+=======
+; File C:\Users\Surface Pro 4\OneDrive\My Projects\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
 ;	COMDAT ??0<lambda_10>@?BE@??ui512md_01_mul@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEAA@AEAH0@Z
 _TEXT	SEGMENT
 this$ = 224
@@ -32405,7 +32996,11 @@ $LN4:
 	00 00		 sub	 rsp, 232		; 000000e8H
   00018	48 8d 6c 24 20	 lea	 rbp, QWORD PTR [rsp+32]
   0001d	48 8d 0d 00 00
+<<<<<<< HEAD
 	00 00		 lea	 rcx, OFFSET FLAT:__44F99598_ui512_unit_tests_multiply@cpp
+=======
+	00 00		 lea	 rcx, OFFSET FLAT:__A43181B2_ui512_unit_tests_multiply@cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
   00024	e8 00 00 00 00	 call	 __CheckForDebuggerJustMyCode
   00029	90		 npad	 1
   0002a	48 8b 85 e0 00
@@ -32428,7 +33023,11 @@ $LN4:
 ??0<lambda_10>@?BE@??ui512md_01_mul@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEAA@AEAH0@Z ENDP ; `ui512_Unit_Tests::ui512_unit_tests_multiply::ui512md_01_mul'::`20'::<lambda_10>::<lambda_10>
 _TEXT	ENDS
 ; Function compile flags: /Odtp /RTCsu /ZI
+<<<<<<< HEAD
 ; File C:\Users\John Lynch\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+=======
+; File C:\Users\Surface Pro 4\OneDrive\My Projects\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
 ;	COMDAT ??R<lambda_10>@?BE@??ui512md_01_mul@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEBA@XZ
 _TEXT	SEGMENT
 _s$ = 16
@@ -32466,7 +33065,11 @@ $LN6:
   00042	c7 85 e4 01 00
 	00 00 00 00 00	 mov	 DWORD PTR $T4[rbp], 0
   0004c	48 8d 0d 00 00
+<<<<<<< HEAD
 	00 00		 lea	 rcx, OFFSET FLAT:__44F99598_ui512_unit_tests_multiply@cpp
+=======
+	00 00		 lea	 rcx, OFFSET FLAT:__A43181B2_ui512_unit_tests_multiply@cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
   00053	e8 00 00 00 00	 call	 __CheckForDebuggerJustMyCode
   00058	90		 npad	 1
   00059	ba f8 00 00 00	 mov	 edx, 248		; 000000f8H
@@ -32573,7 +33176,11 @@ __$ReturnUdt$ = 584
 ?dtor$0@?0???R<lambda_10>@?BE@??ui512md_01_mul@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEBA@XZ@4HA ENDP ; ``ui512_Unit_Tests::ui512_unit_tests_multiply::ui512md_01_mul'::`20'::<lambda_10>::operator()'::`1'::dtor$0
 text$x	ENDS
 ; Function compile flags: /Odtp /RTCsu /ZI
+<<<<<<< HEAD
 ; File C:\Users\John Lynch\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+=======
+; File C:\Users\Surface Pro 4\OneDrive\My Projects\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
 ;	COMDAT ??0<lambda_9>@?BE@??ui512md_01_mul@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEAA@AEAH0@Z
 _TEXT	SEGMENT
 this$ = 224
@@ -32593,7 +33200,11 @@ $LN4:
 	00 00		 sub	 rsp, 232		; 000000e8H
   00018	48 8d 6c 24 20	 lea	 rbp, QWORD PTR [rsp+32]
   0001d	48 8d 0d 00 00
+<<<<<<< HEAD
 	00 00		 lea	 rcx, OFFSET FLAT:__44F99598_ui512_unit_tests_multiply@cpp
+=======
+	00 00		 lea	 rcx, OFFSET FLAT:__A43181B2_ui512_unit_tests_multiply@cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
   00024	e8 00 00 00 00	 call	 __CheckForDebuggerJustMyCode
   00029	90		 npad	 1
   0002a	48 8b 85 e0 00
@@ -32616,7 +33227,11 @@ $LN4:
 ??0<lambda_9>@?BE@??ui512md_01_mul@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEAA@AEAH0@Z ENDP ; `ui512_Unit_Tests::ui512_unit_tests_multiply::ui512md_01_mul'::`20'::<lambda_9>::<lambda_9>
 _TEXT	ENDS
 ; Function compile flags: /Odtp /RTCsu /ZI
+<<<<<<< HEAD
 ; File C:\Users\John Lynch\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+=======
+; File C:\Users\Surface Pro 4\OneDrive\My Projects\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
 ;	COMDAT ??R<lambda_9>@?BE@??ui512md_01_mul@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEBA@XZ
 _TEXT	SEGMENT
 _s$ = 16
@@ -32654,7 +33269,11 @@ $LN6:
   00042	c7 85 e4 01 00
 	00 00 00 00 00	 mov	 DWORD PTR $T4[rbp], 0
   0004c	48 8d 0d 00 00
+<<<<<<< HEAD
 	00 00		 lea	 rcx, OFFSET FLAT:__44F99598_ui512_unit_tests_multiply@cpp
+=======
+	00 00		 lea	 rcx, OFFSET FLAT:__A43181B2_ui512_unit_tests_multiply@cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
   00053	e8 00 00 00 00	 call	 __CheckForDebuggerJustMyCode
   00058	90		 npad	 1
   00059	ba f8 00 00 00	 mov	 edx, 248		; 000000f8H
@@ -32761,7 +33380,11 @@ __$ReturnUdt$ = 584
 ?dtor$0@?0???R<lambda_9>@?BE@??ui512md_01_mul@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEBA@XZ@4HA ENDP ; ``ui512_Unit_Tests::ui512_unit_tests_multiply::ui512md_01_mul'::`20'::<lambda_9>::operator()'::`1'::dtor$0
 text$x	ENDS
 ; Function compile flags: /Odtp /RTCsu /ZI
+<<<<<<< HEAD
 ; File C:\Users\John Lynch\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+=======
+; File C:\Users\Surface Pro 4\OneDrive\My Projects\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
 ;	COMDAT ??0<lambda_8>@?BA@??ui512md_01_mul@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEAA@AEAH0@Z
 _TEXT	SEGMENT
 this$ = 224
@@ -32781,7 +33404,11 @@ $LN4:
 	00 00		 sub	 rsp, 232		; 000000e8H
   00018	48 8d 6c 24 20	 lea	 rbp, QWORD PTR [rsp+32]
   0001d	48 8d 0d 00 00
+<<<<<<< HEAD
 	00 00		 lea	 rcx, OFFSET FLAT:__44F99598_ui512_unit_tests_multiply@cpp
+=======
+	00 00		 lea	 rcx, OFFSET FLAT:__A43181B2_ui512_unit_tests_multiply@cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
   00024	e8 00 00 00 00	 call	 __CheckForDebuggerJustMyCode
   00029	90		 npad	 1
   0002a	48 8b 85 e0 00
@@ -32804,7 +33431,11 @@ $LN4:
 ??0<lambda_8>@?BA@??ui512md_01_mul@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEAA@AEAH0@Z ENDP ; `ui512_Unit_Tests::ui512_unit_tests_multiply::ui512md_01_mul'::`16'::<lambda_8>::<lambda_8>
 _TEXT	ENDS
 ; Function compile flags: /Odtp /RTCsu /ZI
+<<<<<<< HEAD
 ; File C:\Users\John Lynch\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+=======
+; File C:\Users\Surface Pro 4\OneDrive\My Projects\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
 ;	COMDAT ??R<lambda_8>@?BA@??ui512md_01_mul@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEBA@XZ
 _TEXT	SEGMENT
 _s$ = 16
@@ -32842,7 +33473,11 @@ $LN6:
   00042	c7 85 e4 01 00
 	00 00 00 00 00	 mov	 DWORD PTR $T4[rbp], 0
   0004c	48 8d 0d 00 00
+<<<<<<< HEAD
 	00 00		 lea	 rcx, OFFSET FLAT:__44F99598_ui512_unit_tests_multiply@cpp
+=======
+	00 00		 lea	 rcx, OFFSET FLAT:__A43181B2_ui512_unit_tests_multiply@cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
   00053	e8 00 00 00 00	 call	 __CheckForDebuggerJustMyCode
   00058	90		 npad	 1
   00059	ba f8 00 00 00	 mov	 edx, 248		; 000000f8H
@@ -32949,7 +33584,11 @@ __$ReturnUdt$ = 584
 ?dtor$0@?0???R<lambda_8>@?BA@??ui512md_01_mul@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEBA@XZ@4HA ENDP ; ``ui512_Unit_Tests::ui512_unit_tests_multiply::ui512md_01_mul'::`16'::<lambda_8>::operator()'::`1'::dtor$0
 text$x	ENDS
 ; Function compile flags: /Odtp /RTCsu /ZI
+<<<<<<< HEAD
 ; File C:\Users\John Lynch\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+=======
+; File C:\Users\Surface Pro 4\OneDrive\My Projects\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
 ;	COMDAT ??0<lambda_7>@?BA@??ui512md_01_mul@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEAA@AEAH0@Z
 _TEXT	SEGMENT
 this$ = 224
@@ -32969,7 +33608,11 @@ $LN4:
 	00 00		 sub	 rsp, 232		; 000000e8H
   00018	48 8d 6c 24 20	 lea	 rbp, QWORD PTR [rsp+32]
   0001d	48 8d 0d 00 00
+<<<<<<< HEAD
 	00 00		 lea	 rcx, OFFSET FLAT:__44F99598_ui512_unit_tests_multiply@cpp
+=======
+	00 00		 lea	 rcx, OFFSET FLAT:__A43181B2_ui512_unit_tests_multiply@cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
   00024	e8 00 00 00 00	 call	 __CheckForDebuggerJustMyCode
   00029	90		 npad	 1
   0002a	48 8b 85 e0 00
@@ -32992,7 +33635,11 @@ $LN4:
 ??0<lambda_7>@?BA@??ui512md_01_mul@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEAA@AEAH0@Z ENDP ; `ui512_Unit_Tests::ui512_unit_tests_multiply::ui512md_01_mul'::`16'::<lambda_7>::<lambda_7>
 _TEXT	ENDS
 ; Function compile flags: /Odtp /RTCsu /ZI
+<<<<<<< HEAD
 ; File C:\Users\John Lynch\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+=======
+; File C:\Users\Surface Pro 4\OneDrive\My Projects\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
 ;	COMDAT ??R<lambda_7>@?BA@??ui512md_01_mul@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEBA@XZ
 _TEXT	SEGMENT
 _s$ = 16
@@ -33030,7 +33677,11 @@ $LN6:
   00042	c7 85 e4 01 00
 	00 00 00 00 00	 mov	 DWORD PTR $T4[rbp], 0
   0004c	48 8d 0d 00 00
+<<<<<<< HEAD
 	00 00		 lea	 rcx, OFFSET FLAT:__44F99598_ui512_unit_tests_multiply@cpp
+=======
+	00 00		 lea	 rcx, OFFSET FLAT:__A43181B2_ui512_unit_tests_multiply@cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
   00053	e8 00 00 00 00	 call	 __CheckForDebuggerJustMyCode
   00058	90		 npad	 1
   00059	ba f8 00 00 00	 mov	 edx, 248		; 000000f8H
@@ -33137,7 +33788,11 @@ __$ReturnUdt$ = 584
 ?dtor$0@?0???R<lambda_7>@?BA@??ui512md_01_mul@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEBA@XZ@4HA ENDP ; ``ui512_Unit_Tests::ui512_unit_tests_multiply::ui512md_01_mul'::`16'::<lambda_7>::operator()'::`1'::dtor$0
 text$x	ENDS
 ; Function compile flags: /Odtp /RTCsu /ZI
+<<<<<<< HEAD
 ; File C:\Users\John Lynch\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+=======
+; File C:\Users\Surface Pro 4\OneDrive\My Projects\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
 ;	COMDAT ??0<lambda_6>@?M@??ui512md_01_mul@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEAA@AEAH0@Z
 _TEXT	SEGMENT
 this$ = 224
@@ -33157,7 +33812,11 @@ $LN4:
 	00 00		 sub	 rsp, 232		; 000000e8H
   00018	48 8d 6c 24 20	 lea	 rbp, QWORD PTR [rsp+32]
   0001d	48 8d 0d 00 00
+<<<<<<< HEAD
 	00 00		 lea	 rcx, OFFSET FLAT:__44F99598_ui512_unit_tests_multiply@cpp
+=======
+	00 00		 lea	 rcx, OFFSET FLAT:__A43181B2_ui512_unit_tests_multiply@cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
   00024	e8 00 00 00 00	 call	 __CheckForDebuggerJustMyCode
   00029	90		 npad	 1
   0002a	48 8b 85 e0 00
@@ -33180,7 +33839,11 @@ $LN4:
 ??0<lambda_6>@?M@??ui512md_01_mul@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEAA@AEAH0@Z ENDP ; `ui512_Unit_Tests::ui512_unit_tests_multiply::ui512md_01_mul'::`12'::<lambda_6>::<lambda_6>
 _TEXT	ENDS
 ; Function compile flags: /Odtp /RTCsu /ZI
+<<<<<<< HEAD
 ; File C:\Users\John Lynch\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+=======
+; File C:\Users\Surface Pro 4\OneDrive\My Projects\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
 ;	COMDAT ??R<lambda_6>@?M@??ui512md_01_mul@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEBA@XZ
 _TEXT	SEGMENT
 _s$ = 16
@@ -33218,7 +33881,11 @@ $LN6:
   00042	c7 85 e4 01 00
 	00 00 00 00 00	 mov	 DWORD PTR $T4[rbp], 0
   0004c	48 8d 0d 00 00
+<<<<<<< HEAD
 	00 00		 lea	 rcx, OFFSET FLAT:__44F99598_ui512_unit_tests_multiply@cpp
+=======
+	00 00		 lea	 rcx, OFFSET FLAT:__A43181B2_ui512_unit_tests_multiply@cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
   00053	e8 00 00 00 00	 call	 __CheckForDebuggerJustMyCode
   00058	90		 npad	 1
   00059	ba f8 00 00 00	 mov	 edx, 248		; 000000f8H
@@ -33325,7 +33992,11 @@ __$ReturnUdt$ = 584
 ?dtor$0@?0???R<lambda_6>@?M@??ui512md_01_mul@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEBA@XZ@4HA ENDP ; ``ui512_Unit_Tests::ui512_unit_tests_multiply::ui512md_01_mul'::`12'::<lambda_6>::operator()'::`1'::dtor$0
 text$x	ENDS
 ; Function compile flags: /Odtp /RTCsu /ZI
+<<<<<<< HEAD
 ; File C:\Users\John Lynch\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+=======
+; File C:\Users\Surface Pro 4\OneDrive\My Projects\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
 ;	COMDAT ??0<lambda_5>@?M@??ui512md_01_mul@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEAA@AEAH0@Z
 _TEXT	SEGMENT
 this$ = 224
@@ -33345,7 +34016,11 @@ $LN4:
 	00 00		 sub	 rsp, 232		; 000000e8H
   00018	48 8d 6c 24 20	 lea	 rbp, QWORD PTR [rsp+32]
   0001d	48 8d 0d 00 00
+<<<<<<< HEAD
 	00 00		 lea	 rcx, OFFSET FLAT:__44F99598_ui512_unit_tests_multiply@cpp
+=======
+	00 00		 lea	 rcx, OFFSET FLAT:__A43181B2_ui512_unit_tests_multiply@cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
   00024	e8 00 00 00 00	 call	 __CheckForDebuggerJustMyCode
   00029	90		 npad	 1
   0002a	48 8b 85 e0 00
@@ -33368,7 +34043,11 @@ $LN4:
 ??0<lambda_5>@?M@??ui512md_01_mul@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEAA@AEAH0@Z ENDP ; `ui512_Unit_Tests::ui512_unit_tests_multiply::ui512md_01_mul'::`12'::<lambda_5>::<lambda_5>
 _TEXT	ENDS
 ; Function compile flags: /Odtp /RTCsu /ZI
+<<<<<<< HEAD
 ; File C:\Users\John Lynch\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+=======
+; File C:\Users\Surface Pro 4\OneDrive\My Projects\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
 ;	COMDAT ??R<lambda_5>@?M@??ui512md_01_mul@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEBA@XZ
 _TEXT	SEGMENT
 _s$ = 16
@@ -33406,7 +34085,11 @@ $LN6:
   00042	c7 85 e4 01 00
 	00 00 00 00 00	 mov	 DWORD PTR $T4[rbp], 0
   0004c	48 8d 0d 00 00
+<<<<<<< HEAD
 	00 00		 lea	 rcx, OFFSET FLAT:__44F99598_ui512_unit_tests_multiply@cpp
+=======
+	00 00		 lea	 rcx, OFFSET FLAT:__A43181B2_ui512_unit_tests_multiply@cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
   00053	e8 00 00 00 00	 call	 __CheckForDebuggerJustMyCode
   00058	90		 npad	 1
   00059	ba f8 00 00 00	 mov	 edx, 248		; 000000f8H
@@ -33513,7 +34196,11 @@ __$ReturnUdt$ = 584
 ?dtor$0@?0???R<lambda_5>@?M@??ui512md_01_mul@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEBA@XZ@4HA ENDP ; ``ui512_Unit_Tests::ui512_unit_tests_multiply::ui512md_01_mul'::`12'::<lambda_5>::operator()'::`1'::dtor$0
 text$x	ENDS
 ; Function compile flags: /Odtp /RTCsu /ZI
+<<<<<<< HEAD
 ; File C:\Users\John Lynch\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+=======
+; File C:\Users\Surface Pro 4\OneDrive\My Projects\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
 ;	COMDAT ??0<lambda_4>@?7??ui512md_01_mul@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEAA@AEAH0@Z
 _TEXT	SEGMENT
 this$ = 224
@@ -33533,7 +34220,11 @@ $LN4:
 	00 00		 sub	 rsp, 232		; 000000e8H
   00018	48 8d 6c 24 20	 lea	 rbp, QWORD PTR [rsp+32]
   0001d	48 8d 0d 00 00
+<<<<<<< HEAD
 	00 00		 lea	 rcx, OFFSET FLAT:__44F99598_ui512_unit_tests_multiply@cpp
+=======
+	00 00		 lea	 rcx, OFFSET FLAT:__A43181B2_ui512_unit_tests_multiply@cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
   00024	e8 00 00 00 00	 call	 __CheckForDebuggerJustMyCode
   00029	90		 npad	 1
   0002a	48 8b 85 e0 00
@@ -33556,7 +34247,11 @@ $LN4:
 ??0<lambda_4>@?7??ui512md_01_mul@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEAA@AEAH0@Z ENDP ; `ui512_Unit_Tests::ui512_unit_tests_multiply::ui512md_01_mul'::`8'::<lambda_4>::<lambda_4>
 _TEXT	ENDS
 ; Function compile flags: /Odtp /RTCsu /ZI
+<<<<<<< HEAD
 ; File C:\Users\John Lynch\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+=======
+; File C:\Users\Surface Pro 4\OneDrive\My Projects\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
 ;	COMDAT ??R<lambda_4>@?7??ui512md_01_mul@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEBA@XZ
 _TEXT	SEGMENT
 _s$ = 16
@@ -33594,7 +34289,11 @@ $LN6:
   00042	c7 85 e4 01 00
 	00 00 00 00 00	 mov	 DWORD PTR $T4[rbp], 0
   0004c	48 8d 0d 00 00
+<<<<<<< HEAD
 	00 00		 lea	 rcx, OFFSET FLAT:__44F99598_ui512_unit_tests_multiply@cpp
+=======
+	00 00		 lea	 rcx, OFFSET FLAT:__A43181B2_ui512_unit_tests_multiply@cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
   00053	e8 00 00 00 00	 call	 __CheckForDebuggerJustMyCode
   00058	90		 npad	 1
   00059	ba f8 00 00 00	 mov	 edx, 248		; 000000f8H
@@ -33701,7 +34400,11 @@ __$ReturnUdt$ = 584
 ?dtor$0@?0???R<lambda_4>@?7??ui512md_01_mul@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEBA@XZ@4HA ENDP ; ``ui512_Unit_Tests::ui512_unit_tests_multiply::ui512md_01_mul'::`8'::<lambda_4>::operator()'::`1'::dtor$0
 text$x	ENDS
 ; Function compile flags: /Odtp /RTCsu /ZI
+<<<<<<< HEAD
 ; File C:\Users\John Lynch\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+=======
+; File C:\Users\Surface Pro 4\OneDrive\My Projects\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
 ;	COMDAT ??0<lambda_3>@?7??ui512md_01_mul@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEAA@AEAH0@Z
 _TEXT	SEGMENT
 this$ = 224
@@ -33721,7 +34424,11 @@ $LN4:
 	00 00		 sub	 rsp, 232		; 000000e8H
   00018	48 8d 6c 24 20	 lea	 rbp, QWORD PTR [rsp+32]
   0001d	48 8d 0d 00 00
+<<<<<<< HEAD
 	00 00		 lea	 rcx, OFFSET FLAT:__44F99598_ui512_unit_tests_multiply@cpp
+=======
+	00 00		 lea	 rcx, OFFSET FLAT:__A43181B2_ui512_unit_tests_multiply@cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
   00024	e8 00 00 00 00	 call	 __CheckForDebuggerJustMyCode
   00029	90		 npad	 1
   0002a	48 8b 85 e0 00
@@ -33744,7 +34451,11 @@ $LN4:
 ??0<lambda_3>@?7??ui512md_01_mul@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEAA@AEAH0@Z ENDP ; `ui512_Unit_Tests::ui512_unit_tests_multiply::ui512md_01_mul'::`8'::<lambda_3>::<lambda_3>
 _TEXT	ENDS
 ; Function compile flags: /Odtp /RTCsu /ZI
+<<<<<<< HEAD
 ; File C:\Users\John Lynch\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+=======
+; File C:\Users\Surface Pro 4\OneDrive\My Projects\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
 ;	COMDAT ??R<lambda_3>@?7??ui512md_01_mul@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEBA@XZ
 _TEXT	SEGMENT
 _s$ = 16
@@ -33782,7 +34493,11 @@ $LN6:
   00042	c7 85 e4 01 00
 	00 00 00 00 00	 mov	 DWORD PTR $T4[rbp], 0
   0004c	48 8d 0d 00 00
+<<<<<<< HEAD
 	00 00		 lea	 rcx, OFFSET FLAT:__44F99598_ui512_unit_tests_multiply@cpp
+=======
+	00 00		 lea	 rcx, OFFSET FLAT:__A43181B2_ui512_unit_tests_multiply@cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
   00053	e8 00 00 00 00	 call	 __CheckForDebuggerJustMyCode
   00058	90		 npad	 1
   00059	ba f8 00 00 00	 mov	 edx, 248		; 000000f8H
@@ -33889,7 +34604,11 @@ __$ReturnUdt$ = 584
 ?dtor$0@?0???R<lambda_3>@?7??ui512md_01_mul@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEBA@XZ@4HA ENDP ; ``ui512_Unit_Tests::ui512_unit_tests_multiply::ui512md_01_mul'::`8'::<lambda_3>::operator()'::`1'::dtor$0
 text$x	ENDS
 ; Function compile flags: /Odtp /RTCsu /ZI
+<<<<<<< HEAD
 ; File C:\Users\John Lynch\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+=======
+; File C:\Users\Surface Pro 4\OneDrive\My Projects\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
 ;	COMDAT ??0<lambda_2>@?3??ui512md_01_mul@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEAA@AEAH@Z
 _TEXT	SEGMENT
 this$ = 224
@@ -33907,7 +34626,11 @@ $LN4:
 	00 00		 sub	 rsp, 232		; 000000e8H
   00013	48 8d 6c 24 20	 lea	 rbp, QWORD PTR [rsp+32]
   00018	48 8d 0d 00 00
+<<<<<<< HEAD
 	00 00		 lea	 rcx, OFFSET FLAT:__44F99598_ui512_unit_tests_multiply@cpp
+=======
+	00 00		 lea	 rcx, OFFSET FLAT:__A43181B2_ui512_unit_tests_multiply@cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
   0001f	e8 00 00 00 00	 call	 __CheckForDebuggerJustMyCode
   00024	90		 npad	 1
   00025	48 8b 85 e0 00
@@ -33925,7 +34648,11 @@ $LN4:
 ??0<lambda_2>@?3??ui512md_01_mul@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEAA@AEAH@Z ENDP ; `ui512_Unit_Tests::ui512_unit_tests_multiply::ui512md_01_mul'::`4'::<lambda_2>::<lambda_2>
 _TEXT	ENDS
 ; Function compile flags: /Odtp /RTCsu /ZI
+<<<<<<< HEAD
 ; File C:\Users\John Lynch\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+=======
+; File C:\Users\Surface Pro 4\OneDrive\My Projects\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
 ;	COMDAT ??R<lambda_2>@?3??ui512md_01_mul@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEBA@XZ
 _TEXT	SEGMENT
 _s$ = 16
@@ -33961,7 +34688,11 @@ $LN6:
   00042	c7 85 e4 01 00
 	00 00 00 00 00	 mov	 DWORD PTR $T4[rbp], 0
   0004c	48 8d 0d 00 00
+<<<<<<< HEAD
 	00 00		 lea	 rcx, OFFSET FLAT:__44F99598_ui512_unit_tests_multiply@cpp
+=======
+	00 00		 lea	 rcx, OFFSET FLAT:__A43181B2_ui512_unit_tests_multiply@cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
   00053	e8 00 00 00 00	 call	 __CheckForDebuggerJustMyCode
   00058	90		 npad	 1
   00059	ba f8 00 00 00	 mov	 edx, 248		; 000000f8H
@@ -34298,7 +35029,11 @@ pLineInfo$ = 520
 ?dtor$2@?0???$AreEqual@_K$0A@@Assert@CppUnitTestFramework@VisualStudio@Microsoft@@SAXAEB_K0PEB_WPEBU__LineInfo@123@@Z@4HA ENDP ; `Microsoft::VisualStudio::CppUnitTestFramework::Assert::AreEqual<unsigned __int64,0>'::`1'::dtor$2
 text$x	ENDS
 ; Function compile flags: /Odtp /RTCsu /ZI
+<<<<<<< HEAD
 ; File C:\Users\John Lynch\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+=======
+; File C:\Users\Surface Pro 4\OneDrive\My Projects\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
 ;	COMDAT ??0<lambda_1>@?3??ui512md_01_mul@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEAA@AEAH@Z
 _TEXT	SEGMENT
 this$ = 224
@@ -34316,7 +35051,11 @@ $LN4:
 	00 00		 sub	 rsp, 232		; 000000e8H
   00013	48 8d 6c 24 20	 lea	 rbp, QWORD PTR [rsp+32]
   00018	48 8d 0d 00 00
+<<<<<<< HEAD
 	00 00		 lea	 rcx, OFFSET FLAT:__44F99598_ui512_unit_tests_multiply@cpp
+=======
+	00 00		 lea	 rcx, OFFSET FLAT:__A43181B2_ui512_unit_tests_multiply@cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
   0001f	e8 00 00 00 00	 call	 __CheckForDebuggerJustMyCode
   00024	90		 npad	 1
   00025	48 8b 85 e0 00
@@ -34334,7 +35073,11 @@ $LN4:
 ??0<lambda_1>@?3??ui512md_01_mul@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEAA@AEAH@Z ENDP ; `ui512_Unit_Tests::ui512_unit_tests_multiply::ui512md_01_mul'::`4'::<lambda_1>::<lambda_1>
 _TEXT	ENDS
 ; Function compile flags: /Odtp /RTCsu /ZI
+<<<<<<< HEAD
 ; File C:\Users\John Lynch\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+=======
+; File C:\Users\Surface Pro 4\OneDrive\My Projects\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
 ;	COMDAT ??R<lambda_1>@?3??ui512md_01_mul@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@QEBA@XZ
 _TEXT	SEGMENT
 _s$ = 16
@@ -34370,7 +35113,11 @@ $LN6:
   00042	c7 85 e4 01 00
 	00 00 00 00 00	 mov	 DWORD PTR $T4[rbp], 0
   0004c	48 8d 0d 00 00
+<<<<<<< HEAD
 	00 00		 lea	 rcx, OFFSET FLAT:__44F99598_ui512_unit_tests_multiply@cpp
+=======
+	00 00		 lea	 rcx, OFFSET FLAT:__A43181B2_ui512_unit_tests_multiply@cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
   00053	e8 00 00 00 00	 call	 __CheckForDebuggerJustMyCode
   00058	90		 npad	 1
   00059	ba f8 00 00 00	 mov	 edx, 248		; 000000f8H
@@ -34799,7 +35546,11 @@ $LN4:
 ??0ui512_unit_tests_multiply@ui512_Unit_Tests@@QEAA@XZ ENDP ; ui512_Unit_Tests::ui512_unit_tests_multiply::ui512_unit_tests_multiply
 _TEXT	ENDS
 ; Function compile flags: /Odtp /RTCsu /ZI
+<<<<<<< HEAD
 ; File C:\Users\John Lynch\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+=======
+; File C:\Users\Surface Pro 4\OneDrive\My Projects\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
 ;	COMDAT ?ui512md_02_mul64_performance_timing@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ
 _TEXT	SEGMENT
 No1$ = 16
@@ -34831,7 +35582,11 @@ $LN3:
   00037	48 89 85 38 02
 	00 00		 mov	 QWORD PTR __$ArrayPad$[rbp], rax
   0003e	48 8d 0d 00 00
+<<<<<<< HEAD
 	00 00		 lea	 rcx, OFFSET FLAT:__44F99598_ui512_unit_tests_multiply@cpp
+=======
+	00 00		 lea	 rcx, OFFSET FLAT:__A43181B2_ui512_unit_tests_multiply@cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
   00045	e8 00 00 00 00	 call	 __CheckForDebuggerJustMyCode
   0004a	90		 npad	 1
 
@@ -34951,7 +35706,11 @@ $LN3:
 ?ui512md_02_mul64_performance_timing@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ ENDP ; ui512_Unit_Tests::ui512_unit_tests_multiply::ui512md_02_mul64_performance_timing
 _TEXT	ENDS
 ; Function compile flags: /Odtp /RTCsu /ZI
+<<<<<<< HEAD
 ; File C:\Users\John Lynch\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+=======
+; File C:\Users\Surface Pro 4\OneDrive\My Projects\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
 ;	COMDAT ?__GetTestMethodInfo_ui512md_02_mul64_performance_timing@ui512_unit_tests_multiply@ui512_Unit_Tests@@CAPEBUMemberMethodInfo@CppUnitTestFramework@VisualStudio@Microsoft@@XZ
 _TEXT	SEGMENT
 ?__GetTestMethodInfo_ui512md_02_mul64_performance_timing@ui512_unit_tests_multiply@ui512_Unit_Tests@@CAPEBUMemberMethodInfo@CppUnitTestFramework@VisualStudio@Microsoft@@XZ PROC ; ui512_Unit_Tests::ui512_unit_tests_multiply::__GetTestMethodInfo_ui512md_02_mul64_performance_timing, COMDAT
@@ -34965,7 +35724,11 @@ $LN3:
 	00 00		 sub	 rsp, 232		; 000000e8H
   0000a	48 8d 6c 24 20	 lea	 rbp, QWORD PTR [rsp+32]
   0000f	48 8d 0d 00 00
+<<<<<<< HEAD
 	00 00		 lea	 rcx, OFFSET FLAT:__44F99598_ui512_unit_tests_multiply@cpp
+=======
+	00 00		 lea	 rcx, OFFSET FLAT:__A43181B2_ui512_unit_tests_multiply@cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
   00016	e8 00 00 00 00	 call	 __CheckForDebuggerJustMyCode
   0001b	90		 npad	 1
   0001c	e8 00 00 00 00	 call	 ?__GetTestClassInfo@?$TestClass@Vui512_unit_tests_multiply@ui512_Unit_Tests@@@CppUnitTestFramework@VisualStudio@Microsoft@@SAPEBUTestClassInfo@234@XZ ; Microsoft::VisualStudio::CppUnitTestFramework::TestClass<ui512_Unit_Tests::ui512_unit_tests_multiply>::__GetTestClassInfo
@@ -34986,7 +35749,11 @@ $LN3:
 ?__GetTestMethodInfo_ui512md_02_mul64_performance_timing@ui512_unit_tests_multiply@ui512_Unit_Tests@@CAPEBUMemberMethodInfo@CppUnitTestFramework@VisualStudio@Microsoft@@XZ ENDP ; ui512_Unit_Tests::ui512_unit_tests_multiply::__GetTestMethodInfo_ui512md_02_mul64_performance_timing
 _TEXT	ENDS
 ; Function compile flags: /Odtp /RTCsu /ZI
+<<<<<<< HEAD
 ; File C:\Users\John Lynch\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+=======
+; File C:\Users\Surface Pro 4\OneDrive\My Projects\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
 ;	COMDAT ?ui512md_02_mul64@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ
 _TEXT	SEGMENT
 seed$ = 8
@@ -35224,7 +35991,11 @@ $LN104:
   00047	48 89 85 c8 1b
 	00 00		 mov	 QWORD PTR __$ArrayPad$[rbp], rax
   0004e	48 8d 0d 00 00
+<<<<<<< HEAD
 	00 00		 lea	 rcx, OFFSET FLAT:__44F99598_ui512_unit_tests_multiply@cpp
+=======
+	00 00		 lea	 rcx, OFFSET FLAT:__A43181B2_ui512_unit_tests_multiply@cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
   00055	e8 00 00 00 00	 call	 __CheckForDebuggerJustMyCode
   0005a	90		 npad	 1
 
@@ -44628,7 +45399,11 @@ this$ = 7216
 ?dtor$27@?0??ui512md_02_mul64@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@4HA ENDP ; `ui512_Unit_Tests::ui512_unit_tests_multiply::ui512md_02_mul64'::`1'::dtor$27
 text$x	ENDS
 ; Function compile flags: /Odtp /RTCsu /ZI
+<<<<<<< HEAD
 ; File C:\Users\John Lynch\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+=======
+; File C:\Users\Surface Pro 4\OneDrive\My Projects\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
 ;	COMDAT ?__GetTestMethodInfo_ui512md_02_mul64@ui512_unit_tests_multiply@ui512_Unit_Tests@@CAPEBUMemberMethodInfo@CppUnitTestFramework@VisualStudio@Microsoft@@XZ
 _TEXT	SEGMENT
 ?__GetTestMethodInfo_ui512md_02_mul64@ui512_unit_tests_multiply@ui512_Unit_Tests@@CAPEBUMemberMethodInfo@CppUnitTestFramework@VisualStudio@Microsoft@@XZ PROC ; ui512_Unit_Tests::ui512_unit_tests_multiply::__GetTestMethodInfo_ui512md_02_mul64, COMDAT
@@ -44642,7 +45417,11 @@ $LN3:
 	00 00		 sub	 rsp, 232		; 000000e8H
   0000a	48 8d 6c 24 20	 lea	 rbp, QWORD PTR [rsp+32]
   0000f	48 8d 0d 00 00
+<<<<<<< HEAD
 	00 00		 lea	 rcx, OFFSET FLAT:__44F99598_ui512_unit_tests_multiply@cpp
+=======
+	00 00		 lea	 rcx, OFFSET FLAT:__A43181B2_ui512_unit_tests_multiply@cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
   00016	e8 00 00 00 00	 call	 __CheckForDebuggerJustMyCode
   0001b	90		 npad	 1
   0001c	e8 00 00 00 00	 call	 ?__GetTestClassInfo@?$TestClass@Vui512_unit_tests_multiply@ui512_Unit_Tests@@@CppUnitTestFramework@VisualStudio@Microsoft@@SAPEBUTestClassInfo@234@XZ ; Microsoft::VisualStudio::CppUnitTestFramework::TestClass<ui512_Unit_Tests::ui512_unit_tests_multiply>::__GetTestClassInfo
@@ -44663,7 +45442,11 @@ $LN3:
 ?__GetTestMethodInfo_ui512md_02_mul64@ui512_unit_tests_multiply@ui512_Unit_Tests@@CAPEBUMemberMethodInfo@CppUnitTestFramework@VisualStudio@Microsoft@@XZ ENDP ; ui512_Unit_Tests::ui512_unit_tests_multiply::__GetTestMethodInfo_ui512md_02_mul64
 _TEXT	ENDS
 ; Function compile flags: /Odtp /RTCsu /ZI
+<<<<<<< HEAD
 ; File C:\Users\John Lynch\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+=======
+; File C:\Users\Surface Pro 4\OneDrive\My Projects\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
 ;	COMDAT ?ui512md_01_mul_performance_timing@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ
 _TEXT	SEGMENT
 No1$ = 16
@@ -44695,7 +45478,11 @@ $LN3:
   00037	48 89 85 38 02
 	00 00		 mov	 QWORD PTR __$ArrayPad$[rbp], rax
   0003e	48 8d 0d 00 00
+<<<<<<< HEAD
 	00 00		 lea	 rcx, OFFSET FLAT:__44F99598_ui512_unit_tests_multiply@cpp
+=======
+	00 00		 lea	 rcx, OFFSET FLAT:__A43181B2_ui512_unit_tests_multiply@cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
   00045	e8 00 00 00 00	 call	 __CheckForDebuggerJustMyCode
   0004a	90		 npad	 1
 
@@ -44816,7 +45603,11 @@ $LN3:
 ?ui512md_01_mul_performance_timing@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ ENDP ; ui512_Unit_Tests::ui512_unit_tests_multiply::ui512md_01_mul_performance_timing
 _TEXT	ENDS
 ; Function compile flags: /Odtp /RTCsu /ZI
+<<<<<<< HEAD
 ; File C:\Users\John Lynch\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+=======
+; File C:\Users\Surface Pro 4\OneDrive\My Projects\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
 ;	COMDAT ?__GetTestMethodInfo_ui512md_01_mul_performance_timing@ui512_unit_tests_multiply@ui512_Unit_Tests@@CAPEBUMemberMethodInfo@CppUnitTestFramework@VisualStudio@Microsoft@@XZ
 _TEXT	SEGMENT
 ?__GetTestMethodInfo_ui512md_01_mul_performance_timing@ui512_unit_tests_multiply@ui512_Unit_Tests@@CAPEBUMemberMethodInfo@CppUnitTestFramework@VisualStudio@Microsoft@@XZ PROC ; ui512_Unit_Tests::ui512_unit_tests_multiply::__GetTestMethodInfo_ui512md_01_mul_performance_timing, COMDAT
@@ -44830,7 +45621,11 @@ $LN3:
 	00 00		 sub	 rsp, 232		; 000000e8H
   0000a	48 8d 6c 24 20	 lea	 rbp, QWORD PTR [rsp+32]
   0000f	48 8d 0d 00 00
+<<<<<<< HEAD
 	00 00		 lea	 rcx, OFFSET FLAT:__44F99598_ui512_unit_tests_multiply@cpp
+=======
+	00 00		 lea	 rcx, OFFSET FLAT:__A43181B2_ui512_unit_tests_multiply@cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
   00016	e8 00 00 00 00	 call	 __CheckForDebuggerJustMyCode
   0001b	90		 npad	 1
   0001c	e8 00 00 00 00	 call	 ?__GetTestClassInfo@?$TestClass@Vui512_unit_tests_multiply@ui512_Unit_Tests@@@CppUnitTestFramework@VisualStudio@Microsoft@@SAPEBUTestClassInfo@234@XZ ; Microsoft::VisualStudio::CppUnitTestFramework::TestClass<ui512_Unit_Tests::ui512_unit_tests_multiply>::__GetTestClassInfo
@@ -44851,7 +45646,11 @@ $LN3:
 ?__GetTestMethodInfo_ui512md_01_mul_performance_timing@ui512_unit_tests_multiply@ui512_Unit_Tests@@CAPEBUMemberMethodInfo@CppUnitTestFramework@VisualStudio@Microsoft@@XZ ENDP ; ui512_Unit_Tests::ui512_unit_tests_multiply::__GetTestMethodInfo_ui512md_01_mul_performance_timing
 _TEXT	ENDS
 ; Function compile flags: /Odtp /RTCsu /ZI
+<<<<<<< HEAD
 ; File C:\Users\John Lynch\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+=======
+; File C:\Users\Surface Pro 4\OneDrive\My Projects\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
 ;	COMDAT ?ui512md_01_mul@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ
 _TEXT	SEGMENT
 seed$ = 8
@@ -45199,7 +45998,11 @@ $LN142:
   00047	48 89 85 98 28
 	00 00		 mov	 QWORD PTR __$ArrayPad$[rbp], rax
   0004e	48 8d 0d 00 00
+<<<<<<< HEAD
 	00 00		 lea	 rcx, OFFSET FLAT:__44F99598_ui512_unit_tests_multiply@cpp
+=======
+	00 00		 lea	 rcx, OFFSET FLAT:__A43181B2_ui512_unit_tests_multiply@cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
   00055	e8 00 00 00 00	 call	 __CheckForDebuggerJustMyCode
   0005a	90		 npad	 1
 
@@ -63216,7 +64019,11 @@ this$ = 10496
 ?dtor$39@?0??ui512md_01_mul@ui512_unit_tests_multiply@ui512_Unit_Tests@@AEAAXXZ@4HA ENDP ; `ui512_Unit_Tests::ui512_unit_tests_multiply::ui512md_01_mul'::`1'::dtor$39
 text$x	ENDS
 ; Function compile flags: /Odtp /RTCsu /ZI
+<<<<<<< HEAD
 ; File C:\Users\John Lynch\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+=======
+; File C:\Users\Surface Pro 4\OneDrive\My Projects\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
 ;	COMDAT ?__GetTestMethodInfo_ui512md_01_mul@ui512_unit_tests_multiply@ui512_Unit_Tests@@CAPEBUMemberMethodInfo@CppUnitTestFramework@VisualStudio@Microsoft@@XZ
 _TEXT	SEGMENT
 ?__GetTestMethodInfo_ui512md_01_mul@ui512_unit_tests_multiply@ui512_Unit_Tests@@CAPEBUMemberMethodInfo@CppUnitTestFramework@VisualStudio@Microsoft@@XZ PROC ; ui512_Unit_Tests::ui512_unit_tests_multiply::__GetTestMethodInfo_ui512md_01_mul, COMDAT
@@ -63230,7 +64037,11 @@ $LN3:
 	00 00		 sub	 rsp, 232		; 000000e8H
   0000a	48 8d 6c 24 20	 lea	 rbp, QWORD PTR [rsp+32]
   0000f	48 8d 0d 00 00
+<<<<<<< HEAD
 	00 00		 lea	 rcx, OFFSET FLAT:__44F99598_ui512_unit_tests_multiply@cpp
+=======
+	00 00		 lea	 rcx, OFFSET FLAT:__A43181B2_ui512_unit_tests_multiply@cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
   00016	e8 00 00 00 00	 call	 __CheckForDebuggerJustMyCode
   0001b	90		 npad	 1
   0001c	e8 00 00 00 00	 call	 ?__GetTestClassInfo@?$TestClass@Vui512_unit_tests_multiply@ui512_Unit_Tests@@@CppUnitTestFramework@VisualStudio@Microsoft@@SAPEBUTestClassInfo@234@XZ ; Microsoft::VisualStudio::CppUnitTestFramework::TestClass<ui512_Unit_Tests::ui512_unit_tests_multiply>::__GetTestClassInfo
@@ -79461,7 +80272,11 @@ $LN4:
 ??2@YAPEAX_KPEAX@Z ENDP					; operator new
 _TEXT	ENDS
 ; Function compile flags: /Odtp /RTCsu /ZI
+<<<<<<< HEAD
 ; File C:\Users\John Lynch\source\repos\ui512\ui512_unit_tests\CommonTypeDefs.h
+=======
+; File C:\Users\Surface Pro 4\OneDrive\My Projects\source\repos\ui512\ui512_unit_tests\CommonTypeDefs.h
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
 ;	COMDAT ?AreEqual@regs@@QEBA_NPEAU1@@Z
 _TEXT	SEGMENT
 tv69 = 192
@@ -79480,7 +80295,11 @@ $LN5:
 	00 00		 sub	 rsp, 248		; 000000f8H
   00013	48 8d 6c 24 20	 lea	 rbp, QWORD PTR [rsp+32]
   00018	48 8d 0d 00 00
+<<<<<<< HEAD
 	00 00		 lea	 rcx, OFFSET FLAT:__5E836398_CommonTypeDefs@h
+=======
+	00 00		 lea	 rcx, OFFSET FLAT:__6C4E5558_CommonTypeDefs@h
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
   0001f	e8 00 00 00 00	 call	 __CheckForDebuggerJustMyCode
   00024	90		 npad	 1
 
@@ -79515,7 +80334,11 @@ $LN4@AreEqual:
 ?AreEqual@regs@@QEBA_NPEAU1@@Z ENDP			; regs::AreEqual
 _TEXT	ENDS
 ; Function compile flags: /Odtp /RTCsu /ZI
+<<<<<<< HEAD
 ; File C:\Users\John Lynch\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+=======
+; File C:\Users\Surface Pro 4\OneDrive\My Projects\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
 ;	COMDAT ?__empty_global_delete@@YAXPEAX_KW4align_val_t@std@@@Z
 _TEXT	SEGMENT
 __formal$ = 224
@@ -79533,7 +80356,11 @@ $LN4:
 	00 00		 sub	 rsp, 232		; 000000e8H
   00018	48 8d 6c 24 20	 lea	 rbp, QWORD PTR [rsp+32]
   0001d	48 8d 0d 00 00
+<<<<<<< HEAD
 	00 00		 lea	 rcx, OFFSET FLAT:__44F99598_ui512_unit_tests_multiply@cpp
+=======
+	00 00		 lea	 rcx, OFFSET FLAT:__A43181B2_ui512_unit_tests_multiply@cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
   00024	e8 00 00 00 00	 call	 __CheckForDebuggerJustMyCode
   00029	90		 npad	 1
   0002a	48 8d a5 c8 00
@@ -79544,7 +80371,11 @@ $LN4:
 ?__empty_global_delete@@YAXPEAX_KW4align_val_t@std@@@Z ENDP ; __empty_global_delete
 _TEXT	ENDS
 ; Function compile flags: /Odtp /RTCsu /ZI
+<<<<<<< HEAD
 ; File C:\Users\John Lynch\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+=======
+; File C:\Users\Surface Pro 4\OneDrive\My Projects\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
 ;	COMDAT ?__empty_global_delete@@YAXPEAXW4align_val_t@std@@@Z
 _TEXT	SEGMENT
 __formal$ = 224
@@ -79560,7 +80391,11 @@ $LN4:
 	00 00		 sub	 rsp, 232		; 000000e8H
   00013	48 8d 6c 24 20	 lea	 rbp, QWORD PTR [rsp+32]
   00018	48 8d 0d 00 00
+<<<<<<< HEAD
 	00 00		 lea	 rcx, OFFSET FLAT:__44F99598_ui512_unit_tests_multiply@cpp
+=======
+	00 00		 lea	 rcx, OFFSET FLAT:__A43181B2_ui512_unit_tests_multiply@cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
   0001f	e8 00 00 00 00	 call	 __CheckForDebuggerJustMyCode
   00024	90		 npad	 1
   00025	48 8d a5 c8 00
@@ -79571,7 +80406,11 @@ $LN4:
 ?__empty_global_delete@@YAXPEAXW4align_val_t@std@@@Z ENDP ; __empty_global_delete
 _TEXT	ENDS
 ; Function compile flags: /Odtp /RTCsu /ZI
+<<<<<<< HEAD
 ; File C:\Users\John Lynch\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+=======
+; File C:\Users\Surface Pro 4\OneDrive\My Projects\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
 ;	COMDAT ?__empty_global_delete@@YAXPEAX_K@Z
 _TEXT	SEGMENT
 __formal$ = 224
@@ -79587,7 +80426,11 @@ $LN4:
 	00 00		 sub	 rsp, 232		; 000000e8H
   00013	48 8d 6c 24 20	 lea	 rbp, QWORD PTR [rsp+32]
   00018	48 8d 0d 00 00
+<<<<<<< HEAD
 	00 00		 lea	 rcx, OFFSET FLAT:__44F99598_ui512_unit_tests_multiply@cpp
+=======
+	00 00		 lea	 rcx, OFFSET FLAT:__A43181B2_ui512_unit_tests_multiply@cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
   0001f	e8 00 00 00 00	 call	 __CheckForDebuggerJustMyCode
   00024	90		 npad	 1
   00025	48 8d a5 c8 00
@@ -79598,7 +80441,11 @@ $LN4:
 ?__empty_global_delete@@YAXPEAX_K@Z ENDP		; __empty_global_delete
 _TEXT	ENDS
 ; Function compile flags: /Odtp /RTCsu /ZI
+<<<<<<< HEAD
 ; File C:\Users\John Lynch\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+=======
+; File C:\Users\Surface Pro 4\OneDrive\My Projects\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_multiply.cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
 ;	COMDAT ?__empty_global_delete@@YAXPEAX@Z
 _TEXT	SEGMENT
 __formal$ = 224
@@ -79612,7 +80459,11 @@ $LN4:
 	00 00		 sub	 rsp, 232		; 000000e8H
   0000e	48 8d 6c 24 20	 lea	 rbp, QWORD PTR [rsp+32]
   00013	48 8d 0d 00 00
+<<<<<<< HEAD
 	00 00		 lea	 rcx, OFFSET FLAT:__44F99598_ui512_unit_tests_multiply@cpp
+=======
+	00 00		 lea	 rcx, OFFSET FLAT:__A43181B2_ui512_unit_tests_multiply@cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
   0001a	e8 00 00 00 00	 call	 __CheckForDebuggerJustMyCode
   0001f	90		 npad	 1
   00020	48 8d a5 c8 00

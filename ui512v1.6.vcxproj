@@ -117,6 +117,7 @@
       <EnableAssemblyGeneratedCodeListing>true</EnableAssemblyGeneratedCodeListing>
       <AssembledCodeListingFile>$(SolutionDir)/Listings/%(FileName).cod</AssembledCodeListingFile>
       <IncludePaths>includes\;%(IncludePaths)</IncludePaths>
+      <ObjectFileName>$(SolutionDir)%(FileName).obj</ObjectFileName>
     </MASM>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">

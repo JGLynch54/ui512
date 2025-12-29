@@ -23,3 +23,13 @@
 /ui512_unit_tests/x64/Debug/ui512_unit_tests.tlog/link.command.1.tlog
 /ui512_unit_tests/x64/Debug/ui512_unit_tests.tlog/link.write.1.tlog
 /ui512_unit_tests/x64/Debug/ui512_unit_tests.tlog/ui512_unit_tests.lastbuildstate
+/ui512_compare.obj
+/ui512_division.obj
+/ui512_global_data.obj
+/ui512_multiply.obj
+/ui512_shift.obj
+/ui512_significance.obj
+/ui512_addition.obj
+/ui512_bitops.obj
+/ui512_clear_copy_set.obj
+/ui512_subtraction.obj

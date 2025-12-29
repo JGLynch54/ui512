@@ -11,9 +11,15 @@ _BSS	SEGMENT
 _Avx2WmemEnabledWeakValue DD 01H DUP (?)
 _BSS	ENDS
 msvcjmc	SEGMENT
+<<<<<<< HEAD
 __BCDB5C9F_ui512_unit_tests@pch DB 01H
 __4F9DAAF3_predefined C++ types (compiler internal) DB 01H
 __5E836398_CommonTypeDefs@h DB 01H
+=======
+__67805D5D_ui512_unit_tests@pch DB 01H
+__8524D803_predefined C++ types (compiler internal) DB 01H
+__6C4E5558_CommonTypeDefs@h DB 01H
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
 __20193517_vector DB 01H
 __D1A2D489_xsmf_control@h DB 01H
 __AE5FB554_optional DB 01H
@@ -42,8 +48,13 @@ __2B08D9FB___msvc_print@hpp DB 01H
 __85E81555___msvc_formatter@hpp DB 01H
 __DAF60B2D___msvc_format_ucd_tables@hpp DB 01H
 __E5CD0F93_format DB 01H
+<<<<<<< HEAD
 __73AE2530_ui512_unit_tests@h DB 01H
 __08AB2003_ui512_unit_tests_shift@cpp DB 01H
+=======
+__77EE552A_ui512_unit_tests@h DB 01H
+__F3607167_ui512_unit_tests_shift@cpp DB 01H
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
 __92E676FC_CppUnitTestLogger@h DB 01H
 __FFBDF365_locale@h DB 01H
 __7A237B76_clocale DB 01H
@@ -158,8 +169,13 @@ __E98FA7A7_cstdlib DB 01H
 __12FEDF4E_sdkddkver@h DB 01H
 __DA6CE5E7_CppUnitTestCommon@h DB 01H
 __A9AD3190_CppUnitTest@h DB 01H
+<<<<<<< HEAD
 __BFCD2E3E_pch@h DB 01H
 __EE7C4E54_pch@cpp DB 01H
+=======
+__E31EC421_pch@h DB 01H
+__63F9177F_pch@cpp DB 01H
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
 msvcjmc	ENDS
 PUBLIC	?__empty_global_delete@@YAXPEAX@Z		; __empty_global_delete
 PUBLIC	?__empty_global_delete@@YAXPEAX_K@Z		; __empty_global_delete
@@ -452,7 +468,11 @@ PUBLIC	??_C@_1BO@LIDJJEMN@?$AAT?$AAe?$AAs?$AAt?$AAM?$AAe?$AAt?$AAh?$AAo?$AAd?$AA
 PUBLIC	??_C@_1CC@IPKDGEGH@?$AAu?$AAi?$AA5?$AA1?$AA2?$AAb?$AAi?$AAt?$AAs?$AA_?$AA0?$AA1?$AA_?$AAs?$AAh@ ; `string'
 PUBLIC	??_C@_0EP@OKAIEBBF@ui512_Unit_Tests?3?3ui512_unit_te@ ; `string'
 PUBLIC	??_C@_0JG@NJBDBCMC@?$DP__GetTestMethodInfo_ui512bits_@ ; `string'
+<<<<<<< HEAD
 PUBLIC	??_C@_1KG@FIFILGBM@?$AAC?$AA?3?$AA?2?$AAU?$AAs?$AAe?$AAr?$AAs?$AA?2?$AAJ?$AAo?$AAh?$AAn?$AA?5?$AAL@ ; `string'
+=======
+PUBLIC	??_C@_1NG@CHGNLPJJ@?$AAC?$AA?3?$AA?2?$AAU?$AAs?$AAe?$AAr?$AAs?$AA?2?$AAS?$AAu?$AAr?$AAf?$AAa?$AAc@ ; `string'
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
 PUBLIC	?s_Info@?1??__GetTestMethodInfo_ui512bits_01_shr@ui512_unit_tests_shift@ui512_Unit_Tests@@CAPEBUMemberMethodInfo@CppUnitTestFramework@VisualStudio@Microsoft@@XZ@4U4567@A ; `ui512_Unit_Tests::ui512_unit_tests_shift::__GetTestMethodInfo_ui512bits_01_shr'::`2'::s_Info
 PUBLIC	??_C@_1DG@MPBKICBG@?$AAR?$AAe?$AAg?$AAi?$AAs?$AAt?$AAe?$AAr?$AA?5?$AAv?$AAa?$AAl?$AAi?$AAd?$AAa@ ; `string'
 PUBLIC	??_C@_0HF@PJPBAIKC@Shift?5right?5function?5testing?4?5E@ ; `string'
@@ -3270,7 +3290,11 @@ testdata$_B_method	SEGMENT
 	DQ	FLAT:??_C@_1DK@CMKAJBB@?$AAu?$AAi?$AA5?$AA1?$AA2?$AAb?$AAi?$AAt?$AAs?$AA_?$AA0?$AA4?$AA_?$AAs?$AAh@
 	DQ	FLAT:??_C@_0FL@GLHBLAMP@ui512_Unit_Tests?3?3ui512_unit_te@
 	DQ	FLAT:??_C@_0KC@PADLJGJG@?$DP__GetTestMethodInfo_ui512bits_@
+<<<<<<< HEAD
 	DQ	FLAT:??_C@_1KG@FIFILGBM@?$AAC?$AA?3?$AA?2?$AAU?$AAs?$AAe?$AAr?$AAs?$AA?2?$AAJ?$AAo?$AAh?$AAn?$AA?5?$AAL@
+=======
+	DQ	FLAT:??_C@_1NG@CHGNLPJJ@?$AAC?$AA?3?$AA?2?$AAU?$AAs?$AAe?$AAr?$AAs?$AA?2?$AAS?$AAu?$AAr?$AAf?$AAa?$AAc@
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
 	DD	01aaH
 	ORG $+4
 testdata$_B_method	ENDS
@@ -3365,7 +3389,11 @@ testdata$_B_method	SEGMENT
 	DQ	FLAT:??_C@_1CC@NDFONKFE@?$AAu?$AAi?$AA5?$AA1?$AA2?$AAb?$AAi?$AAt?$AAs?$AA_?$AA0?$AA3?$AA_?$AAs?$AAh@
 	DQ	FLAT:??_C@_0EP@HDIBNPMB@ui512_Unit_Tests?3?3ui512_unit_te@
 	DQ	FLAT:??_C@_0JG@KJPAGPJH@?$DP__GetTestMethodInfo_ui512bits_@
+<<<<<<< HEAD
 	DQ	FLAT:??_C@_1KG@FIFILGBM@?$AAC?$AA?3?$AA?2?$AAU?$AAs?$AAe?$AAr?$AAs?$AA?2?$AAJ?$AAo?$AAh?$AAn?$AA?5?$AAL@
+=======
+	DQ	FLAT:??_C@_1NG@CHGNLPJJ@?$AAC?$AA?3?$AA?2?$AAU?$AAs?$AAe?$AAr?$AAs?$AA?2?$AAS?$AAu?$AAr?$AAf?$AAa?$AAc@
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
 	DD	0f5H
 	ORG $+4
 testdata$_B_method	ENDS
@@ -3434,7 +3462,11 @@ testdata$_B_method	SEGMENT
 	DQ	FLAT:??_C@_1DK@NIEGMJJL@?$AAu?$AAi?$AA5?$AA1?$AA2?$AAb?$AAi?$AAt?$AAs?$AA_?$AA0?$AA2?$AA_?$AAs?$AAh@
 	DQ	FLAT:??_C@_0FL@MICEGFKG@ui512_Unit_Tests?3?3ui512_unit_te@
 	DQ	FLAT:??_C@_0KC@KLNCJAKJ@?$DP__GetTestMethodInfo_ui512bits_@
+<<<<<<< HEAD
 	DQ	FLAT:??_C@_1KG@FIFILGBM@?$AAC?$AA?3?$AA?2?$AAU?$AAs?$AAe?$AAr?$AAs?$AA?2?$AAJ?$AAo?$AAh?$AAn?$AA?5?$AAL@
+=======
+	DQ	FLAT:??_C@_1NG@CHGNLPJJ@?$AAC?$AA?3?$AA?2?$AAU?$AAs?$AAe?$AAr?$AAs?$AA?2?$AAS?$AAu?$AAr?$AAf?$AAa?$AAc@
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
 	DD	0dfH
 	ORG $+4
 testdata$_B_method	ENDS
@@ -3537,6 +3569,7 @@ _DATA	SEGMENT
 	DQ	0000000000000000H
 	DQ	FLAT:?s_Metadata@?1??__GetTestMethodInfo_ui512bits_01_shr@ui512_unit_tests_shift@ui512_Unit_Tests@@CAPEBUMemberMethodInfo@CppUnitTestFramework@VisualStudio@Microsoft@@XZ@4UMethodMetadata@567@B
 _DATA	ENDS
+<<<<<<< HEAD
 ;	COMDAT ??_C@_1KG@FIFILGBM@?$AAC?$AA?3?$AA?2?$AAU?$AAs?$AAe?$AAr?$AAs?$AA?2?$AAJ?$AAo?$AAh?$AAn?$AA?5?$AAL@
 CONST	SEGMENT
 ??_C@_1KG@FIFILGBM@?$AAC?$AA?3?$AA?2?$AAU?$AAs?$AAe?$AAr?$AAs?$AA?2?$AAJ?$AAo?$AAh?$AAn?$AA?5?$AAL@ DB 'C'
@@ -3553,6 +3586,28 @@ CONST	SEGMENT
 	DB	00H, '_', 00H, 't', 00H, 'e', 00H, 's', 00H, 't', 00H, 's', 00H
 	DB	'_', 00H, 's', 00H, 'h', 00H, 'i', 00H, 'f', 00H, 't', 00H, '.'
 	DB	00H, 'c', 00H, 'p', 00H, 'p', 00H, 00H, 00H	; `string'
+=======
+;	COMDAT ??_C@_1NG@CHGNLPJJ@?$AAC?$AA?3?$AA?2?$AAU?$AAs?$AAe?$AAr?$AAs?$AA?2?$AAS?$AAu?$AAr?$AAf?$AAa?$AAc@
+CONST	SEGMENT
+??_C@_1NG@CHGNLPJJ@?$AAC?$AA?3?$AA?2?$AAU?$AAs?$AAe?$AAr?$AAs?$AA?2?$AAS?$AAu?$AAr?$AAf?$AAa?$AAc@ DB 'C'
+	DB	00H, ':', 00H, '\', 00H, 'U', 00H, 's', 00H, 'e', 00H, 'r', 00H
+	DB	's', 00H, '\', 00H, 'S', 00H, 'u', 00H, 'r', 00H, 'f', 00H, 'a'
+	DB	00H, 'c', 00H, 'e', 00H, ' ', 00H, 'P', 00H, 'r', 00H, 'o', 00H
+	DB	' ', 00H, '4', 00H, '\', 00H, 'O', 00H, 'n', 00H, 'e', 00H, 'D'
+	DB	00H, 'r', 00H, 'i', 00H, 'v', 00H, 'e', 00H, '\', 00H, 'M', 00H
+	DB	'y', 00H, ' ', 00H, 'P', 00H, 'r', 00H, 'o', 00H, 'j', 00H, 'e'
+	DB	00H, 'c', 00H, 't', 00H, 's', 00H, '\', 00H, 's', 00H, 'o', 00H
+	DB	'u', 00H, 'r', 00H, 'c', 00H, 'e', 00H, '\', 00H, 'r', 00H, 'e'
+	DB	00H, 'p', 00H, 'o', 00H, 's', 00H, '\', 00H, 'u', 00H, 'i', 00H
+	DB	'5', 00H, '1', 00H, '2', 00H, '\', 00H, 'u', 00H, 'i', 00H, '5'
+	DB	00H, '1', 00H, '2', 00H, '_', 00H, 'u', 00H, 'n', 00H, 'i', 00H
+	DB	't', 00H, '_', 00H, 't', 00H, 'e', 00H, 's', 00H, 't', 00H, 's'
+	DB	00H, '\', 00H, 'u', 00H, 'i', 00H, '5', 00H, '1', 00H, '2', 00H
+	DB	'_', 00H, 'u', 00H, 'n', 00H, 'i', 00H, 't', 00H, '_', 00H, 't'
+	DB	00H, 'e', 00H, 's', 00H, 't', 00H, 's', 00H, '_', 00H, 's', 00H
+	DB	'h', 00H, 'i', 00H, 'f', 00H, 't', 00H, '.', 00H, 'c', 00H, 'p'
+	DB	00H, 'p', 00H, 00H, 00H			; `string'
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
 CONST	ENDS
 ;	COMDAT ??_C@_0JG@NJBDBCMC@?$DP__GetTestMethodInfo_ui512bits_@
 CONST	SEGMENT
@@ -3587,7 +3642,11 @@ testdata$_B_method	SEGMENT
 	DQ	FLAT:??_C@_1CC@IPKDGEGH@?$AAu?$AAi?$AA5?$AA1?$AA2?$AAb?$AAi?$AAt?$AAs?$AA_?$AA0?$AA1?$AA_?$AAs?$AAh@
 	DQ	FLAT:??_C@_0EP@OKAIEBBF@ui512_Unit_Tests?3?3ui512_unit_te@
 	DQ	FLAT:??_C@_0JG@NJBDBCMC@?$DP__GetTestMethodInfo_ui512bits_@
+<<<<<<< HEAD
 	DQ	FLAT:??_C@_1KG@FIFILGBM@?$AAC?$AA?3?$AA?2?$AAU?$AAs?$AAe?$AAr?$AAs?$AA?2?$AAJ?$AAo?$AAh?$AAn?$AA?5?$AAL@
+=======
+	DQ	FLAT:??_C@_1NG@CHGNLPJJ@?$AAC?$AA?3?$AA?2?$AAU?$AAs?$AAe?$AAr?$AAs?$AA?2?$AAS?$AAu?$AAr?$AAf?$AAa?$AAc@
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
 	DD	02dH
 	ORG $+4
 testdata$_B_method	ENDS
@@ -15119,7 +15178,11 @@ $LN4:
 ??0ui512_unit_tests_shift@ui512_Unit_Tests@@QEAA@XZ ENDP ; ui512_Unit_Tests::ui512_unit_tests_shift::ui512_unit_tests_shift
 _TEXT	ENDS
 ; Function compile flags: /Odtp /RTCsu /ZI
+<<<<<<< HEAD
 ; File C:\Users\John Lynch\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_shift.cpp
+=======
+; File C:\Users\Surface Pro 4\OneDrive\My Projects\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_shift.cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
 ;	COMDAT ?ui512bits_04_shl_performance@ui512_unit_tests_shift@ui512_Unit_Tests@@AEAAXXZ
 _TEXT	SEGMENT
 No1$ = 16
@@ -15151,7 +15214,11 @@ $LN3:
   00037	48 89 85 38 02
 	00 00		 mov	 QWORD PTR __$ArrayPad$[rbp], rax
   0003e	48 8d 0d 00 00
+<<<<<<< HEAD
 	00 00		 lea	 rcx, OFFSET FLAT:__08AB2003_ui512_unit_tests_shift@cpp
+=======
+	00 00		 lea	 rcx, OFFSET FLAT:__F3607167_ui512_unit_tests_shift@cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
   00045	e8 00 00 00 00	 call	 __CheckForDebuggerJustMyCode
   0004a	90		 npad	 1
 
@@ -15271,7 +15338,11 @@ $LN3:
 ?ui512bits_04_shl_performance@ui512_unit_tests_shift@ui512_Unit_Tests@@AEAAXXZ ENDP ; ui512_Unit_Tests::ui512_unit_tests_shift::ui512bits_04_shl_performance
 _TEXT	ENDS
 ; Function compile flags: /Odtp /RTCsu /ZI
+<<<<<<< HEAD
 ; File C:\Users\John Lynch\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_shift.cpp
+=======
+; File C:\Users\Surface Pro 4\OneDrive\My Projects\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_shift.cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
 ;	COMDAT ?__GetTestMethodInfo_ui512bits_04_shl_performance@ui512_unit_tests_shift@ui512_Unit_Tests@@CAPEBUMemberMethodInfo@CppUnitTestFramework@VisualStudio@Microsoft@@XZ
 _TEXT	SEGMENT
 ?__GetTestMethodInfo_ui512bits_04_shl_performance@ui512_unit_tests_shift@ui512_Unit_Tests@@CAPEBUMemberMethodInfo@CppUnitTestFramework@VisualStudio@Microsoft@@XZ PROC ; ui512_Unit_Tests::ui512_unit_tests_shift::__GetTestMethodInfo_ui512bits_04_shl_performance, COMDAT
@@ -15285,7 +15356,11 @@ $LN3:
 	00 00		 sub	 rsp, 232		; 000000e8H
   0000a	48 8d 6c 24 20	 lea	 rbp, QWORD PTR [rsp+32]
   0000f	48 8d 0d 00 00
+<<<<<<< HEAD
 	00 00		 lea	 rcx, OFFSET FLAT:__08AB2003_ui512_unit_tests_shift@cpp
+=======
+	00 00		 lea	 rcx, OFFSET FLAT:__F3607167_ui512_unit_tests_shift@cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
   00016	e8 00 00 00 00	 call	 __CheckForDebuggerJustMyCode
   0001b	90		 npad	 1
   0001c	e8 00 00 00 00	 call	 ?__GetTestClassInfo@?$TestClass@Vui512_unit_tests_shift@ui512_Unit_Tests@@@CppUnitTestFramework@VisualStudio@Microsoft@@SAPEBUTestClassInfo@234@XZ ; Microsoft::VisualStudio::CppUnitTestFramework::TestClass<ui512_Unit_Tests::ui512_unit_tests_shift>::__GetTestClassInfo
@@ -15306,7 +15381,11 @@ $LN3:
 ?__GetTestMethodInfo_ui512bits_04_shl_performance@ui512_unit_tests_shift@ui512_Unit_Tests@@CAPEBUMemberMethodInfo@CppUnitTestFramework@VisualStudio@Microsoft@@XZ ENDP ; ui512_Unit_Tests::ui512_unit_tests_shift::__GetTestMethodInfo_ui512bits_04_shl_performance
 _TEXT	ENDS
 ; Function compile flags: /Odtp /RTCsu /ZI
+<<<<<<< HEAD
 ; File C:\Users\John Lynch\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_shift.cpp
+=======
+; File C:\Users\Surface Pro 4\OneDrive\My Projects\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_shift.cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
 ;	COMDAT ?ui512bits_03_shl@ui512_unit_tests_shift@ui512_Unit_Tests@@AEAAXXZ
 _TEXT	SEGMENT
 pattern$ = 64
@@ -15417,7 +15496,11 @@ $LN64:
   00047	48 89 85 28 12
 	00 00		 mov	 QWORD PTR __$ArrayPad$[rbp], rax
   0004e	48 8d 0d 00 00
+<<<<<<< HEAD
 	00 00		 lea	 rcx, OFFSET FLAT:__08AB2003_ui512_unit_tests_shift@cpp
+=======
+	00 00		 lea	 rcx, OFFSET FLAT:__F3607167_ui512_unit_tests_shift@cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
   00055	e8 00 00 00 00	 call	 __CheckForDebuggerJustMyCode
   0005a	90		 npad	 1
 
@@ -19123,7 +19206,11 @@ this$ = 4752
 ?dtor$19@?0??ui512bits_03_shl@ui512_unit_tests_shift@ui512_Unit_Tests@@AEAAXXZ@4HA ENDP ; `ui512_Unit_Tests::ui512_unit_tests_shift::ui512bits_03_shl'::`1'::dtor$19
 text$x	ENDS
 ; Function compile flags: /Odtp /RTCsu /ZI
+<<<<<<< HEAD
 ; File C:\Users\John Lynch\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_shift.cpp
+=======
+; File C:\Users\Surface Pro 4\OneDrive\My Projects\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_shift.cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
 ;	COMDAT ?__GetTestMethodInfo_ui512bits_03_shl@ui512_unit_tests_shift@ui512_Unit_Tests@@CAPEBUMemberMethodInfo@CppUnitTestFramework@VisualStudio@Microsoft@@XZ
 _TEXT	SEGMENT
 ?__GetTestMethodInfo_ui512bits_03_shl@ui512_unit_tests_shift@ui512_Unit_Tests@@CAPEBUMemberMethodInfo@CppUnitTestFramework@VisualStudio@Microsoft@@XZ PROC ; ui512_Unit_Tests::ui512_unit_tests_shift::__GetTestMethodInfo_ui512bits_03_shl, COMDAT
@@ -19137,7 +19224,11 @@ $LN3:
 	00 00		 sub	 rsp, 232		; 000000e8H
   0000a	48 8d 6c 24 20	 lea	 rbp, QWORD PTR [rsp+32]
   0000f	48 8d 0d 00 00
+<<<<<<< HEAD
 	00 00		 lea	 rcx, OFFSET FLAT:__08AB2003_ui512_unit_tests_shift@cpp
+=======
+	00 00		 lea	 rcx, OFFSET FLAT:__F3607167_ui512_unit_tests_shift@cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
   00016	e8 00 00 00 00	 call	 __CheckForDebuggerJustMyCode
   0001b	90		 npad	 1
   0001c	e8 00 00 00 00	 call	 ?__GetTestClassInfo@?$TestClass@Vui512_unit_tests_shift@ui512_Unit_Tests@@@CppUnitTestFramework@VisualStudio@Microsoft@@SAPEBUTestClassInfo@234@XZ ; Microsoft::VisualStudio::CppUnitTestFramework::TestClass<ui512_Unit_Tests::ui512_unit_tests_shift>::__GetTestClassInfo
@@ -19158,7 +19249,11 @@ $LN3:
 ?__GetTestMethodInfo_ui512bits_03_shl@ui512_unit_tests_shift@ui512_Unit_Tests@@CAPEBUMemberMethodInfo@CppUnitTestFramework@VisualStudio@Microsoft@@XZ ENDP ; ui512_Unit_Tests::ui512_unit_tests_shift::__GetTestMethodInfo_ui512bits_03_shl
 _TEXT	ENDS
 ; Function compile flags: /Odtp /RTCsu /ZI
+<<<<<<< HEAD
 ; File C:\Users\John Lynch\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_shift.cpp
+=======
+; File C:\Users\Surface Pro 4\OneDrive\My Projects\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_shift.cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
 ;	COMDAT ?ui512bits_02_shr_performance@ui512_unit_tests_shift@ui512_Unit_Tests@@AEAAXXZ
 _TEXT	SEGMENT
 No1$ = 16
@@ -19190,7 +19285,11 @@ $LN3:
   00037	48 89 85 38 02
 	00 00		 mov	 QWORD PTR __$ArrayPad$[rbp], rax
   0003e	48 8d 0d 00 00
+<<<<<<< HEAD
 	00 00		 lea	 rcx, OFFSET FLAT:__08AB2003_ui512_unit_tests_shift@cpp
+=======
+	00 00		 lea	 rcx, OFFSET FLAT:__F3607167_ui512_unit_tests_shift@cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
   00045	e8 00 00 00 00	 call	 __CheckForDebuggerJustMyCode
   0004a	90		 npad	 1
 
@@ -19310,7 +19409,11 @@ $LN3:
 ?ui512bits_02_shr_performance@ui512_unit_tests_shift@ui512_Unit_Tests@@AEAAXXZ ENDP ; ui512_Unit_Tests::ui512_unit_tests_shift::ui512bits_02_shr_performance
 _TEXT	ENDS
 ; Function compile flags: /Odtp /RTCsu /ZI
+<<<<<<< HEAD
 ; File C:\Users\John Lynch\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_shift.cpp
+=======
+; File C:\Users\Surface Pro 4\OneDrive\My Projects\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_shift.cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
 ;	COMDAT ?__GetTestMethodInfo_ui512bits_02_shr_performance@ui512_unit_tests_shift@ui512_Unit_Tests@@CAPEBUMemberMethodInfo@CppUnitTestFramework@VisualStudio@Microsoft@@XZ
 _TEXT	SEGMENT
 ?__GetTestMethodInfo_ui512bits_02_shr_performance@ui512_unit_tests_shift@ui512_Unit_Tests@@CAPEBUMemberMethodInfo@CppUnitTestFramework@VisualStudio@Microsoft@@XZ PROC ; ui512_Unit_Tests::ui512_unit_tests_shift::__GetTestMethodInfo_ui512bits_02_shr_performance, COMDAT
@@ -19324,7 +19427,11 @@ $LN3:
 	00 00		 sub	 rsp, 232		; 000000e8H
   0000a	48 8d 6c 24 20	 lea	 rbp, QWORD PTR [rsp+32]
   0000f	48 8d 0d 00 00
+<<<<<<< HEAD
 	00 00		 lea	 rcx, OFFSET FLAT:__08AB2003_ui512_unit_tests_shift@cpp
+=======
+	00 00		 lea	 rcx, OFFSET FLAT:__F3607167_ui512_unit_tests_shift@cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
   00016	e8 00 00 00 00	 call	 __CheckForDebuggerJustMyCode
   0001b	90		 npad	 1
   0001c	e8 00 00 00 00	 call	 ?__GetTestClassInfo@?$TestClass@Vui512_unit_tests_shift@ui512_Unit_Tests@@@CppUnitTestFramework@VisualStudio@Microsoft@@SAPEBUTestClassInfo@234@XZ ; Microsoft::VisualStudio::CppUnitTestFramework::TestClass<ui512_Unit_Tests::ui512_unit_tests_shift>::__GetTestClassInfo
@@ -19345,7 +19452,11 @@ $LN3:
 ?__GetTestMethodInfo_ui512bits_02_shr_performance@ui512_unit_tests_shift@ui512_Unit_Tests@@CAPEBUMemberMethodInfo@CppUnitTestFramework@VisualStudio@Microsoft@@XZ ENDP ; ui512_Unit_Tests::ui512_unit_tests_shift::__GetTestMethodInfo_ui512bits_02_shr_performance
 _TEXT	ENDS
 ; Function compile flags: /Odtp /RTCsu /ZI
+<<<<<<< HEAD
 ; File C:\Users\John Lynch\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_shift.cpp
+=======
+; File C:\Users\Surface Pro 4\OneDrive\My Projects\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_shift.cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
 ;	COMDAT ?ui512bits_01_shr@ui512_unit_tests_shift@ui512_Unit_Tests@@AEAAXXZ
 _TEXT	SEGMENT
 pattern$ = 64
@@ -19465,7 +19576,11 @@ $LN63:
   00047	48 89 85 c8 12
 	00 00		 mov	 QWORD PTR __$ArrayPad$[rbp], rax
   0004e	48 8d 0d 00 00
+<<<<<<< HEAD
 	00 00		 lea	 rcx, OFFSET FLAT:__08AB2003_ui512_unit_tests_shift@cpp
+=======
+	00 00		 lea	 rcx, OFFSET FLAT:__F3607167_ui512_unit_tests_shift@cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
   00055	e8 00 00 00 00	 call	 __CheckForDebuggerJustMyCode
   0005a	90		 npad	 1
 
@@ -23774,7 +23889,11 @@ this$ = 4912
 ?dtor$22@?0??ui512bits_01_shr@ui512_unit_tests_shift@ui512_Unit_Tests@@AEAAXXZ@4HA ENDP ; `ui512_Unit_Tests::ui512_unit_tests_shift::ui512bits_01_shr'::`1'::dtor$22
 text$x	ENDS
 ; Function compile flags: /Odtp /RTCsu /ZI
+<<<<<<< HEAD
 ; File C:\Users\John Lynch\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_shift.cpp
+=======
+; File C:\Users\Surface Pro 4\OneDrive\My Projects\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_shift.cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
 ;	COMDAT ?__GetTestMethodInfo_ui512bits_01_shr@ui512_unit_tests_shift@ui512_Unit_Tests@@CAPEBUMemberMethodInfo@CppUnitTestFramework@VisualStudio@Microsoft@@XZ
 _TEXT	SEGMENT
 ?__GetTestMethodInfo_ui512bits_01_shr@ui512_unit_tests_shift@ui512_Unit_Tests@@CAPEBUMemberMethodInfo@CppUnitTestFramework@VisualStudio@Microsoft@@XZ PROC ; ui512_Unit_Tests::ui512_unit_tests_shift::__GetTestMethodInfo_ui512bits_01_shr, COMDAT
@@ -23788,7 +23907,11 @@ $LN3:
 	00 00		 sub	 rsp, 232		; 000000e8H
   0000a	48 8d 6c 24 20	 lea	 rbp, QWORD PTR [rsp+32]
   0000f	48 8d 0d 00 00
+<<<<<<< HEAD
 	00 00		 lea	 rcx, OFFSET FLAT:__08AB2003_ui512_unit_tests_shift@cpp
+=======
+	00 00		 lea	 rcx, OFFSET FLAT:__F3607167_ui512_unit_tests_shift@cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
   00016	e8 00 00 00 00	 call	 __CheckForDebuggerJustMyCode
   0001b	90		 npad	 1
   0001c	e8 00 00 00 00	 call	 ?__GetTestClassInfo@?$TestClass@Vui512_unit_tests_shift@ui512_Unit_Tests@@@CppUnitTestFramework@VisualStudio@Microsoft@@SAPEBUTestClassInfo@234@XZ ; Microsoft::VisualStudio::CppUnitTestFramework::TestClass<ui512_Unit_Tests::ui512_unit_tests_shift>::__GetTestClassInfo
@@ -36372,7 +36495,11 @@ $LN4:
 ??2@YAPEAX_KPEAX@Z ENDP					; operator new
 _TEXT	ENDS
 ; Function compile flags: /Odtp /RTCsu /ZI
+<<<<<<< HEAD
 ; File C:\Users\John Lynch\source\repos\ui512\ui512_unit_tests\CommonTypeDefs.h
+=======
+; File C:\Users\Surface Pro 4\OneDrive\My Projects\source\repos\ui512\ui512_unit_tests\CommonTypeDefs.h
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
 ;	COMDAT ?AreEqual@regs@@QEBA_NPEAU1@@Z
 _TEXT	SEGMENT
 tv69 = 192
@@ -36391,7 +36518,11 @@ $LN5:
 	00 00		 sub	 rsp, 248		; 000000f8H
   00013	48 8d 6c 24 20	 lea	 rbp, QWORD PTR [rsp+32]
   00018	48 8d 0d 00 00
+<<<<<<< HEAD
 	00 00		 lea	 rcx, OFFSET FLAT:__5E836398_CommonTypeDefs@h
+=======
+	00 00		 lea	 rcx, OFFSET FLAT:__6C4E5558_CommonTypeDefs@h
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
   0001f	e8 00 00 00 00	 call	 __CheckForDebuggerJustMyCode
   00024	90		 npad	 1
 
@@ -36426,7 +36557,11 @@ $LN4@AreEqual:
 ?AreEqual@regs@@QEBA_NPEAU1@@Z ENDP			; regs::AreEqual
 _TEXT	ENDS
 ; Function compile flags: /Odtp /RTCsu /ZI
+<<<<<<< HEAD
 ; File C:\Users\John Lynch\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_shift.cpp
+=======
+; File C:\Users\Surface Pro 4\OneDrive\My Projects\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_shift.cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
 ;	COMDAT ?__empty_global_delete@@YAXPEAX_KW4align_val_t@std@@@Z
 _TEXT	SEGMENT
 __formal$ = 224
@@ -36444,7 +36579,11 @@ $LN4:
 	00 00		 sub	 rsp, 232		; 000000e8H
   00018	48 8d 6c 24 20	 lea	 rbp, QWORD PTR [rsp+32]
   0001d	48 8d 0d 00 00
+<<<<<<< HEAD
 	00 00		 lea	 rcx, OFFSET FLAT:__08AB2003_ui512_unit_tests_shift@cpp
+=======
+	00 00		 lea	 rcx, OFFSET FLAT:__F3607167_ui512_unit_tests_shift@cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
   00024	e8 00 00 00 00	 call	 __CheckForDebuggerJustMyCode
   00029	90		 npad	 1
   0002a	48 8d a5 c8 00
@@ -36455,7 +36594,11 @@ $LN4:
 ?__empty_global_delete@@YAXPEAX_KW4align_val_t@std@@@Z ENDP ; __empty_global_delete
 _TEXT	ENDS
 ; Function compile flags: /Odtp /RTCsu /ZI
+<<<<<<< HEAD
 ; File C:\Users\John Lynch\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_shift.cpp
+=======
+; File C:\Users\Surface Pro 4\OneDrive\My Projects\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_shift.cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
 ;	COMDAT ?__empty_global_delete@@YAXPEAXW4align_val_t@std@@@Z
 _TEXT	SEGMENT
 __formal$ = 224
@@ -36471,7 +36614,11 @@ $LN4:
 	00 00		 sub	 rsp, 232		; 000000e8H
   00013	48 8d 6c 24 20	 lea	 rbp, QWORD PTR [rsp+32]
   00018	48 8d 0d 00 00
+<<<<<<< HEAD
 	00 00		 lea	 rcx, OFFSET FLAT:__08AB2003_ui512_unit_tests_shift@cpp
+=======
+	00 00		 lea	 rcx, OFFSET FLAT:__F3607167_ui512_unit_tests_shift@cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
   0001f	e8 00 00 00 00	 call	 __CheckForDebuggerJustMyCode
   00024	90		 npad	 1
   00025	48 8d a5 c8 00
@@ -36482,7 +36629,11 @@ $LN4:
 ?__empty_global_delete@@YAXPEAXW4align_val_t@std@@@Z ENDP ; __empty_global_delete
 _TEXT	ENDS
 ; Function compile flags: /Odtp /RTCsu /ZI
+<<<<<<< HEAD
 ; File C:\Users\John Lynch\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_shift.cpp
+=======
+; File C:\Users\Surface Pro 4\OneDrive\My Projects\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_shift.cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
 ;	COMDAT ?__empty_global_delete@@YAXPEAX_K@Z
 _TEXT	SEGMENT
 __formal$ = 224
@@ -36498,7 +36649,11 @@ $LN4:
 	00 00		 sub	 rsp, 232		; 000000e8H
   00013	48 8d 6c 24 20	 lea	 rbp, QWORD PTR [rsp+32]
   00018	48 8d 0d 00 00
+<<<<<<< HEAD
 	00 00		 lea	 rcx, OFFSET FLAT:__08AB2003_ui512_unit_tests_shift@cpp
+=======
+	00 00		 lea	 rcx, OFFSET FLAT:__F3607167_ui512_unit_tests_shift@cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
   0001f	e8 00 00 00 00	 call	 __CheckForDebuggerJustMyCode
   00024	90		 npad	 1
   00025	48 8d a5 c8 00
@@ -36509,7 +36664,11 @@ $LN4:
 ?__empty_global_delete@@YAXPEAX_K@Z ENDP		; __empty_global_delete
 _TEXT	ENDS
 ; Function compile flags: /Odtp /RTCsu /ZI
+<<<<<<< HEAD
 ; File C:\Users\John Lynch\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_shift.cpp
+=======
+; File C:\Users\Surface Pro 4\OneDrive\My Projects\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_shift.cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
 ;	COMDAT ?__empty_global_delete@@YAXPEAX@Z
 _TEXT	SEGMENT
 __formal$ = 224
@@ -36523,7 +36682,11 @@ $LN4:
 	00 00		 sub	 rsp, 232		; 000000e8H
   0000e	48 8d 6c 24 20	 lea	 rbp, QWORD PTR [rsp+32]
   00013	48 8d 0d 00 00
+<<<<<<< HEAD
 	00 00		 lea	 rcx, OFFSET FLAT:__08AB2003_ui512_unit_tests_shift@cpp
+=======
+	00 00		 lea	 rcx, OFFSET FLAT:__F3607167_ui512_unit_tests_shift@cpp
+>>>>>>> 93ede99fc58f7157296217c9066c300a91e2bfb0
   0001a	e8 00 00 00 00	 call	 __CheckForDebuggerJustMyCode
   0001f	90		 npad	 1
   00020	48 8d a5 c8 00

@@ -1,4 +1,4 @@
-Microsoft (R) Macro Assembler (x64) Version 14.50.35721.0   12/24/25 13:55:07
+Microsoft (R) Macro Assembler (x64) Version 14.50.35721.0   12/26/25 11:15:43
 ui512_subtraction.asm					     Page 1 - 1
 
 
@@ -114,7 +114,7 @@ ui512_subtraction.asm					     Page 1 - 1
 			      C ;	Note: This is intended to be a mutually exclusive choice (UseZ thru UseQ).
 			      C ;	However, the coding of the options selects the "highest" one used and ignores the rest ( If __UseZ ... ELSEIF __UseY ... )
 			      C 
- = 00000001		      C __UseZ			EQU				1									; Use AVX4 processor features (512 bit registers and instructions)
+ = 00000000		      C __UseZ			EQU				0									; Use AVX4 processor features (512 bit registers and instructions)
  = 00000000		      C __UseY			EQU				0									; Use AVX2 processor features (256 bit registers and instructions)
  = 00000000		      C __UseX			EQU				0									; Use SIMD/SSE processor features (128 bit registers and instructions)
  = 00000001		      C __UseQ			EQU				1									; Do not use extensions, use standard x64 bit registers and instructions
@@ -665,45 +665,47 @@ ui512_subtraction.asm					     Page 1 - 1
 								CheckAlign		R8									; (IN) 8 QWORD right hand operand, subtrahend
 
 					IF __UseZ
-				; Load operands
- 00000010  62 61 FD 48/ 6F					VMOVDQA64		ZMM30, ZM_PTR [RDX]					; Load lh_op
-	   32
- 00000016  62 41 FD 48/ 6F					VMOVDQA64		ZMM31, ZM_PTR [R8]					; Load rh_op
-	   38
-
-				; Initialize loop variables: R9 for the targeted in-lane subtract of borrows; k7 for return code overall borrow flag
- 0000001C  4D/ 33 C9						XOR				R9, R9
- 0000001F  49/ FF C1						INC				R9
- 00000022  C5 C5/ 47 FF						KXORB			k7, k7, k7							; Clear k7 (what borrows have been done mask)
-
-								Sub_Prop_Borrow ZMM29, ZMM30, ZMM31, k7, R9
- 00000026  62 01 8D 40/ FB   1					VPSUBQ		    ZMM29, ZMM30, ZMM31			; Initial subtraction, lane by lane subtract
-	   EF
- 0000002C  62 93 95 40/ 1E   1					VPCMPUQ		    k1, ZMM29, ZMM30, CPGT			; Detect initial borrows. Destination lane > subtrahend lane? must have borrowed in that lane
-	   CE 06
- 00000033  C5 C5/ 42 D1	     1	@@:             KANDNB			k2, k7, k1						; eliminate apparent borrows if they had already been flagged (and processed) (AND NOT previous K7)
- 00000037  C5 C5/ 45 FA	     1	                KORB			k7, k7, k2				; new borrows in K2, OR into borrows done (borrowK)
- 0000003B  C4 E3 79/ 30 D2   1	                KSHIFTRB		k2, k2, 1							; new borrows shift right to align which lane to add borrow from
-	   01
- 00000041  C5 F9/ 99 D2	     1	                KTESTB			k2, k2								; no new borrows? exit
- 00000045  74 15	     1					JZ				@F									; If, after alignment shift, there are no borrows, save and exit
- 00000047  62 D2 FD CA/ 7C   1					VPBROADCASTQ	ZMM0 {k2}{z}, R9				; Apply borrow-ins only where needed
-	   C1
- 0000004D  62 61 95 42/ FB   1					VPSUBQ			ZMM29 {k2}, ZMM29, ZMM0				; subtract the borrows, possibly causing cascade of borrowing to next higher lane
-	   E8
- 00000053  62 F3 95 42/ 1E   1					VPCMPUQ			k1 { k2 }, ZMM29, ZMM0, CPGT			; detect new mask of borrows
-	   C8 06
- 0000005A  EB D7	     1					JMP				@B
- 0000005C		     1	@@:
- 0000005C  C5 F9/ 93 C7		                KMOVB			RAX, k7								; Move final borrows done to RAX
- 00000060  48/ 83 E0 01		                AND				RAX, retcode_one					; bit 0 (MSB borrow-out)
- 00000064  62 61 FD 48/ 7F					VMOVDQA64		ZM_PTR [RCX], ZMM29
-	   29
- 0000006A  C3							RET
-
 					ELSE
+ 00000010  48/ 8B 42 38						MOV				RAX, Q_PTR [ RDX ] [ 7 * 8 ]		; get last word of minuend (least significant word of the number we are subtracting from) (left-hand operand)
+ 00000014  49/ 2B 40 38						SUB				RAX, Q_PTR [ R8 ] [ 7 * 8 ]			; subtract last word of subtrahend (the number to be subtracted) (right-hand operand)
+ 00000018  48/ 89 41 38						MOV				Q_PTR [ RCX ] [ 7 * 8 ], RAX		; store result in last word of difference, note: the flag 'carry' has been set to whether there has been a 'borrow'
+
+				; FOR EACH index 6 thru 0: Get minuend QWORD, subtract (with borrow), store at difference
+								FOR				idx, < 6, 5, 4, 3, 2, 1, 0 >
+								MOV				RAX, [ RDX ] [ idx * 8 ]					
+								SBB				RAX, [ R8 ] [ idx * 8 ]
+								MOV				[ RCX ] [ idx * 8 ], RAX
+								ENDM
+ 0000001C  48/ 8B 42 30	     1					MOV				RAX, [ RDX ] [ 6 * 8 ]					
+ 00000020  49/ 1B 40 30	     1					SBB				RAX, [ R8 ] [ 6 * 8 ]
+ 00000024  48/ 89 41 30	     1					MOV				[ RCX ] [ 6 * 8 ], RAX
+ 00000028  48/ 8B 42 28	     1					MOV				RAX, [ RDX ] [ 5 * 8 ]					
+ 0000002C  49/ 1B 40 28	     1					SBB				RAX, [ R8 ] [ 5 * 8 ]
+ 00000030  48/ 89 41 28	     1					MOV				[ RCX ] [ 5 * 8 ], RAX
+ 00000034  48/ 8B 42 20	     1					MOV				RAX, [ RDX ] [ 4 * 8 ]					
+ 00000038  49/ 1B 40 20	     1					SBB				RAX, [ R8 ] [ 4 * 8 ]
+ 0000003C  48/ 89 41 20	     1					MOV				[ RCX ] [ 4 * 8 ], RAX
+ 00000040  48/ 8B 42 18	     1					MOV				RAX, [ RDX ] [ 3 * 8 ]					
+ 00000044  49/ 1B 40 18	     1					SBB				RAX, [ R8 ] [ 3 * 8 ]
+ 00000048  48/ 89 41 18	     1					MOV				[ RCX ] [ 3 * 8 ], RAX
+ 0000004C  48/ 8B 42 10	     1					MOV				RAX, [ RDX ] [ 2 * 8 ]					
+ 00000050  49/ 1B 40 10	     1					SBB				RAX, [ R8 ] [ 2 * 8 ]
+ 00000054  48/ 89 41 10	     1					MOV				[ RCX ] [ 2 * 8 ], RAX
+ 00000058  48/ 8B 42 08	     1					MOV				RAX, [ RDX ] [ 1 * 8 ]					
+ 0000005C  49/ 1B 40 08	     1					SBB				RAX, [ R8 ] [ 1 * 8 ]
+ 00000060  48/ 89 41 08	     1					MOV				[ RCX ] [ 1 * 8 ], RAX
+ 00000064  48/ 8B 02	     1					MOV				RAX, [ RDX ] [ 0 * 8 ]					
+ 00000067  49/ 1B 00	     1					SBB				RAX, [ R8 ] [ 0 * 8 ]
+ 0000006A  48/ 89 01	     1					MOV				[ RCX ] [ 0 * 8 ], RAX
+
+ 0000006D  48/ 8D 04 25						LEA				RAX, [ retcode_zero ]				; return, set return code to zero if no remaining borrow, to one if there is a borrow
+	   00000000
+ 00000075  0F 42 05						CMOVC			EAX, ret_one
+	   00000000 E
+ 0000007C  C3							RET
+
 					ENDIF
- 0000006B			sub_u			ENDP
+ 0000007D			sub_u			ENDP
 
 				;--------------------------------------------------------------------------------------------------------------------------------------------------------------
 				;			sub_u_wb	-	subtract supplied 512bit (8 QWORDS) RH OP from LH OP, including borrow giving difference in destination
@@ -716,88 +718,61 @@ ui512_subtraction.asm					     Page 1 - 1
 				;			Note: unrolled code instead of loop: faster, and no regs to save / setup / restore
 				;
 								Leaf_Entry		sub_u_wb
- 0000006B  00000006 [	     1					DB				6 DUP (0cch)
+ 0000007D  00000006 [	     1					DB				6 DUP (0cch)
 	    CC
 	   ]
- 00000080		     1	sub_u_wb			PROC
+ 00000090		     1	sub_u_wb			PROC
 								CheckAlign		RCX									; (OUT) 8 QWORD difference
 								CheckAlign		RDX									; (IN) 8 QWORD left hand operand, minuend
 								CheckAlign		R8									; (IN) 8 QWORD right hand operand, subtrahend
 
 					IF __UseZ
-				; Load operands
- 00000080  62 61 FD 48/ 6F					VMOVDQA64		ZMM30, ZM_PTR [RDX]					; Load lh_op
-	   32
- 00000086  62 41 FD 48/ 6F					VMOVDQA64		ZMM31, ZM_PTR [R8]					; Load rh_op
-	   38
- 0000008C  4D/ 33 C0						XOR				R8, R8
- 0000008F  66| 45/ 85 C9					TEST			R9W, R9W							; borrow-in non-zero?
- 00000093  74 5C						JZ				@@noborrowin
- 00000095  4D/ 33 C9						XOR				R9, R9
- 00000098  49/ FF C1		                INC				R9
- 0000009B  C5 F9/ 90 0D						KMOVB			k1,  B_PTR mskB7				; mask for least significant word
-	   00000000 E
- 000000A3  62 42 FD C9/ 7C					VPBROADCASTQ	ZMM28 {k1}{z}, R9					; ZMM28 now 512 bit version of carry-in
-	   E1
- 000000A9  C5 C5/ 47 FF		                KXORB			k7, k7, k7							; Clear k7 (what carries have been done mask)
-								Sub_Prop_Borrow	ZMM29, ZMM30, ZMM28, k7, R9			; add 30 (lh_op), 28 (carry-in); detect and propagate carries
- 000000AD  62 01 8D 40/ FB   1					VPSUBQ		    ZMM29, ZMM30, ZMM28			; Initial subtraction, lane by lane subtract
-	   EC
- 000000B3  62 93 95 40/ 1E   1					VPCMPUQ		    k1, ZMM29, ZMM30, CPGT			; Detect initial borrows. Destination lane > subtrahend lane? must have borrowed in that lane
-	   CE 06
- 000000BA  C5 C5/ 42 D1	     1	@@:             KANDNB			k2, k7, k1						; eliminate apparent borrows if they had already been flagged (and processed) (AND NOT previous K7)
- 000000BE  C5 C5/ 45 FA	     1	                KORB			k7, k7, k2				; new borrows in K2, OR into borrows done (borrowK)
- 000000C2  C4 E3 79/ 30 D2   1	                KSHIFTRB		k2, k2, 1							; new borrows shift right to align which lane to add borrow from
-	   01
- 000000C8  C5 F9/ 99 D2	     1	                KTESTB			k2, k2								; no new borrows? exit
- 000000CC  74 15	     1					JZ				@F									; If, after alignment shift, there are no borrows, save and exit
- 000000CE  62 D2 FD CA/ 7C   1					VPBROADCASTQ	ZMM0 {k2}{z}, R9				; Apply borrow-ins only where needed
-	   C1
- 000000D4  62 61 95 42/ FB   1					VPSUBQ			ZMM29 {k2}, ZMM29, ZMM0				; subtract the borrows, possibly causing cascade of borrowing to next higher lane
-	   E8
- 000000DA  62 F3 95 42/ 1E   1					VPCMPUQ			k1 { k2 }, ZMM29, ZMM0, CPGT			; detect new mask of borrows
-	   C8 06
- 000000E1  EB D7	     1					JMP				@B
- 000000E3		     1	@@:
- 000000E3  C5 79/ 93 C7						KMOVB			R8, k7								; adding carry cause carry?
- 000000E7  49/ 83 E0 01						AND				R8, retcode_one						; save this carry, if present, for return
- 000000EB  62 01 FD 48/ 6F					VMOVDQA64		ZMM30, ZMM29						; move carried in sum to addend 1
-	   F5
-
-				; Initialize loop variables: R9 for the targeted in-lane subtract of borrows; k7 for return code overall borrow flag
- 000000F1  4D/ 33 C9		@@noborrowin: 	XOR				R9, R9
- 000000F4  49/ FF C1						INC				R9
- 000000F7  C5 C5/ 47 FF						KXORB			k7, k7, k7							; Clear k7 (what borrows have been done mask)
-
-								Sub_Prop_Borrow ZMM29, ZMM30, ZMM31, k7, R9
- 000000FB  62 01 8D 40/ FB   1					VPSUBQ		    ZMM29, ZMM30, ZMM31			; Initial subtraction, lane by lane subtract
-	   EF
- 00000101  62 93 95 40/ 1E   1					VPCMPUQ		    k1, ZMM29, ZMM30, CPGT			; Detect initial borrows. Destination lane > subtrahend lane? must have borrowed in that lane
-	   CE 06
- 00000108  C5 C5/ 42 D1	     1	@@:             KANDNB			k2, k7, k1						; eliminate apparent borrows if they had already been flagged (and processed) (AND NOT previous K7)
- 0000010C  C5 C5/ 45 FA	     1	                KORB			k7, k7, k2				; new borrows in K2, OR into borrows done (borrowK)
- 00000110  C4 E3 79/ 30 D2   1	                KSHIFTRB		k2, k2, 1							; new borrows shift right to align which lane to add borrow from
-	   01
- 00000116  C5 F9/ 99 D2	     1	                KTESTB			k2, k2								; no new borrows? exit
- 0000011A  74 15	     1					JZ				@F									; If, after alignment shift, there are no borrows, save and exit
- 0000011C  62 D2 FD CA/ 7C   1					VPBROADCASTQ	ZMM0 {k2}{z}, R9				; Apply borrow-ins only where needed
-	   C1
- 00000122  62 61 95 42/ FB   1					VPSUBQ			ZMM29 {k2}, ZMM29, ZMM0				; subtract the borrows, possibly causing cascade of borrowing to next higher lane
-	   E8
- 00000128  62 F3 95 42/ 1E   1					VPCMPUQ			k1 { k2 }, ZMM29, ZMM0, CPGT			; detect new mask of borrows
-	   C8 06
- 0000012F  EB D7	     1					JMP				@B
- 00000131		     1	@@:
- 00000131  C5 F9/ 93 C7		                KMOVB			RAX, k7								; Move final borrows done to RAX
- 00000135  48/ 83 E0 01		                AND				RAX, retcode_one					; bit 0 (MSB borrow-out)
- 00000139  49/ 0B C0						OR				RAX, R8
- 0000013C  62 61 FD 48/ 7F					VMOVDQA64		ZM_PTR [RCX], ZMM29
-	   29
- 00000142  C3							RET
-
 					ELSE
+								; Check if carry-in set, set flag carry for addition if so, clear if not
+ 00000090  F8							CLC
+ 00000091  66| 45/ 85 C9					TEST			R9W, R9W
+ 00000095  74 01						JZ				@@noborrowin
+ 00000097  F9							STC
+
+				; FOR EACH index 6 thru 0: Get minuend QWORD, subtract (with borrow), store at difference
+ 00000098			@@noborrowin:	FOR				idx, < 7, 6, 5, 4, 3, 2, 1, 0 >
+								MOV				RAX, [ RDX ] [ idx * 8 ]					
+								SBB				RAX, [ R8 ] [ idx * 8 ]
+								MOV				[ RCX ] [ idx * 8 ], RAX
+								ENDM
+ 00000098  48/ 8B 42 38	     1					MOV				RAX, [ RDX ] [ 7 * 8 ]					
+ 0000009C  49/ 1B 40 38	     1					SBB				RAX, [ R8 ] [ 7 * 8 ]
+ 000000A0  48/ 89 41 38	     1					MOV				[ RCX ] [ 7 * 8 ], RAX
+ 000000A4  48/ 8B 42 30	     1					MOV				RAX, [ RDX ] [ 6 * 8 ]					
+ 000000A8  49/ 1B 40 30	     1					SBB				RAX, [ R8 ] [ 6 * 8 ]
+ 000000AC  48/ 89 41 30	     1					MOV				[ RCX ] [ 6 * 8 ], RAX
+ 000000B0  48/ 8B 42 28	     1					MOV				RAX, [ RDX ] [ 5 * 8 ]					
+ 000000B4  49/ 1B 40 28	     1					SBB				RAX, [ R8 ] [ 5 * 8 ]
+ 000000B8  48/ 89 41 28	     1					MOV				[ RCX ] [ 5 * 8 ], RAX
+ 000000BC  48/ 8B 42 20	     1					MOV				RAX, [ RDX ] [ 4 * 8 ]					
+ 000000C0  49/ 1B 40 20	     1					SBB				RAX, [ R8 ] [ 4 * 8 ]
+ 000000C4  48/ 89 41 20	     1					MOV				[ RCX ] [ 4 * 8 ], RAX
+ 000000C8  48/ 8B 42 18	     1					MOV				RAX, [ RDX ] [ 3 * 8 ]					
+ 000000CC  49/ 1B 40 18	     1					SBB				RAX, [ R8 ] [ 3 * 8 ]
+ 000000D0  48/ 89 41 18	     1					MOV				[ RCX ] [ 3 * 8 ], RAX
+ 000000D4  48/ 8B 42 10	     1					MOV				RAX, [ RDX ] [ 2 * 8 ]					
+ 000000D8  49/ 1B 40 10	     1					SBB				RAX, [ R8 ] [ 2 * 8 ]
+ 000000DC  48/ 89 41 10	     1					MOV				[ RCX ] [ 2 * 8 ], RAX
+ 000000E0  48/ 8B 42 08	     1					MOV				RAX, [ RDX ] [ 1 * 8 ]					
+ 000000E4  49/ 1B 40 08	     1					SBB				RAX, [ R8 ] [ 1 * 8 ]
+ 000000E8  48/ 89 41 08	     1					MOV				[ RCX ] [ 1 * 8 ], RAX
+ 000000EC  48/ 8B 02	     1					MOV				RAX, [ RDX ] [ 0 * 8 ]					
+ 000000EF  49/ 1B 00	     1					SBB				RAX, [ R8 ] [ 0 * 8 ]
+ 000000F2  48/ 89 01	     1					MOV				[ RCX ] [ 0 * 8 ], RAX
+
+ 000000F5  48/ 8D 04 25						LEA				RAX, [ retcode_zero ]				; return, set return code to zero if no remaining borrow, to one if there is a borrow
+	   00000000
+ 000000FD  0F 42 05						CMOVC			EAX, ret_one
+	   00000000 E
+ 00000104  C3							RET
+
 					ENDIF
- 00000143			sub_u_wb		ENDP
+ 00000105			sub_u_wb		ENDP
 
 				;
 				;--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -810,57 +785,58 @@ ui512_subtraction.asm					     Page 1 - 1
 				;			Note: unrolled code instead of loop: faster, and no regs to save / setup / restore
 				;
 								Leaf_Entry		sub_uT64
- 00000143  00000006 [	     1					DB				6 DUP (0cch)
+ 00000105  00000006 [	     1					DB				6 DUP (0cch)
 	    CC
 	   ]
- 00000150		     1	sub_uT64			PROC
+ 00000110		     1	sub_uT64			PROC
 								CheckAlign		RCX									; (OUT) 8 QWORD difference
 								CheckAlign		RDX									; (IN) 8 QWORD left hand operand, minuend
 
 					IF __UseZ
-				; Load operands
- 00000150  62 61 FD 48/ 6F					VMOVDQA64		ZMM30, ZM_PTR [RDX]			        ; Load lh_op
-	   32
- 00000156  C5 F9/ 90 0D						KMOVB			k1, B_PTR mskB7						; mask for least significant word
-	   00000000 E
- 0000015E  62 42 FD C9/ 7C					VPBROADCASTQ	ZMM31 {k1}{z}, R8					; ZMM31 now 512 bit version of passed rh_op
-	   F8
-
-				; Initialize loop variables: R9 for the targeted in-lane subtract of borrows; k7 for return code overall borrow flag
- 00000164  4D/ 33 C9						XOR				R9, R9
- 00000167  49/ FF C1						INC				R9
- 0000016A  C5 C5/ 47 FF						KXORB			k7, k7, k7							; Clear k7 (what borrows have been done mask)
-								Sub_Prop_Borrow ZMM29, ZMM30, ZMM31, k7, R9
- 0000016E  62 01 8D 40/ FB   1					VPSUBQ		    ZMM29, ZMM30, ZMM31			; Initial subtraction, lane by lane subtract
-	   EF
- 00000174  62 93 95 40/ 1E   1					VPCMPUQ		    k1, ZMM29, ZMM30, CPGT			; Detect initial borrows. Destination lane > subtrahend lane? must have borrowed in that lane
-	   CE 06
- 0000017B  C5 C5/ 42 D1	     1	@@:             KANDNB			k2, k7, k1						; eliminate apparent borrows if they had already been flagged (and processed) (AND NOT previous K7)
- 0000017F  C5 C5/ 45 FA	     1	                KORB			k7, k7, k2				; new borrows in K2, OR into borrows done (borrowK)
- 00000183  C4 E3 79/ 30 D2   1	                KSHIFTRB		k2, k2, 1							; new borrows shift right to align which lane to add borrow from
-	   01
- 00000189  C5 F9/ 99 D2	     1	                KTESTB			k2, k2								; no new borrows? exit
- 0000018D  74 15	     1					JZ				@F									; If, after alignment shift, there are no borrows, save and exit
- 0000018F  62 D2 FD CA/ 7C   1					VPBROADCASTQ	ZMM0 {k2}{z}, R9				; Apply borrow-ins only where needed
-	   C1
- 00000195  62 61 95 42/ FB   1					VPSUBQ			ZMM29 {k2}, ZMM29, ZMM0				; subtract the borrows, possibly causing cascade of borrowing to next higher lane
-	   E8
- 0000019B  62 F3 95 42/ 1E   1					VPCMPUQ			k1 { k2 }, ZMM29, ZMM0, CPGT			; detect new mask of borrows
-	   C8 06
- 000001A2  EB D7	     1					JMP				@B
- 000001A4		     1	@@:
- 000001A4  C5 F9/ 93 C7		                KMOVB			RAX, k7								; Move final borrows done to RAX
- 000001A8  48/ 83 E0 01		                AND				RAX, retcode_one					; bit 0 (MSB borrow-out)
- 000001AC  62 61 FD 48/ 7F					VMOVDQA64		ZM_PTR [RCX], ZMM29
-	   29
- 000001B2  C3							RET
-
 					ELSE
+ 00000110  48/ 8B 42 38						MOV				RAX, [ RDX ] [ 7 * 8 ]				; 
+ 00000114  49/ 2B C0						SUB				RAX, R8
+ 00000117  48/ 89 41 38						MOV				[ RCX ] [ 7 * 8 ], RAX
+
+				; FOR EACH index 6 thru 0: Get minuend QWORD, subtract borrow (if any), store at difference
+								FOR				idx, < 6, 5, 4, 3, 2, 1, 0 >
+								MOV				RAX, [ RDX ] [ idx * 8 ]					
+								SBB				RAX, 0
+								MOV				[ RCX ] [ idx * 8 ], RAX
+								ENDM
+ 0000011B  48/ 8B 42 30	     1					MOV				RAX, [ RDX ] [ 6 * 8 ]					
+ 0000011F  48/ 83 D8 00	     1					SBB				RAX, 0
+ 00000123  48/ 89 41 30	     1					MOV				[ RCX ] [ 6 * 8 ], RAX
+ 00000127  48/ 8B 42 28	     1					MOV				RAX, [ RDX ] [ 5 * 8 ]					
+ 0000012B  48/ 83 D8 00	     1					SBB				RAX, 0
+ 0000012F  48/ 89 41 28	     1					MOV				[ RCX ] [ 5 * 8 ], RAX
+ 00000133  48/ 8B 42 20	     1					MOV				RAX, [ RDX ] [ 4 * 8 ]					
+ 00000137  48/ 83 D8 00	     1					SBB				RAX, 0
+ 0000013B  48/ 89 41 20	     1					MOV				[ RCX ] [ 4 * 8 ], RAX
+ 0000013F  48/ 8B 42 18	     1					MOV				RAX, [ RDX ] [ 3 * 8 ]					
+ 00000143  48/ 83 D8 00	     1					SBB				RAX, 0
+ 00000147  48/ 89 41 18	     1					MOV				[ RCX ] [ 3 * 8 ], RAX
+ 0000014B  48/ 8B 42 10	     1					MOV				RAX, [ RDX ] [ 2 * 8 ]					
+ 0000014F  48/ 83 D8 00	     1					SBB				RAX, 0
+ 00000153  48/ 89 41 10	     1					MOV				[ RCX ] [ 2 * 8 ], RAX
+ 00000157  48/ 8B 42 08	     1					MOV				RAX, [ RDX ] [ 1 * 8 ]					
+ 0000015B  48/ 83 D8 00	     1					SBB				RAX, 0
+ 0000015F  48/ 89 41 08	     1					MOV				[ RCX ] [ 1 * 8 ], RAX
+ 00000163  48/ 8B 02	     1					MOV				RAX, [ RDX ] [ 0 * 8 ]					
+ 00000166  48/ 83 D8 00	     1					SBB				RAX, 0
+ 0000016A  48/ 89 01	     1					MOV				[ RCX ] [ 0 * 8 ], RAX
+
+ 0000016D  48/ 8D 04 25						LEA				RAX, [ retcode_zero ]
+	   00000000
+ 00000175  0F 42 05						CMOVC			EAX, ret_one
+	   00000000 E
+ 0000017C  C3							RET
+
 					ENDIF
- 000001B3			sub_uT64		ENDP
- 000001B3			ui512_subtract	ENDS											; end of section
+ 0000017D			sub_uT64		ENDP
+ 0000017D			ui512_subtract	ENDS											; end of section
 								END													; end of module
-Microsoft (R) Macro Assembler (x64) Version 14.50.35721.0   12/24/25 13:55:07
+Microsoft (R) Macro Assembler (x64) Version 14.50.35721.0   12/26/25 11:15:43
 ui512_subtraction.asm					     Symbols 2 - 1
 
 
@@ -913,17 +889,17 @@ Segments:
 
                 N a m e                  Length   Align   Class
 
-ui512_subtract . . . . . . . . .	 000001B3 16	  'CODE'	
+ui512_subtract . . . . . . . . .	 0000017D 16	  'CODE'	
 
 
 Procedures, parameters, and locals:
 
                 N a m e                 Type     Value    Attr
 
-sub_uT64 . . . . . . . . . . . .	P 	 00000150 ui512_subtract	Length= 00000063 Public
-sub_u_wb . . . . . . . . . . . .	P 	 00000080 ui512_subtract	Length= 000000C3 Public
-  @@noborrowin . . . . . . . . .	L 	 000000F1 ui512_subtract	
-sub_u  . . . . . . . . . . . . .	P 	 00000010 ui512_subtract	Length= 0000005B Public
+sub_uT64 . . . . . . . . . . . .	P 	 00000110 ui512_subtract	Length= 0000006D Public
+sub_u_wb . . . . . . . . . . . .	P 	 00000090 ui512_subtract	Length= 00000075 Public
+  @@noborrowin . . . . . . . . .	L 	 00000098 ui512_subtract	
+sub_u  . . . . . . . . . . . . .	P 	 00000010 ui512_subtract	Length= 0000006D Public
 
 
 Symbols:
@@ -954,7 +930,7 @@ __UseBMI2  . . . . . . . . . . .	Number	 00000001h
 __UseQ . . . . . . . . . . . . .	Number	 00000001h   
 __UseX . . . . . . . . . . . . .	Number	 00000000h   
 __UseY . . . . . . . . . . . . .	Number	 00000000h   
-__UseZ . . . . . . . . . . . . .	Number	 00000001h   
+__UseZ . . . . . . . . . . . . .	Number	 00000000h   
 __VerifyRegs . . . . . . . . . .	Number	 00000001h   
 add_uT64 . . . . . . . . . . . .	L 	 00000000 External
 add_u_wc . . . . . . . . . . . .	L 	 00000000 External
