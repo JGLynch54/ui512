@@ -9,5 +9,5 @@
   ui512_unit_tests_significance.cpp
   ui512_unit_tests_subtraction.cpp
   ui512_unit_tests_division.cpp
-     Creating library C:\Users\John Lynch\OneDrive\My Projects\source\repos\ui512v1.6\x64\Debug\ui512_unit_tests.lib and object C:\Users\John Lynch\OneDrive\My Projects\source\repos\ui512v1.6\x64\Debug\ui512_unit_tests.exp
-  ui512_unit_tests.vcxproj -> C:\Users\John Lynch\OneDrive\My Projects\source\repos\ui512v1.6\x64\Debug\ui512_unit_tests.dll
+     Creating library C:\Users\John Lynch\source\repos\ui512\x64\Debug\ui512_unit_tests.lib and object C:\Users\John Lynch\source\repos\ui512\x64\Debug\ui512_unit_tests.exp
+  ui512_unit_tests.vcxproj -> C:\Users\John Lynch\source\repos\ui512\x64\Debug\ui512_unit_tests.dll
