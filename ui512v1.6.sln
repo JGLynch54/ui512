@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 18
-VisualStudioVersion = 18.1.11312.151 d18.0
+VisualStudioVersion = 18.1.11312.151
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ui512v1.6", "ui512v1.6.vcxproj", "{D9144C10-737C-41A4-949E-BD83A8A6B785}"
 EndProject
@@ -21,6 +21,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "includes", "includes", "{02
 		includes\ui512_externs.inc = includes\ui512_externs.inc
 		includes\ui512_legalnotes.inc = includes\ui512_legalnotes.inc
 		includes\ui512_macros.inc = includes\ui512_macros.inc
+		ui512_stubexterns.inc = ui512_stubexterns.inc
 	EndProjectSection
 EndProject
 Global

@@ -85,17 +85,17 @@ mult_u_Locals	ENDS
 				ALIGN												; start (both inner and outer) loop aligned
 @@multloop:		LEA				R10,  1 [ R11 ] [ R12]				; R10 now holds index for overflow / product work area (results)
 				MOV				RAX, Q_PTR [ R8 ] [ R12 * 8 ]		; get qword of multiplicand
+				TEST			RAX, RAX							; skip multiply if zero
+				JZ				@@nextmult
 				MUL				Q_PTR [ R9 ] [ R11 * 8 ]			; multiply by qword of multiplier
 				ADD				l_Ptr.product [ R10 * 8 ], RAX			; accummulate in product [R10], this is low-order 64 bits of result of mul
 				DEC				R10									; index for overflow / product area, decrement and preserve carry flag
-@@:
-				ADC				l_Ptr.product [ R10 * 8 ], RDX		; high-order result of 64bit multiply, plus the carry (if any)
-				JNC				@F									; if adding caused carry, propagate it, else next 
+@@:				ADC				l_Ptr.product [ R10 * 8 ], RDX		; high-order result of 64bit multiply, plus the carry (if any)
+				JNC				@@nextmult									; if adding caused carry, propagate it, else next 
 				LEA				RDX, [ 0 ]							; if propagating, add zero plus carry. preserve carry flag
 				DEC				R10									; propagating carry
 				JGE				@B
-@@:																	
-				DEC				R12D								; index to next qword of multiplicand
+@@nextmult:		DEC				R12D								; index to next qword of multiplicand
 				CMP				R12D, R14D							; Done with inner loop? R14W has multiplicand index lower limit 
 				JGE				@@multloop							; no -> do it again
 				LEA				R12D, [ 7 ]							; yes, reset inner loop (multiplicand) index
@@ -168,13 +168,18 @@ mult64_Locals	ENDS
 ; FOR EACH index of 7 thru 1 (omiting 0): fetch qword of multiplicand, multiply, add 128 bit result (RAX, RDX) to running working product
 				FOR				idx, < 7, 6, 5, 4, 3, 2, 1 >		; Note: this is not a 'real' for statement, this is a macro that generates an unwound loop
 				MOV				RAX, l_Ptr.multiplicand + [ idx * 8 ] ; multiplicand [ idx ] qword -> RAX
+				TEST			RAX, RAX							; skip multiply if zero	
+				JZ				@F
 				MUL				R9									; times multiplier -> RAX, RDX
 				ADD				Q_PTR [ RCX ] [ idx * 8 ], RAX		; add RAX to working product [ idx ] qword
 				ADC				Q_PTR [ RCX ] [ (idx - 1) * 8 ], RDX ; and add RDX with carry to [ idx - 1 ] qword of working product
+@@:
 				ENDM
 
 ; Most significant (idx=0), the high order result of the multiply in RDX, goes to the overflow of the caller
 				MOV				RAX, l_Ptr.multiplicand
+				TEST			RAX, RAX							; skip multiply if zero
+				JZ				@@exit
 				MUL				R9
 				ADD				Q_PTR [ RCX ] [ 0 * 8 ], RAX
 				ADC				Q_PTR [ R10 ], RDX					; last qword overflow is also the operation overflow

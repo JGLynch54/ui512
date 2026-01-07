@@ -167,6 +167,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="ui512_stub_testing.cpp" />
     <ClCompile Include="ui512_unit_tests.cpp" />
     <ClCompile Include="ui512_unit_tests_addition.cpp" />
     <ClCompile Include="ui512_unit_tests_bitops.cpp" />
@@ -182,6 +183,7 @@
     <ClInclude Include="CommonTypeDefs.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="ui512_externs.h" />
+    <ClInclude Include="ui512_stubexterns.h" />
     <ClInclude Include="ui512_unit_tests.h" />
   </ItemGroup>
   <ItemGroup>

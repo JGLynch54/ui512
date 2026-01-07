@@ -48,6 +48,9 @@
     <ClCompile Include="ui512_unit_tests_significance.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ui512_stub_testing.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -60,6 +63,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ui512_unit_tests.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ui512_stubexterns.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

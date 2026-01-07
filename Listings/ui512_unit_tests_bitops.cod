@@ -11,9 +11,9 @@ _BSS	SEGMENT
 _Avx2WmemEnabledWeakValue DD 01H DUP (?)
 _BSS	ENDS
 msvcjmc	SEGMENT
-__67805D5D_ui512_unit_tests@pch DB 01H
-__8524D803_predefined C++ types (compiler internal) DB 01H
-__6C4E5558_CommonTypeDefs@h DB 01H
+__BCDB5C9F_ui512_unit_tests@pch DB 01H
+__4F9DAAF3_predefined C++ types (compiler internal) DB 01H
+__5E836398_CommonTypeDefs@h DB 01H
 __20193517_vector DB 01H
 __D1A2D489_xsmf_control@h DB 01H
 __AE5FB554_optional DB 01H
@@ -42,8 +42,8 @@ __2B08D9FB___msvc_print@hpp DB 01H
 __85E81555___msvc_formatter@hpp DB 01H
 __DAF60B2D___msvc_format_ucd_tables@hpp DB 01H
 __E5CD0F93_format DB 01H
-__77EE552A_ui512_unit_tests@h DB 01H
-__021DAEAF_ui512_unit_tests_bitops@cpp DB 01H
+__73AE2530_ui512_unit_tests@h DB 01H
+__4839C0BF_ui512_unit_tests_bitops@cpp DB 01H
 __92E676FC_CppUnitTestLogger@h DB 01H
 __FFBDF365_locale@h DB 01H
 __7A237B76_clocale DB 01H
@@ -158,8 +158,8 @@ __E98FA7A7_cstdlib DB 01H
 __12FEDF4E_sdkddkver@h DB 01H
 __DA6CE5E7_CppUnitTestCommon@h DB 01H
 __A9AD3190_CppUnitTest@h DB 01H
-__E31EC421_pch@h DB 01H
-__63F9177F_pch@cpp DB 01H
+__BFCD2E3E_pch@h DB 01H
+__EE7C4E54_pch@cpp DB 01H
 msvcjmc	ENDS
 PUBLIC	?__empty_global_delete@@YAXPEAX@Z		; __empty_global_delete
 PUBLIC	?__empty_global_delete@@YAXPEAX_K@Z		; __empty_global_delete
@@ -449,7 +449,7 @@ PUBLIC	??_C@_1BO@LIDJJEMN@?$AAT?$AAe?$AAs?$AAt?$AAM?$AAe?$AAt?$AAh?$AAo?$AAd?$AA
 PUBLIC	??_C@_1CC@BCBGLJGP@?$AAu?$AAi?$AA5?$AA1?$AA2?$AAb?$AAi?$AAt?$AAs?$AA_?$AA0?$AA1?$AA_?$AAa?$AAn@ ; `string'
 PUBLIC	??_C@_0FA@FNLLFGKO@ui512_Unit_Tests?3?3ui512_unit_te@ ; `string'
 PUBLIC	??_C@_0JH@OJOCMAPD@?$DP__GetTestMethodInfo_ui512bits_@ ; `string'
-PUBLIC	??_C@_1NI@GJKBPOHE@?$AAC?$AA?3?$AA?2?$AAU?$AAs?$AAe?$AAr?$AAs?$AA?2?$AAS?$AAu?$AAr?$AAf?$AAa?$AAc@ ; `string'
+PUBLIC	??_C@_1KI@FGIJFFOL@?$AAC?$AA?3?$AA?2?$AAU?$AAs?$AAe?$AAr?$AAs?$AA?2?$AAJ?$AAo?$AAh?$AAn?$AA?5?$AAL@ ; `string'
 PUBLIC	?s_Info@?1??__GetTestMethodInfo_ui512bits_01_and@ui512_unit_tests_bitops@ui512_Unit_Tests@@CAPEBUMemberMethodInfo@CppUnitTestFramework@VisualStudio@Microsoft@@XZ@4U4567@A ; `ui512_Unit_Tests::ui512_unit_tests_bitops::__GetTestMethodInfo_ui512bits_01_and'::`2'::s_Info
 PUBLIC	??_C@_1DG@MPBKICBG@?$AAR?$AAe?$AAg?$AAi?$AAs?$AAt?$AAe?$AAr?$AA?5?$AAv?$AAa?$AAl?$AAi?$AAd?$AAa@ ; `string'
 PUBLIC	??_C@_0FL@OOKPACMO@and_u?5function?5register?5validat@ ; `string'
@@ -3055,7 +3055,7 @@ testdata$_B_method	SEGMENT
 	DQ	FLAT:??_C@_1DK@EKHFAILJ@?$AAu?$AAi?$AA5?$AA1?$AA2?$AAb?$AAi?$AAt?$AAs?$AA_?$AA0?$AA5?$AA_?$AAn?$AAo@
 	DQ	FLAT:??_C@_0FM@LDNMFOLA@ui512_Unit_Tests?3?3ui512_unit_te@
 	DQ	FLAT:??_C@_0KD@BKAKAIID@?$DP__GetTestMethodInfo_ui512bits_@
-	DQ	FLAT:??_C@_1NI@GJKBPOHE@?$AAC?$AA?3?$AA?2?$AAU?$AAs?$AAe?$AAr?$AAs?$AA?2?$AAS?$AAu?$AAr?$AAf?$AAa?$AAc@
+	DQ	FLAT:??_C@_1KI@FGIJFFOL@?$AAC?$AA?3?$AA?2?$AAU?$AAs?$AAe?$AAr?$AAs?$AA?2?$AAJ?$AAo?$AAh?$AAn?$AA?5?$AAL@
 	DD	0faH
 	ORG $+4
 testdata$_B_method	ENDS
@@ -3103,7 +3103,7 @@ testdata$_B_method	SEGMENT
 	DQ	FLAT:??_C@_1CC@MINAFIOJ@?$AAu?$AAi?$AA5?$AA1?$AA2?$AAb?$AAi?$AAt?$AAs?$AA_?$AA0?$AA4?$AA_?$AAn?$AAo@
 	DQ	FLAT:??_C@_0FA@BOBFKPCN@ui512_Unit_Tests?3?3ui512_unit_te@
 	DQ	FLAT:??_C@_0JH@JBNIAOFL@?$DP__GetTestMethodInfo_ui512bits_@
-	DQ	FLAT:??_C@_1NI@GJKBPOHE@?$AAC?$AA?3?$AA?2?$AAU?$AAs?$AAe?$AAr?$AAs?$AA?2?$AAS?$AAu?$AAr?$AAf?$AAa?$AAc@
+	DQ	FLAT:??_C@_1KI@FGIJFFOL@?$AAC?$AA?3?$AA?2?$AAU?$AAs?$AAe?$AAr?$AAs?$AA?2?$AAJ?$AAo?$AAh?$AAn?$AA?5?$AAL@
 	DD	0d7H
 	ORG $+4
 testdata$_B_method	ENDS
@@ -3153,7 +3153,7 @@ testdata$_B_method	SEGMENT
 	DQ	FLAT:??_C@_1DK@NCBPIINN@?$AAu?$AAi?$AA5?$AA1?$AA2?$AAb?$AAi?$AAt?$AAs?$AA_?$AA0?$AA3?$AA_?$AAx?$AAo@
 	DQ	FLAT:??_C@_0FM@PANEPOPJ@ui512_Unit_Tests?3?3ui512_unit_te@
 	DQ	FLAT:??_C@_0KD@PLIMLBHK@?$DP__GetTestMethodInfo_ui512bits_@
-	DQ	FLAT:??_C@_1NI@GJKBPOHE@?$AAC?$AA?3?$AA?2?$AAU?$AAs?$AAe?$AAr?$AAs?$AA?2?$AAS?$AAu?$AAr?$AAf?$AAa?$AAc@
+	DQ	FLAT:??_C@_1KI@FGIJFFOL@?$AAC?$AA?3?$AA?2?$AAU?$AAs?$AAe?$AAr?$AAs?$AA?2?$AAJ?$AAo?$AAh?$AAn?$AA?5?$AAL@
 	DD	0c1H
 	ORG $+4
 testdata$_B_method	ENDS
@@ -3201,7 +3201,7 @@ testdata$_B_method	SEGMENT
 	DQ	FLAT:??_C@_1CC@CDPHNGBG@?$AAu?$AAi?$AA5?$AA1?$AA2?$AAb?$AAi?$AAt?$AAs?$AA_?$AA0?$AA3?$AA_?$AAx?$AAo@
 	DQ	FLAT:??_C@_0FA@CADIDAFA@ui512_Unit_Tests?3?3ui512_unit_te@
 	DQ	FLAT:??_C@_0JH@LDIGONBD@?$DP__GetTestMethodInfo_ui512bits_@
-	DQ	FLAT:??_C@_1NI@GJKBPOHE@?$AAC?$AA?3?$AA?2?$AAU?$AAs?$AAe?$AAr?$AAs?$AA?2?$AAS?$AAu?$AAr?$AAf?$AAa?$AAc@
+	DQ	FLAT:??_C@_1KI@FGIJFFOL@?$AAC?$AA?3?$AA?2?$AAU?$AAs?$AAe?$AAr?$AAs?$AA?2?$AAJ?$AAo?$AAh?$AAn?$AA?5?$AAL@
 	DD	09fH
 	ORG $+4
 testdata$_B_method	ENDS
@@ -3250,7 +3250,7 @@ testdata$_B_method	SEGMENT
 	DQ	FLAT:??_C@_1DI@LGIKPAHM@?$AAu?$AAi?$AA5?$AA1?$AA2?$AAb?$AAi?$AAt?$AAs?$AA_?$AA0?$AA2?$AA_?$AAo?$AAr@
 	DQ	FLAT:??_C@_0FL@DCOHCOOI@ui512_Unit_Tests?3?3ui512_unit_te@
 	DQ	FLAT:??_C@_0KC@CELDGGPN@?$DP__GetTestMethodInfo_ui512bits_@
-	DQ	FLAT:??_C@_1NI@GJKBPOHE@?$AAC?$AA?3?$AA?2?$AAU?$AAs?$AAe?$AAr?$AAs?$AA?2?$AAS?$AAu?$AAr?$AAf?$AAa?$AAc@
+	DQ	FLAT:??_C@_1KI@FGIJFFOL@?$AAC?$AA?3?$AA?2?$AAU?$AAs?$AAe?$AAr?$AAs?$AA?2?$AAJ?$AAo?$AAh?$AAn?$AA?5?$AAL@
 	DD	089H
 	ORG $+4
 testdata$_B_method	ENDS
@@ -3298,7 +3298,7 @@ testdata$_B_method	SEGMENT
 	DQ	FLAT:??_C@_1CA@ELMPLLFG@?$AAu?$AAi?$AA5?$AA1?$AA2?$AAb?$AAi?$AAt?$AAs?$AA_?$AA0?$AA2?$AA_?$AAo?$AAr@
 	DQ	FLAT:??_C@_0EP@DCNLADDM@ui512_Unit_Tests?3?3ui512_unit_te@
 	DQ	FLAT:??_C@_0JG@CNAOEAJM@?$DP__GetTestMethodInfo_ui512bits_@
-	DQ	FLAT:??_C@_1NI@GJKBPOHE@?$AAC?$AA?3?$AA?2?$AAU?$AAs?$AAe?$AAr?$AAs?$AA?2?$AAS?$AAu?$AAr?$AAf?$AAa?$AAc@
+	DQ	FLAT:??_C@_1KI@FGIJFFOL@?$AAC?$AA?3?$AA?2?$AAU?$AAs?$AAe?$AAr?$AAs?$AA?2?$AAJ?$AAo?$AAh?$AAn?$AA?5?$AAL@
 	DD	066H
 	ORG $+4
 testdata$_B_method	ENDS
@@ -3366,7 +3366,7 @@ testdata$_B_method	SEGMENT
 	DQ	FLAT:??_C@_1DK@OJLEEDH@?$AAu?$AAi?$AA5?$AA1?$AA2?$AAb?$AAi?$AAt?$AAs?$AA_?$AA0?$AA1?$AA_?$AAa?$AAn@
 	DQ	FLAT:??_C@_0FM@OJNHAJAI@ui512_Unit_Tests?3?3ui512_unit_te@
 	DQ	FLAT:??_C@_0KD@MBGBBPKA@?$DP__GetTestMethodInfo_ui512bits_@
-	DQ	FLAT:??_C@_1NI@GJKBPOHE@?$AAC?$AA?3?$AA?2?$AAU?$AAs?$AAe?$AAr?$AAs?$AA?2?$AAS?$AAu?$AAr?$AAf?$AAa?$AAc@
+	DQ	FLAT:??_C@_1KI@FGIJFFOL@?$AAC?$AA?3?$AA?2?$AAU?$AAs?$AAe?$AAr?$AAs?$AA?2?$AAJ?$AAo?$AAh?$AAn?$AA?5?$AAL@
 	DD	050H
 	ORG $+4
 testdata$_B_method	ENDS
@@ -3413,26 +3413,22 @@ _DATA	SEGMENT
 	DQ	0000000000000000H
 	DQ	FLAT:?s_Metadata@?1??__GetTestMethodInfo_ui512bits_01_and@ui512_unit_tests_bitops@ui512_Unit_Tests@@CAPEBUMemberMethodInfo@CppUnitTestFramework@VisualStudio@Microsoft@@XZ@4UMethodMetadata@567@B
 _DATA	ENDS
-;	COMDAT ??_C@_1NI@GJKBPOHE@?$AAC?$AA?3?$AA?2?$AAU?$AAs?$AAe?$AAr?$AAs?$AA?2?$AAS?$AAu?$AAr?$AAf?$AAa?$AAc@
+;	COMDAT ??_C@_1KI@FGIJFFOL@?$AAC?$AA?3?$AA?2?$AAU?$AAs?$AAe?$AAr?$AAs?$AA?2?$AAJ?$AAo?$AAh?$AAn?$AA?5?$AAL@
 CONST	SEGMENT
-??_C@_1NI@GJKBPOHE@?$AAC?$AA?3?$AA?2?$AAU?$AAs?$AAe?$AAr?$AAs?$AA?2?$AAS?$AAu?$AAr?$AAf?$AAa?$AAc@ DB 'C'
+??_C@_1KI@FGIJFFOL@?$AAC?$AA?3?$AA?2?$AAU?$AAs?$AAe?$AAr?$AAs?$AA?2?$AAJ?$AAo?$AAh?$AAn?$AA?5?$AAL@ DB 'C'
 	DB	00H, ':', 00H, '\', 00H, 'U', 00H, 's', 00H, 'e', 00H, 'r', 00H
-	DB	's', 00H, '\', 00H, 'S', 00H, 'u', 00H, 'r', 00H, 'f', 00H, 'a'
-	DB	00H, 'c', 00H, 'e', 00H, ' ', 00H, 'P', 00H, 'r', 00H, 'o', 00H
-	DB	' ', 00H, '4', 00H, '\', 00H, 'O', 00H, 'n', 00H, 'e', 00H, 'D'
-	DB	00H, 'r', 00H, 'i', 00H, 'v', 00H, 'e', 00H, '\', 00H, 'M', 00H
-	DB	'y', 00H, ' ', 00H, 'P', 00H, 'r', 00H, 'o', 00H, 'j', 00H, 'e'
-	DB	00H, 'c', 00H, 't', 00H, 's', 00H, '\', 00H, 's', 00H, 'o', 00H
-	DB	'u', 00H, 'r', 00H, 'c', 00H, 'e', 00H, '\', 00H, 'r', 00H, 'e'
-	DB	00H, 'p', 00H, 'o', 00H, 's', 00H, '\', 00H, 'u', 00H, 'i', 00H
-	DB	'5', 00H, '1', 00H, '2', 00H, '\', 00H, 'u', 00H, 'i', 00H, '5'
-	DB	00H, '1', 00H, '2', 00H, '_', 00H, 'u', 00H, 'n', 00H, 'i', 00H
-	DB	't', 00H, '_', 00H, 't', 00H, 'e', 00H, 's', 00H, 't', 00H, 's'
-	DB	00H, '\', 00H, 'u', 00H, 'i', 00H, '5', 00H, '1', 00H, '2', 00H
-	DB	'_', 00H, 'u', 00H, 'n', 00H, 'i', 00H, 't', 00H, '_', 00H, 't'
-	DB	00H, 'e', 00H, 's', 00H, 't', 00H, 's', 00H, '_', 00H, 'b', 00H
-	DB	'i', 00H, 't', 00H, 'o', 00H, 'p', 00H, 's', 00H, '.', 00H, 'c'
-	DB	00H, 'p', 00H, 'p', 00H, 00H, 00H		; `string'
+	DB	's', 00H, '\', 00H, 'J', 00H, 'o', 00H, 'h', 00H, 'n', 00H, ' '
+	DB	00H, 'L', 00H, 'y', 00H, 'n', 00H, 'c', 00H, 'h', 00H, '\', 00H
+	DB	's', 00H, 'o', 00H, 'u', 00H, 'r', 00H, 'c', 00H, 'e', 00H, '\'
+	DB	00H, 'r', 00H, 'e', 00H, 'p', 00H, 'o', 00H, 's', 00H, '\', 00H
+	DB	'u', 00H, 'i', 00H, '5', 00H, '1', 00H, '2', 00H, '\', 00H, 'u'
+	DB	00H, 'i', 00H, '5', 00H, '1', 00H, '2', 00H, '_', 00H, 'u', 00H
+	DB	'n', 00H, 'i', 00H, 't', 00H, '_', 00H, 't', 00H, 'e', 00H, 's'
+	DB	00H, 't', 00H, 's', 00H, '\', 00H, 'u', 00H, 'i', 00H, '5', 00H
+	DB	'1', 00H, '2', 00H, '_', 00H, 'u', 00H, 'n', 00H, 'i', 00H, 't'
+	DB	00H, '_', 00H, 't', 00H, 'e', 00H, 's', 00H, 't', 00H, 's', 00H
+	DB	'_', 00H, 'b', 00H, 'i', 00H, 't', 00H, 'o', 00H, 'p', 00H, 's'
+	DB	00H, '.', 00H, 'c', 00H, 'p', 00H, 'p', 00H, 00H, 00H ; `string'
 CONST	ENDS
 ;	COMDAT ??_C@_0JH@OJOCMAPD@?$DP__GetTestMethodInfo_ui512bits_@
 CONST	SEGMENT
@@ -3467,7 +3463,7 @@ testdata$_B_method	SEGMENT
 	DQ	FLAT:??_C@_1CC@BCBGLJGP@?$AAu?$AAi?$AA5?$AA1?$AA2?$AAb?$AAi?$AAt?$AAs?$AA_?$AA0?$AA1?$AA_?$AAa?$AAn@
 	DQ	FLAT:??_C@_0FA@FNLLFGKO@ui512_Unit_Tests?3?3ui512_unit_te@
 	DQ	FLAT:??_C@_0JH@OJOCMAPD@?$DP__GetTestMethodInfo_ui512bits_@
-	DQ	FLAT:??_C@_1NI@GJKBPOHE@?$AAC?$AA?3?$AA?2?$AAU?$AAs?$AAe?$AAr?$AAs?$AA?2?$AAS?$AAu?$AAr?$AAf?$AAa?$AAc@
+	DQ	FLAT:??_C@_1KI@FGIJFFOL@?$AAC?$AA?3?$AA?2?$AAU?$AAs?$AAe?$AAr?$AAs?$AA?2?$AAJ?$AAo?$AAh?$AAn?$AA?5?$AAL@
 	DD	02dH
 	ORG $+4
 testdata$_B_method	ENDS
@@ -13588,7 +13584,7 @@ $LN4:
 ??0ui512_unit_tests_bitops@ui512_Unit_Tests@@QEAA@XZ ENDP ; ui512_Unit_Tests::ui512_unit_tests_bitops::ui512_unit_tests_bitops
 _TEXT	ENDS
 ; Function compile flags: /Odtp /RTCsu /ZI
-; File C:\Users\Surface Pro 4\OneDrive\My Projects\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_bitops.cpp
+; File C:\Users\John Lynch\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_bitops.cpp
 ;	COMDAT ?ui512bits_05_not_performance@ui512_unit_tests_bitops@ui512_Unit_Tests@@AEAAXXZ
 _TEXT	SEGMENT
 No1$ = 16
@@ -13620,7 +13616,7 @@ $LN3:
   00037	48 89 85 38 02
 	00 00		 mov	 QWORD PTR __$ArrayPad$[rbp], rax
   0003e	48 8d 0d 00 00
-	00 00		 lea	 rcx, OFFSET FLAT:__021DAEAF_ui512_unit_tests_bitops@cpp
+	00 00		 lea	 rcx, OFFSET FLAT:__4839C0BF_ui512_unit_tests_bitops@cpp
   00045	e8 00 00 00 00	 call	 __CheckForDebuggerJustMyCode
   0004a	90		 npad	 1
 
@@ -13740,7 +13736,7 @@ $LN3:
 ?ui512bits_05_not_performance@ui512_unit_tests_bitops@ui512_Unit_Tests@@AEAAXXZ ENDP ; ui512_Unit_Tests::ui512_unit_tests_bitops::ui512bits_05_not_performance
 _TEXT	ENDS
 ; Function compile flags: /Odtp /RTCsu /ZI
-; File C:\Users\Surface Pro 4\OneDrive\My Projects\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_bitops.cpp
+; File C:\Users\John Lynch\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_bitops.cpp
 ;	COMDAT ?__GetTestMethodInfo_ui512bits_05_not_performance@ui512_unit_tests_bitops@ui512_Unit_Tests@@CAPEBUMemberMethodInfo@CppUnitTestFramework@VisualStudio@Microsoft@@XZ
 _TEXT	SEGMENT
 ?__GetTestMethodInfo_ui512bits_05_not_performance@ui512_unit_tests_bitops@ui512_Unit_Tests@@CAPEBUMemberMethodInfo@CppUnitTestFramework@VisualStudio@Microsoft@@XZ PROC ; ui512_Unit_Tests::ui512_unit_tests_bitops::__GetTestMethodInfo_ui512bits_05_not_performance, COMDAT
@@ -13754,7 +13750,7 @@ $LN3:
 	00 00		 sub	 rsp, 232		; 000000e8H
   0000a	48 8d 6c 24 20	 lea	 rbp, QWORD PTR [rsp+32]
   0000f	48 8d 0d 00 00
-	00 00		 lea	 rcx, OFFSET FLAT:__021DAEAF_ui512_unit_tests_bitops@cpp
+	00 00		 lea	 rcx, OFFSET FLAT:__4839C0BF_ui512_unit_tests_bitops@cpp
   00016	e8 00 00 00 00	 call	 __CheckForDebuggerJustMyCode
   0001b	90		 npad	 1
   0001c	e8 00 00 00 00	 call	 ?__GetTestClassInfo@?$TestClass@Vui512_unit_tests_bitops@ui512_Unit_Tests@@@CppUnitTestFramework@VisualStudio@Microsoft@@SAPEBUTestClassInfo@234@XZ ; Microsoft::VisualStudio::CppUnitTestFramework::TestClass<ui512_Unit_Tests::ui512_unit_tests_bitops>::__GetTestClassInfo
@@ -13775,7 +13771,7 @@ $LN3:
 ?__GetTestMethodInfo_ui512bits_05_not_performance@ui512_unit_tests_bitops@ui512_Unit_Tests@@CAPEBUMemberMethodInfo@CppUnitTestFramework@VisualStudio@Microsoft@@XZ ENDP ; ui512_Unit_Tests::ui512_unit_tests_bitops::__GetTestMethodInfo_ui512bits_05_not_performance
 _TEXT	ENDS
 ; Function compile flags: /Odtp /RTCsu /ZI
-; File C:\Users\Surface Pro 4\OneDrive\My Projects\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_bitops.cpp
+; File C:\Users\John Lynch\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_bitops.cpp
 ;	COMDAT ?ui512bits_04_not@ui512_unit_tests_bitops@ui512_Unit_Tests@@AEAAXXZ
 _TEXT	SEGMENT
 seed$ = 8
@@ -13825,7 +13821,7 @@ $LN16:
   00041	48 89 85 78 05
 	00 00		 mov	 QWORD PTR __$ArrayPad$[rbp], rax
   00048	48 8d 0d 00 00
-	00 00		 lea	 rcx, OFFSET FLAT:__021DAEAF_ui512_unit_tests_bitops@cpp
+	00 00		 lea	 rcx, OFFSET FLAT:__4839C0BF_ui512_unit_tests_bitops@cpp
   0004f	e8 00 00 00 00	 call	 __CheckForDebuggerJustMyCode
   00054	90		 npad	 1
 
@@ -14306,7 +14302,7 @@ this$ = 1504
 ?dtor$3@?0??ui512bits_04_not@ui512_unit_tests_bitops@ui512_Unit_Tests@@AEAAXXZ@4HA ENDP ; `ui512_Unit_Tests::ui512_unit_tests_bitops::ui512bits_04_not'::`1'::dtor$3
 text$x	ENDS
 ; Function compile flags: /Odtp /RTCsu /ZI
-; File C:\Users\Surface Pro 4\OneDrive\My Projects\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_bitops.cpp
+; File C:\Users\John Lynch\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_bitops.cpp
 ;	COMDAT ?__GetTestMethodInfo_ui512bits_04_not@ui512_unit_tests_bitops@ui512_Unit_Tests@@CAPEBUMemberMethodInfo@CppUnitTestFramework@VisualStudio@Microsoft@@XZ
 _TEXT	SEGMENT
 ?__GetTestMethodInfo_ui512bits_04_not@ui512_unit_tests_bitops@ui512_Unit_Tests@@CAPEBUMemberMethodInfo@CppUnitTestFramework@VisualStudio@Microsoft@@XZ PROC ; ui512_Unit_Tests::ui512_unit_tests_bitops::__GetTestMethodInfo_ui512bits_04_not, COMDAT
@@ -14320,7 +14316,7 @@ $LN3:
 	00 00		 sub	 rsp, 232		; 000000e8H
   0000a	48 8d 6c 24 20	 lea	 rbp, QWORD PTR [rsp+32]
   0000f	48 8d 0d 00 00
-	00 00		 lea	 rcx, OFFSET FLAT:__021DAEAF_ui512_unit_tests_bitops@cpp
+	00 00		 lea	 rcx, OFFSET FLAT:__4839C0BF_ui512_unit_tests_bitops@cpp
   00016	e8 00 00 00 00	 call	 __CheckForDebuggerJustMyCode
   0001b	90		 npad	 1
   0001c	e8 00 00 00 00	 call	 ?__GetTestClassInfo@?$TestClass@Vui512_unit_tests_bitops@ui512_Unit_Tests@@@CppUnitTestFramework@VisualStudio@Microsoft@@SAPEBUTestClassInfo@234@XZ ; Microsoft::VisualStudio::CppUnitTestFramework::TestClass<ui512_Unit_Tests::ui512_unit_tests_bitops>::__GetTestClassInfo
@@ -14341,7 +14337,7 @@ $LN3:
 ?__GetTestMethodInfo_ui512bits_04_not@ui512_unit_tests_bitops@ui512_Unit_Tests@@CAPEBUMemberMethodInfo@CppUnitTestFramework@VisualStudio@Microsoft@@XZ ENDP ; ui512_Unit_Tests::ui512_unit_tests_bitops::__GetTestMethodInfo_ui512bits_04_not
 _TEXT	ENDS
 ; Function compile flags: /Odtp /RTCsu /ZI
-; File C:\Users\Surface Pro 4\OneDrive\My Projects\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_bitops.cpp
+; File C:\Users\John Lynch\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_bitops.cpp
 ;	COMDAT ?ui512bits_03_xor_performance@ui512_unit_tests_bitops@ui512_Unit_Tests@@AEAAXXZ
 _TEXT	SEGMENT
 No1$ = 16
@@ -14373,7 +14369,7 @@ $LN3:
   00037	48 89 85 38 02
 	00 00		 mov	 QWORD PTR __$ArrayPad$[rbp], rax
   0003e	48 8d 0d 00 00
-	00 00		 lea	 rcx, OFFSET FLAT:__021DAEAF_ui512_unit_tests_bitops@cpp
+	00 00		 lea	 rcx, OFFSET FLAT:__4839C0BF_ui512_unit_tests_bitops@cpp
   00045	e8 00 00 00 00	 call	 __CheckForDebuggerJustMyCode
   0004a	90		 npad	 1
 
@@ -14493,7 +14489,7 @@ $LN3:
 ?ui512bits_03_xor_performance@ui512_unit_tests_bitops@ui512_Unit_Tests@@AEAAXXZ ENDP ; ui512_Unit_Tests::ui512_unit_tests_bitops::ui512bits_03_xor_performance
 _TEXT	ENDS
 ; Function compile flags: /Odtp /RTCsu /ZI
-; File C:\Users\Surface Pro 4\OneDrive\My Projects\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_bitops.cpp
+; File C:\Users\John Lynch\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_bitops.cpp
 ;	COMDAT ?__GetTestMethodInfo_ui512bits_03_xor_performance@ui512_unit_tests_bitops@ui512_Unit_Tests@@CAPEBUMemberMethodInfo@CppUnitTestFramework@VisualStudio@Microsoft@@XZ
 _TEXT	SEGMENT
 ?__GetTestMethodInfo_ui512bits_03_xor_performance@ui512_unit_tests_bitops@ui512_Unit_Tests@@CAPEBUMemberMethodInfo@CppUnitTestFramework@VisualStudio@Microsoft@@XZ PROC ; ui512_Unit_Tests::ui512_unit_tests_bitops::__GetTestMethodInfo_ui512bits_03_xor_performance, COMDAT
@@ -14507,7 +14503,7 @@ $LN3:
 	00 00		 sub	 rsp, 232		; 000000e8H
   0000a	48 8d 6c 24 20	 lea	 rbp, QWORD PTR [rsp+32]
   0000f	48 8d 0d 00 00
-	00 00		 lea	 rcx, OFFSET FLAT:__021DAEAF_ui512_unit_tests_bitops@cpp
+	00 00		 lea	 rcx, OFFSET FLAT:__4839C0BF_ui512_unit_tests_bitops@cpp
   00016	e8 00 00 00 00	 call	 __CheckForDebuggerJustMyCode
   0001b	90		 npad	 1
   0001c	e8 00 00 00 00	 call	 ?__GetTestClassInfo@?$TestClass@Vui512_unit_tests_bitops@ui512_Unit_Tests@@@CppUnitTestFramework@VisualStudio@Microsoft@@SAPEBUTestClassInfo@234@XZ ; Microsoft::VisualStudio::CppUnitTestFramework::TestClass<ui512_Unit_Tests::ui512_unit_tests_bitops>::__GetTestClassInfo
@@ -14528,7 +14524,7 @@ $LN3:
 ?__GetTestMethodInfo_ui512bits_03_xor_performance@ui512_unit_tests_bitops@ui512_Unit_Tests@@CAPEBUMemberMethodInfo@CppUnitTestFramework@VisualStudio@Microsoft@@XZ ENDP ; ui512_Unit_Tests::ui512_unit_tests_bitops::__GetTestMethodInfo_ui512bits_03_xor_performance
 _TEXT	ENDS
 ; Function compile flags: /Odtp /RTCsu /ZI
-; File C:\Users\Surface Pro 4\OneDrive\My Projects\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_bitops.cpp
+; File C:\Users\John Lynch\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_bitops.cpp
 ;	COMDAT ?ui512bits_03_xor@ui512_unit_tests_bitops@ui512_Unit_Tests@@AEAAXXZ
 _TEXT	SEGMENT
 seed$ = 8
@@ -14580,7 +14576,7 @@ $LN16:
   00041	48 89 85 58 06
 	00 00		 mov	 QWORD PTR __$ArrayPad$[rbp], rax
   00048	48 8d 0d 00 00
-	00 00		 lea	 rcx, OFFSET FLAT:__021DAEAF_ui512_unit_tests_bitops@cpp
+	00 00		 lea	 rcx, OFFSET FLAT:__4839C0BF_ui512_unit_tests_bitops@cpp
   0004f	e8 00 00 00 00	 call	 __CheckForDebuggerJustMyCode
   00054	90		 npad	 1
 
@@ -15071,7 +15067,7 @@ this$ = 1728
 ?dtor$3@?0??ui512bits_03_xor@ui512_unit_tests_bitops@ui512_Unit_Tests@@AEAAXXZ@4HA ENDP ; `ui512_Unit_Tests::ui512_unit_tests_bitops::ui512bits_03_xor'::`1'::dtor$3
 text$x	ENDS
 ; Function compile flags: /Odtp /RTCsu /ZI
-; File C:\Users\Surface Pro 4\OneDrive\My Projects\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_bitops.cpp
+; File C:\Users\John Lynch\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_bitops.cpp
 ;	COMDAT ?__GetTestMethodInfo_ui512bits_03_xor@ui512_unit_tests_bitops@ui512_Unit_Tests@@CAPEBUMemberMethodInfo@CppUnitTestFramework@VisualStudio@Microsoft@@XZ
 _TEXT	SEGMENT
 ?__GetTestMethodInfo_ui512bits_03_xor@ui512_unit_tests_bitops@ui512_Unit_Tests@@CAPEBUMemberMethodInfo@CppUnitTestFramework@VisualStudio@Microsoft@@XZ PROC ; ui512_Unit_Tests::ui512_unit_tests_bitops::__GetTestMethodInfo_ui512bits_03_xor, COMDAT
@@ -15085,7 +15081,7 @@ $LN3:
 	00 00		 sub	 rsp, 232		; 000000e8H
   0000a	48 8d 6c 24 20	 lea	 rbp, QWORD PTR [rsp+32]
   0000f	48 8d 0d 00 00
-	00 00		 lea	 rcx, OFFSET FLAT:__021DAEAF_ui512_unit_tests_bitops@cpp
+	00 00		 lea	 rcx, OFFSET FLAT:__4839C0BF_ui512_unit_tests_bitops@cpp
   00016	e8 00 00 00 00	 call	 __CheckForDebuggerJustMyCode
   0001b	90		 npad	 1
   0001c	e8 00 00 00 00	 call	 ?__GetTestClassInfo@?$TestClass@Vui512_unit_tests_bitops@ui512_Unit_Tests@@@CppUnitTestFramework@VisualStudio@Microsoft@@SAPEBUTestClassInfo@234@XZ ; Microsoft::VisualStudio::CppUnitTestFramework::TestClass<ui512_Unit_Tests::ui512_unit_tests_bitops>::__GetTestClassInfo
@@ -15106,7 +15102,7 @@ $LN3:
 ?__GetTestMethodInfo_ui512bits_03_xor@ui512_unit_tests_bitops@ui512_Unit_Tests@@CAPEBUMemberMethodInfo@CppUnitTestFramework@VisualStudio@Microsoft@@XZ ENDP ; ui512_Unit_Tests::ui512_unit_tests_bitops::__GetTestMethodInfo_ui512bits_03_xor
 _TEXT	ENDS
 ; Function compile flags: /Odtp /RTCsu /ZI
-; File C:\Users\Surface Pro 4\OneDrive\My Projects\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_bitops.cpp
+; File C:\Users\John Lynch\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_bitops.cpp
 ;	COMDAT ?ui512bits_02_or_performance@ui512_unit_tests_bitops@ui512_Unit_Tests@@AEAAXXZ
 _TEXT	SEGMENT
 No1$ = 16
@@ -15138,7 +15134,7 @@ $LN3:
   00037	48 89 85 38 02
 	00 00		 mov	 QWORD PTR __$ArrayPad$[rbp], rax
   0003e	48 8d 0d 00 00
-	00 00		 lea	 rcx, OFFSET FLAT:__021DAEAF_ui512_unit_tests_bitops@cpp
+	00 00		 lea	 rcx, OFFSET FLAT:__4839C0BF_ui512_unit_tests_bitops@cpp
   00045	e8 00 00 00 00	 call	 __CheckForDebuggerJustMyCode
   0004a	90		 npad	 1
 
@@ -15258,7 +15254,7 @@ $LN3:
 ?ui512bits_02_or_performance@ui512_unit_tests_bitops@ui512_Unit_Tests@@AEAAXXZ ENDP ; ui512_Unit_Tests::ui512_unit_tests_bitops::ui512bits_02_or_performance
 _TEXT	ENDS
 ; Function compile flags: /Odtp /RTCsu /ZI
-; File C:\Users\Surface Pro 4\OneDrive\My Projects\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_bitops.cpp
+; File C:\Users\John Lynch\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_bitops.cpp
 ;	COMDAT ?__GetTestMethodInfo_ui512bits_02_or_performance@ui512_unit_tests_bitops@ui512_Unit_Tests@@CAPEBUMemberMethodInfo@CppUnitTestFramework@VisualStudio@Microsoft@@XZ
 _TEXT	SEGMENT
 ?__GetTestMethodInfo_ui512bits_02_or_performance@ui512_unit_tests_bitops@ui512_Unit_Tests@@CAPEBUMemberMethodInfo@CppUnitTestFramework@VisualStudio@Microsoft@@XZ PROC ; ui512_Unit_Tests::ui512_unit_tests_bitops::__GetTestMethodInfo_ui512bits_02_or_performance, COMDAT
@@ -15272,7 +15268,7 @@ $LN3:
 	00 00		 sub	 rsp, 232		; 000000e8H
   0000a	48 8d 6c 24 20	 lea	 rbp, QWORD PTR [rsp+32]
   0000f	48 8d 0d 00 00
-	00 00		 lea	 rcx, OFFSET FLAT:__021DAEAF_ui512_unit_tests_bitops@cpp
+	00 00		 lea	 rcx, OFFSET FLAT:__4839C0BF_ui512_unit_tests_bitops@cpp
   00016	e8 00 00 00 00	 call	 __CheckForDebuggerJustMyCode
   0001b	90		 npad	 1
   0001c	e8 00 00 00 00	 call	 ?__GetTestClassInfo@?$TestClass@Vui512_unit_tests_bitops@ui512_Unit_Tests@@@CppUnitTestFramework@VisualStudio@Microsoft@@SAPEBUTestClassInfo@234@XZ ; Microsoft::VisualStudio::CppUnitTestFramework::TestClass<ui512_Unit_Tests::ui512_unit_tests_bitops>::__GetTestClassInfo
@@ -15293,7 +15289,7 @@ $LN3:
 ?__GetTestMethodInfo_ui512bits_02_or_performance@ui512_unit_tests_bitops@ui512_Unit_Tests@@CAPEBUMemberMethodInfo@CppUnitTestFramework@VisualStudio@Microsoft@@XZ ENDP ; ui512_Unit_Tests::ui512_unit_tests_bitops::__GetTestMethodInfo_ui512bits_02_or_performance
 _TEXT	ENDS
 ; Function compile flags: /Odtp /RTCsu /ZI
-; File C:\Users\Surface Pro 4\OneDrive\My Projects\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_bitops.cpp
+; File C:\Users\John Lynch\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_bitops.cpp
 ;	COMDAT ?ui512bits_02_or@ui512_unit_tests_bitops@ui512_Unit_Tests@@AEAAXXZ
 _TEXT	SEGMENT
 seed$ = 8
@@ -15344,7 +15340,7 @@ $LN16:
   00041	48 89 85 58 06
 	00 00		 mov	 QWORD PTR __$ArrayPad$[rbp], rax
   00048	48 8d 0d 00 00
-	00 00		 lea	 rcx, OFFSET FLAT:__021DAEAF_ui512_unit_tests_bitops@cpp
+	00 00		 lea	 rcx, OFFSET FLAT:__4839C0BF_ui512_unit_tests_bitops@cpp
   0004f	e8 00 00 00 00	 call	 __CheckForDebuggerJustMyCode
   00054	90		 npad	 1
 
@@ -15831,7 +15827,7 @@ this$ = 1728
 ?dtor$3@?0??ui512bits_02_or@ui512_unit_tests_bitops@ui512_Unit_Tests@@AEAAXXZ@4HA ENDP ; `ui512_Unit_Tests::ui512_unit_tests_bitops::ui512bits_02_or'::`1'::dtor$3
 text$x	ENDS
 ; Function compile flags: /Odtp /RTCsu /ZI
-; File C:\Users\Surface Pro 4\OneDrive\My Projects\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_bitops.cpp
+; File C:\Users\John Lynch\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_bitops.cpp
 ;	COMDAT ?__GetTestMethodInfo_ui512bits_02_or@ui512_unit_tests_bitops@ui512_Unit_Tests@@CAPEBUMemberMethodInfo@CppUnitTestFramework@VisualStudio@Microsoft@@XZ
 _TEXT	SEGMENT
 ?__GetTestMethodInfo_ui512bits_02_or@ui512_unit_tests_bitops@ui512_Unit_Tests@@CAPEBUMemberMethodInfo@CppUnitTestFramework@VisualStudio@Microsoft@@XZ PROC ; ui512_Unit_Tests::ui512_unit_tests_bitops::__GetTestMethodInfo_ui512bits_02_or, COMDAT
@@ -15845,7 +15841,7 @@ $LN3:
 	00 00		 sub	 rsp, 232		; 000000e8H
   0000a	48 8d 6c 24 20	 lea	 rbp, QWORD PTR [rsp+32]
   0000f	48 8d 0d 00 00
-	00 00		 lea	 rcx, OFFSET FLAT:__021DAEAF_ui512_unit_tests_bitops@cpp
+	00 00		 lea	 rcx, OFFSET FLAT:__4839C0BF_ui512_unit_tests_bitops@cpp
   00016	e8 00 00 00 00	 call	 __CheckForDebuggerJustMyCode
   0001b	90		 npad	 1
   0001c	e8 00 00 00 00	 call	 ?__GetTestClassInfo@?$TestClass@Vui512_unit_tests_bitops@ui512_Unit_Tests@@@CppUnitTestFramework@VisualStudio@Microsoft@@SAPEBUTestClassInfo@234@XZ ; Microsoft::VisualStudio::CppUnitTestFramework::TestClass<ui512_Unit_Tests::ui512_unit_tests_bitops>::__GetTestClassInfo
@@ -15866,7 +15862,7 @@ $LN3:
 ?__GetTestMethodInfo_ui512bits_02_or@ui512_unit_tests_bitops@ui512_Unit_Tests@@CAPEBUMemberMethodInfo@CppUnitTestFramework@VisualStudio@Microsoft@@XZ ENDP ; ui512_Unit_Tests::ui512_unit_tests_bitops::__GetTestMethodInfo_ui512bits_02_or
 _TEXT	ENDS
 ; Function compile flags: /Odtp /RTCsu /ZI
-; File C:\Users\Surface Pro 4\OneDrive\My Projects\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_bitops.cpp
+; File C:\Users\John Lynch\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_bitops.cpp
 ;	COMDAT ?ui512bits_01_and_performance@ui512_unit_tests_bitops@ui512_Unit_Tests@@AEAAXXZ
 _TEXT	SEGMENT
 No1$ = 16
@@ -15898,7 +15894,7 @@ $LN3:
   00037	48 89 85 38 02
 	00 00		 mov	 QWORD PTR __$ArrayPad$[rbp], rax
   0003e	48 8d 0d 00 00
-	00 00		 lea	 rcx, OFFSET FLAT:__021DAEAF_ui512_unit_tests_bitops@cpp
+	00 00		 lea	 rcx, OFFSET FLAT:__4839C0BF_ui512_unit_tests_bitops@cpp
   00045	e8 00 00 00 00	 call	 __CheckForDebuggerJustMyCode
   0004a	90		 npad	 1
 
@@ -16018,7 +16014,7 @@ $LN3:
 ?ui512bits_01_and_performance@ui512_unit_tests_bitops@ui512_Unit_Tests@@AEAAXXZ ENDP ; ui512_Unit_Tests::ui512_unit_tests_bitops::ui512bits_01_and_performance
 _TEXT	ENDS
 ; Function compile flags: /Odtp /RTCsu /ZI
-; File C:\Users\Surface Pro 4\OneDrive\My Projects\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_bitops.cpp
+; File C:\Users\John Lynch\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_bitops.cpp
 ;	COMDAT ?__GetTestMethodInfo_ui512bits_01_and_performance@ui512_unit_tests_bitops@ui512_Unit_Tests@@CAPEBUMemberMethodInfo@CppUnitTestFramework@VisualStudio@Microsoft@@XZ
 _TEXT	SEGMENT
 ?__GetTestMethodInfo_ui512bits_01_and_performance@ui512_unit_tests_bitops@ui512_Unit_Tests@@CAPEBUMemberMethodInfo@CppUnitTestFramework@VisualStudio@Microsoft@@XZ PROC ; ui512_Unit_Tests::ui512_unit_tests_bitops::__GetTestMethodInfo_ui512bits_01_and_performance, COMDAT
@@ -16032,7 +16028,7 @@ $LN3:
 	00 00		 sub	 rsp, 232		; 000000e8H
   0000a	48 8d 6c 24 20	 lea	 rbp, QWORD PTR [rsp+32]
   0000f	48 8d 0d 00 00
-	00 00		 lea	 rcx, OFFSET FLAT:__021DAEAF_ui512_unit_tests_bitops@cpp
+	00 00		 lea	 rcx, OFFSET FLAT:__4839C0BF_ui512_unit_tests_bitops@cpp
   00016	e8 00 00 00 00	 call	 __CheckForDebuggerJustMyCode
   0001b	90		 npad	 1
   0001c	e8 00 00 00 00	 call	 ?__GetTestClassInfo@?$TestClass@Vui512_unit_tests_bitops@ui512_Unit_Tests@@@CppUnitTestFramework@VisualStudio@Microsoft@@SAPEBUTestClassInfo@234@XZ ; Microsoft::VisualStudio::CppUnitTestFramework::TestClass<ui512_Unit_Tests::ui512_unit_tests_bitops>::__GetTestClassInfo
@@ -16053,7 +16049,7 @@ $LN3:
 ?__GetTestMethodInfo_ui512bits_01_and_performance@ui512_unit_tests_bitops@ui512_Unit_Tests@@CAPEBUMemberMethodInfo@CppUnitTestFramework@VisualStudio@Microsoft@@XZ ENDP ; ui512_Unit_Tests::ui512_unit_tests_bitops::__GetTestMethodInfo_ui512bits_01_and_performance
 _TEXT	ENDS
 ; Function compile flags: /Odtp /RTCsu /ZI
-; File C:\Users\Surface Pro 4\OneDrive\My Projects\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_bitops.cpp
+; File C:\Users\John Lynch\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_bitops.cpp
 ;	COMDAT ?ui512bits_01_and@ui512_unit_tests_bitops@ui512_Unit_Tests@@AEAAXXZ
 _TEXT	SEGMENT
 seed$ = 8
@@ -16104,7 +16100,7 @@ $LN16:
   00041	48 89 85 58 06
 	00 00		 mov	 QWORD PTR __$ArrayPad$[rbp], rax
   00048	48 8d 0d 00 00
-	00 00		 lea	 rcx, OFFSET FLAT:__021DAEAF_ui512_unit_tests_bitops@cpp
+	00 00		 lea	 rcx, OFFSET FLAT:__4839C0BF_ui512_unit_tests_bitops@cpp
   0004f	e8 00 00 00 00	 call	 __CheckForDebuggerJustMyCode
   00054	90		 npad	 1
 
@@ -16592,7 +16588,7 @@ this$ = 1728
 ?dtor$3@?0??ui512bits_01_and@ui512_unit_tests_bitops@ui512_Unit_Tests@@AEAAXXZ@4HA ENDP ; `ui512_Unit_Tests::ui512_unit_tests_bitops::ui512bits_01_and'::`1'::dtor$3
 text$x	ENDS
 ; Function compile flags: /Odtp /RTCsu /ZI
-; File C:\Users\Surface Pro 4\OneDrive\My Projects\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_bitops.cpp
+; File C:\Users\John Lynch\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_bitops.cpp
 ;	COMDAT ?__GetTestMethodInfo_ui512bits_01_and@ui512_unit_tests_bitops@ui512_Unit_Tests@@CAPEBUMemberMethodInfo@CppUnitTestFramework@VisualStudio@Microsoft@@XZ
 _TEXT	SEGMENT
 ?__GetTestMethodInfo_ui512bits_01_and@ui512_unit_tests_bitops@ui512_Unit_Tests@@CAPEBUMemberMethodInfo@CppUnitTestFramework@VisualStudio@Microsoft@@XZ PROC ; ui512_Unit_Tests::ui512_unit_tests_bitops::__GetTestMethodInfo_ui512bits_01_and, COMDAT
@@ -16606,7 +16602,7 @@ $LN3:
 	00 00		 sub	 rsp, 232		; 000000e8H
   0000a	48 8d 6c 24 20	 lea	 rbp, QWORD PTR [rsp+32]
   0000f	48 8d 0d 00 00
-	00 00		 lea	 rcx, OFFSET FLAT:__021DAEAF_ui512_unit_tests_bitops@cpp
+	00 00		 lea	 rcx, OFFSET FLAT:__4839C0BF_ui512_unit_tests_bitops@cpp
   00016	e8 00 00 00 00	 call	 __CheckForDebuggerJustMyCode
   0001b	90		 npad	 1
   0001c	e8 00 00 00 00	 call	 ?__GetTestClassInfo@?$TestClass@Vui512_unit_tests_bitops@ui512_Unit_Tests@@@CppUnitTestFramework@VisualStudio@Microsoft@@SAPEBUTestClassInfo@234@XZ ; Microsoft::VisualStudio::CppUnitTestFramework::TestClass<ui512_Unit_Tests::ui512_unit_tests_bitops>::__GetTestClassInfo
@@ -28169,7 +28165,7 @@ $LN4:
 ??2@YAPEAX_KPEAX@Z ENDP					; operator new
 _TEXT	ENDS
 ; Function compile flags: /Odtp /RTCsu /ZI
-; File C:\Users\Surface Pro 4\OneDrive\My Projects\source\repos\ui512\ui512_unit_tests\CommonTypeDefs.h
+; File C:\Users\John Lynch\source\repos\ui512\ui512_unit_tests\CommonTypeDefs.h
 ;	COMDAT ?AreEqual@regs@@QEBA_NPEAU1@@Z
 _TEXT	SEGMENT
 tv69 = 192
@@ -28188,7 +28184,7 @@ $LN5:
 	00 00		 sub	 rsp, 248		; 000000f8H
   00013	48 8d 6c 24 20	 lea	 rbp, QWORD PTR [rsp+32]
   00018	48 8d 0d 00 00
-	00 00		 lea	 rcx, OFFSET FLAT:__6C4E5558_CommonTypeDefs@h
+	00 00		 lea	 rcx, OFFSET FLAT:__5E836398_CommonTypeDefs@h
   0001f	e8 00 00 00 00	 call	 __CheckForDebuggerJustMyCode
   00024	90		 npad	 1
 
@@ -28223,7 +28219,7 @@ $LN4@AreEqual:
 ?AreEqual@regs@@QEBA_NPEAU1@@Z ENDP			; regs::AreEqual
 _TEXT	ENDS
 ; Function compile flags: /Odtp /RTCsu /ZI
-; File C:\Users\Surface Pro 4\OneDrive\My Projects\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_bitops.cpp
+; File C:\Users\John Lynch\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_bitops.cpp
 ;	COMDAT ?__empty_global_delete@@YAXPEAX_KW4align_val_t@std@@@Z
 _TEXT	SEGMENT
 __formal$ = 224
@@ -28241,7 +28237,7 @@ $LN4:
 	00 00		 sub	 rsp, 232		; 000000e8H
   00018	48 8d 6c 24 20	 lea	 rbp, QWORD PTR [rsp+32]
   0001d	48 8d 0d 00 00
-	00 00		 lea	 rcx, OFFSET FLAT:__021DAEAF_ui512_unit_tests_bitops@cpp
+	00 00		 lea	 rcx, OFFSET FLAT:__4839C0BF_ui512_unit_tests_bitops@cpp
   00024	e8 00 00 00 00	 call	 __CheckForDebuggerJustMyCode
   00029	90		 npad	 1
   0002a	48 8d a5 c8 00
@@ -28252,7 +28248,7 @@ $LN4:
 ?__empty_global_delete@@YAXPEAX_KW4align_val_t@std@@@Z ENDP ; __empty_global_delete
 _TEXT	ENDS
 ; Function compile flags: /Odtp /RTCsu /ZI
-; File C:\Users\Surface Pro 4\OneDrive\My Projects\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_bitops.cpp
+; File C:\Users\John Lynch\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_bitops.cpp
 ;	COMDAT ?__empty_global_delete@@YAXPEAXW4align_val_t@std@@@Z
 _TEXT	SEGMENT
 __formal$ = 224
@@ -28268,7 +28264,7 @@ $LN4:
 	00 00		 sub	 rsp, 232		; 000000e8H
   00013	48 8d 6c 24 20	 lea	 rbp, QWORD PTR [rsp+32]
   00018	48 8d 0d 00 00
-	00 00		 lea	 rcx, OFFSET FLAT:__021DAEAF_ui512_unit_tests_bitops@cpp
+	00 00		 lea	 rcx, OFFSET FLAT:__4839C0BF_ui512_unit_tests_bitops@cpp
   0001f	e8 00 00 00 00	 call	 __CheckForDebuggerJustMyCode
   00024	90		 npad	 1
   00025	48 8d a5 c8 00
@@ -28279,7 +28275,7 @@ $LN4:
 ?__empty_global_delete@@YAXPEAXW4align_val_t@std@@@Z ENDP ; __empty_global_delete
 _TEXT	ENDS
 ; Function compile flags: /Odtp /RTCsu /ZI
-; File C:\Users\Surface Pro 4\OneDrive\My Projects\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_bitops.cpp
+; File C:\Users\John Lynch\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_bitops.cpp
 ;	COMDAT ?__empty_global_delete@@YAXPEAX_K@Z
 _TEXT	SEGMENT
 __formal$ = 224
@@ -28295,7 +28291,7 @@ $LN4:
 	00 00		 sub	 rsp, 232		; 000000e8H
   00013	48 8d 6c 24 20	 lea	 rbp, QWORD PTR [rsp+32]
   00018	48 8d 0d 00 00
-	00 00		 lea	 rcx, OFFSET FLAT:__021DAEAF_ui512_unit_tests_bitops@cpp
+	00 00		 lea	 rcx, OFFSET FLAT:__4839C0BF_ui512_unit_tests_bitops@cpp
   0001f	e8 00 00 00 00	 call	 __CheckForDebuggerJustMyCode
   00024	90		 npad	 1
   00025	48 8d a5 c8 00
@@ -28306,7 +28302,7 @@ $LN4:
 ?__empty_global_delete@@YAXPEAX_K@Z ENDP		; __empty_global_delete
 _TEXT	ENDS
 ; Function compile flags: /Odtp /RTCsu /ZI
-; File C:\Users\Surface Pro 4\OneDrive\My Projects\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_bitops.cpp
+; File C:\Users\John Lynch\source\repos\ui512\ui512_unit_tests\ui512_unit_tests_bitops.cpp
 ;	COMDAT ?__empty_global_delete@@YAXPEAX@Z
 _TEXT	SEGMENT
 __formal$ = 224
@@ -28320,7 +28316,7 @@ $LN4:
 	00 00		 sub	 rsp, 232		; 000000e8H
   0000e	48 8d 6c 24 20	 lea	 rbp, QWORD PTR [rsp+32]
   00013	48 8d 0d 00 00
-	00 00		 lea	 rcx, OFFSET FLAT:__021DAEAF_ui512_unit_tests_bitops@cpp
+	00 00		 lea	 rcx, OFFSET FLAT:__4839C0BF_ui512_unit_tests_bitops@cpp
   0001a	e8 00 00 00 00	 call	 __CheckForDebuggerJustMyCode
   0001f	90		 npad	 1
   00020	48 8d a5 c8 00

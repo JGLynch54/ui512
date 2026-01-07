@@ -86,6 +86,7 @@ RCXHome			EQU				Q_PTR [ RSP + ( 1 * 8 ) ]
 RDXHome			EQU				Q_PTR [ RSP + ( 2 * 8 ) ]
 R8Home			EQU				Q_PTR [ RSP + ( 3 * 8 ) ]
 R9Home			EQU				Q_PTR [ RSP + ( 4 * 8 ) ]
+				MOV				RCXHome, RCX					; in 'fastcall' home param space is reserved, but regs not saved, so save at least RCX
 				ENDM
 ;--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ; Proc_w_Local	ProcName, LocalStructName, NV_Regs_Used:vararg
@@ -100,9 +101,8 @@ _allocspace		=				_localspace + ( 2 * _shadowspace) + _alignspace	; calculate to
 				DB				6 DUP (0cch)
 				ALIGN			16
 				PUBLIC			ProcName						; Declare code section, public proc, no prolog, no frame, exceptions handled by caller
-ProcName		PROC			FRAME
-				
-				MOV				[ RSP + ( 1 * 8) ], RCX
+ProcName		PROC			FRAME				
+				MOV				[ RSP + ( 1 * 8) ], RCX			; in 'fastcall' home param space is reserved, but regs not saved, so save at least RCX
 				push_reg        RBP								; standard prologue code
 
 	nRegs = 1

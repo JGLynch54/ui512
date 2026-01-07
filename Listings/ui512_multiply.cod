@@ -1,4 +1,4 @@
-Microsoft (R) Macro Assembler (x64) Version 14.50.35721.0   12/26/25 11:15:43
+Microsoft (R) Macro Assembler (x64) Version 14.50.35721.0   12/29/25 19:46:08
 ui512_multiply.asm					     Page 1 - 1
 
 
@@ -114,7 +114,7 @@ ui512_multiply.asm					     Page 1 - 1
 			      C ;	Note: This is intended to be a mutually exclusive choice (UseZ thru UseQ).
 			      C ;	However, the coding of the options selects the "highest" one used and ignores the rest ( If __UseZ ... ELSEIF __UseY ... )
 			      C 
- = 00000000		      C __UseZ			EQU				0									; Use AVX4 processor features (512 bit registers and instructions)
+ = 00000001		      C __UseZ			EQU				1									; Use AVX4 processor features (512 bit registers and instructions)
  = 00000000		      C __UseY			EQU				0									; Use AVX2 processor features (256 bit registers and instructions)
  = 00000000		      C __UseX			EQU				0									; Use SIMD/SSE processor features (128 bit registers and instructions)
  = 00000001		      C __UseQ			EQU				1									; Do not use extensions, use standard x64 bit registers and instructions
@@ -675,9 +675,9 @@ ui512_multiply.asm					     Page 1 - 1
  00000041  49/ 8B C8						MOV				RCX, R8								; examine multiplicand
  00000044  E8 00000000 E					CALL			msb_u								; get count to most significant bit (-1 if no bits)
  00000049  85 C0						TEST			EAX, EAX								
- 0000004B  0F 8C 00000148					JL				@@zeroandexit						; msb < 0? multiplicand = 0; exit with product = 0
+ 0000004B  0F 8C 000000E9					JL				@@zeroandexit						; msb < 0? multiplicand = 0; exit with product = 0
  00000051  49/ 8D 11						LEA				RDX, [ R9 ]							; multiplicand = 1?	exit with product = multiplier -> address of multiplier (to be copied to product)
- 00000054  0F 84 00000195					JE				@@copyandexit						; msb = 0 means lowest bit, or multiplicand == 1 -> copy multiplier to product and exit
+ 00000054  0F 84 0000010A					JE				@@copyandexit						; msb = 0 means lowest bit, or multiplicand == 1 -> copy multiplier to product and exit
  0000005A  C1 E8 06						SHR				EAX, 6								; divide msb by 64 to get Nr words
  0000005D  44/ 8D 34 25						LEA				R14D, [ 7 ]							; subtract from 7 to get starting (high order, left-most) beginning index
 	   00000007
@@ -687,9 +687,9 @@ ui512_multiply.asm					     Page 1 - 1
  00000068  49/ 8B C9						MOV				RCX, R9								; examine multiplier
  0000006B  E8 00000000 E					CALL			msb_u								; get count to most significant bit (-1 if no bits)
  00000070  85 C0						TEST			EAX, EAX							; 
- 00000072  0F 8C 00000121					JL				@@zeroandexit						; return -1? means multiplier == 0 -> exit with product = 0
+ 00000072  0F 8C 000000C2					JL				@@zeroandexit						; return -1? means multiplier == 0 -> exit with product = 0
  00000078  49/ 8D 10						LEA				RDX, [ R8 ]							; 
- 0000007B  0F 84 0000016E					JE				@@copyandexit						; multiplier = 1? exit with product = multiplicand -> address of multiplicand (to be copied to product)
+ 0000007B  0F 84 000000E3					JE				@@copyandexit						; multiplier = 1? exit with product = multiplicand -> address of multiplicand (to be copied to product)
  00000081  C1 E8 06						SHR				EAX, 6								; divide msb by 64 to get Nr words
  00000084  44/ 8D 3C 25						LEA				R15D, [ 7 ]							; subtract from 7 to get starting (high order, left-most) beginning index
 	   00000007
@@ -715,143 +715,92 @@ ui512_multiply.asm					     Page 1 - 1
  000000B0  4F/ 8D 54 23		@@multloop:		LEA				R10,  1 [ R11 ] [ R12]				; R10 now holds index for overflow / product work area (results)
 	   01
  000000B5  4B/ 8B 04 E0						MOV				RAX, Q_PTR [ R8 ] [ R12 * 8 ]		; get qword of multiplicand
- 000000B9  4B/ F7 24 D9						MUL				Q_PTR [ R9 ] [ R11 * 8 ]			; multiply by qword of multiplier
- 000000BD  4A/ 01 44 D5						ADD				l_Ptr.product [ R10 * 8 ], RAX			; accummulate in product [R10], this is low-order 64 bits of result of mul
+ 000000B9  48/ 85 C0						TEST			RAX, RAX							; skip multiply if zero
+ 000000BC  74 20						JZ				@@nextmult
+ 000000BE  4B/ F7 24 D9						MUL				Q_PTR [ R9 ] [ R11 * 8 ]			; multiply by qword of multiplier
+ 000000C2  4A/ 01 44 D5						ADD				l_Ptr.product [ R10 * 8 ], RAX			; accummulate in product [R10], this is low-order 64 bits of result of mul
 	   00
- 000000C2  49/ FF CA						DEC				R10									; index for overflow / product area, decrement and preserve carry flag
- 000000C5			@@:
- 000000C5  4A/ 11 54 D5						ADC				l_Ptr.product [ R10 * 8 ], RDX		; high-order result of 64bit multiply, plus the carry (if any)
+ 000000C7  49/ FF CA						DEC				R10									; index for overflow / product area, decrement and preserve carry flag
+ 000000CA  4A/ 11 54 D5		@@:				ADC				l_Ptr.product [ R10 * 8 ], RDX		; high-order result of 64bit multiply, plus the carry (if any)
 	   00
- 000000CA  73 0D						JNC				@F									; if adding caused carry, propagate it, else next 
- 000000CC  48/ 8D 14 25						LEA				RDX, [ 0 ]							; if propagating, add zero plus carry. preserve carry flag
+ 000000CF  73 0D						JNC				@@nextmult									; if adding caused carry, propagate it, else next 
+ 000000D1  48/ 8D 14 25						LEA				RDX, [ 0 ]							; if propagating, add zero plus carry. preserve carry flag
 	   00000000
- 000000D4  49/ FF CA						DEC				R10									; propagating carry
- 000000D7  7D EC						JGE				@B
- 000000D9			@@:																	
- 000000D9  41/ FF CC						DEC				R12D								; index to next qword of multiplicand
- 000000DC  45/ 3B E6						CMP				R12D, R14D							; Done with inner loop? R14W has multiplicand index lower limit 
- 000000DF  7D CF						JGE				@@multloop							; no -> do it again
- 000000E1  44/ 8D 24 25						LEA				R12D, [ 7 ]							; yes, reset inner loop (multiplicand) index
+ 000000D9  49/ FF CA						DEC				R10									; propagating carry
+ 000000DC  7D EC						JGE				@B
+ 000000DE  41/ FF CC		@@nextmult:		DEC				R12D								; index to next qword of multiplicand
+ 000000E1  45/ 3B E6						CMP				R12D, R14D							; Done with inner loop? R14W has multiplicand index lower limit 
+ 000000E4  7D CA						JGE				@@multloop							; no -> do it again
+ 000000E6  44/ 8D 24 25						LEA				R12D, [ 7 ]							; yes, reset inner loop (multiplicand) index
 	   00000007
- 000000E9  41/ FF CB						DEC				R11D								; decrement index for outer loop
- 000000EC  45/ 3B DF						CMP				R11D, R15D							; done with outer loop? R15W has multiplier index lower limit
- 000000EF  7D BF						JGE				@@multloop							; no, do it again with next qword of multiplier
+ 000000EE  41/ FF CB						DEC				R11D								; decrement index for outer loop
+ 000000F1  45/ 3B DF						CMP				R11D, R15D							; done with outer loop? R15W has multiplier index lower limit
+ 000000F4  7D BA						JGE				@@multloop							; no, do it again with next qword of multiplier
 
 				; finished: copy working product/overflow to callers product/overflow
- 000000F1  48/ 8B 8C 24						MOV				RCX, RCXHome						; parameter passed as addr of callers product
+ 000000F6  48/ 8B 8C 24						MOV				RCX, RCXHome						; parameter passed as addr of callers product
 	   00000170
- 000000F9  48/ 8D 55 40						LEA				RDX, l_Ptr.product [ 8 * 8 ]
+ 000000FE  48/ 8D 55 40						LEA				RDX, l_Ptr.product [ 8 * 8 ]
 								Copy512			RCX, RDX							; copy working product to callers product
- 000000FD  48/ 8B 02	     2					MOV				RAX, Q_PTR [ RDX ] [ 0 * 8 ]
- 00000100  48/ 89 01	     2					MOV				Q_PTR [ RCX ] [ 0 * 8 ], RAX
- 00000103  48/ 8B 42 08	     2					MOV				RAX, Q_PTR [ RDX ] [ 1 * 8 ]
- 00000107  48/ 89 41 08	     2					MOV				Q_PTR [ RCX ] [ 1 * 8 ], RAX
- 0000010B  48/ 8B 42 10	     2					MOV				RAX, Q_PTR [ RDX ] [ 2 * 8 ]
- 0000010F  48/ 89 41 10	     2					MOV				Q_PTR [ RCX ] [ 2 * 8 ], RAX
- 00000113  48/ 8B 42 18	     2					MOV				RAX, Q_PTR [ RDX ] [ 3 * 8 ]
- 00000117  48/ 89 41 18	     2					MOV				Q_PTR [ RCX ] [ 3 * 8 ], RAX
- 0000011B  48/ 8B 42 20	     2					MOV				RAX, Q_PTR [ RDX ] [ 4 * 8 ]
- 0000011F  48/ 89 41 20	     2					MOV				Q_PTR [ RCX ] [ 4 * 8 ], RAX
- 00000123  48/ 8B 42 28	     2					MOV				RAX, Q_PTR [ RDX ] [ 5 * 8 ]
- 00000127  48/ 89 41 28	     2					MOV				Q_PTR [ RCX ] [ 5 * 8 ], RAX
- 0000012B  48/ 8B 42 30	     2					MOV				RAX, Q_PTR [ RDX ] [ 6 * 8 ]
- 0000012F  48/ 89 41 30	     2					MOV				Q_PTR [ RCX ] [ 6 * 8 ], RAX
- 00000133  48/ 8B 42 38	     2					MOV				RAX, Q_PTR [ RDX ] [ 7 * 8 ]
- 00000137  48/ 89 41 38	     2					MOV				Q_PTR [ RCX ] [ 7 * 8 ], RAX
- 0000013B  48/ 8B 8C 24						MOV				RCX, RDXHome						; parameter passed as addr of callers overflow
+ 00000102  62 61 FD 48/ 6F   1					VMOVDQA64		ZMM31, ZM_PTR [ RDX ]
+	   3A
+ 00000108  62 61 FD 48/ 7F   1					VMOVDQA64		ZM_PTR [ RCX ], ZMM31
+	   39
+ 0000010E  48/ 8B 8C 24						MOV				RCX, RDXHome						; parameter passed as addr of callers overflow
 	   00000178
- 00000143  48/ 8D 55 00						LEA				RDX, l_Ptr.product [ 0 ]
+ 00000116  48/ 8D 55 00						LEA				RDX, l_Ptr.product [ 0 ]
 								Copy512			RCX, RDX							; copy working overflow to callers overflow
- 00000147  48/ 8B 02	     2					MOV				RAX, Q_PTR [ RDX ] [ 0 * 8 ]
- 0000014A  48/ 89 01	     2					MOV				Q_PTR [ RCX ] [ 0 * 8 ], RAX
- 0000014D  48/ 8B 42 08	     2					MOV				RAX, Q_PTR [ RDX ] [ 1 * 8 ]
- 00000151  48/ 89 41 08	     2					MOV				Q_PTR [ RCX ] [ 1 * 8 ], RAX
- 00000155  48/ 8B 42 10	     2					MOV				RAX, Q_PTR [ RDX ] [ 2 * 8 ]
- 00000159  48/ 89 41 10	     2					MOV				Q_PTR [ RCX ] [ 2 * 8 ], RAX
- 0000015D  48/ 8B 42 18	     2					MOV				RAX, Q_PTR [ RDX ] [ 3 * 8 ]
- 00000161  48/ 89 41 18	     2					MOV				Q_PTR [ RCX ] [ 3 * 8 ], RAX
- 00000165  48/ 8B 42 20	     2					MOV				RAX, Q_PTR [ RDX ] [ 4 * 8 ]
- 00000169  48/ 89 41 20	     2					MOV				Q_PTR [ RCX ] [ 4 * 8 ], RAX
- 0000016D  48/ 8B 42 28	     2					MOV				RAX, Q_PTR [ RDX ] [ 5 * 8 ]
- 00000171  48/ 89 41 28	     2					MOV				Q_PTR [ RCX ] [ 5 * 8 ], RAX
- 00000175  48/ 8B 42 30	     2					MOV				RAX, Q_PTR [ RDX ] [ 6 * 8 ]
- 00000179  48/ 89 41 30	     2					MOV				Q_PTR [ RCX ] [ 6 * 8 ], RAX
- 0000017D  48/ 8B 42 38	     2					MOV				RAX, Q_PTR [ RDX ] [ 7 * 8 ]
- 00000181  48/ 89 41 38	     2					MOV				Q_PTR [ RCX ] [ 7 * 8 ], RAX
+ 0000011A  62 61 FD 48/ 6F   1					VMOVDQA64		ZMM31, ZM_PTR [ RDX ]
+	   3A
+ 00000120  62 61 FD 48/ 7F   1					VMOVDQA64		ZM_PTR [ RCX ], ZMM31
+	   39
 
 				; restore regs, release frame, return
- 00000185  48/ 33 C0		@@exit:			XOR				RAX, RAX							; return zero
+ 00000126  48/ 33 C0		@@exit:			XOR				RAX, RAX							; return zero
 								Local_Exit		R15, R14, R13, R12				
- 00000188  48/ 81 C4	     1					ADD				RSP,  _allocspace
+ 00000129  48/ 81 C4	     1					ADD				RSP,  _allocspace
 	   00000140
- 0000018F  41/ 5F	     2					POP				R15
- 00000191  41/ 5E	     2					POP				R14
- 00000193  41/ 5D	     2					POP				R13
- 00000195  41/ 5C	     2					POP				R12
- 00000197  5D		     1					POP				RBP
- 00000198  C3		     1					RET
+ 00000130  41/ 5F	     2					POP				R15
+ 00000132  41/ 5E	     2					POP				R14
+ 00000134  41/ 5D	     2					POP				R13
+ 00000136  41/ 5C	     2					POP				R12
+ 00000138  5D		     1					POP				RBP
+ 00000139  C3		     1					RET
 
 				; multiplying by 0: zero callers product and overflow
- 00000199  48/ 8B 8C 24		@@zeroandexit:	MOV				RCX, RCXHome						; reload address of callers product
+ 0000013A  48/ 8B 8C 24		@@zeroandexit:	MOV				RCX, RCXHome						; reload address of callers product
 	   00000170
 								Zero512			RCX									; zero it
- 000001A1  48/ 33 C0	     1					XOR				RAX, RAX
- 000001A4  48/ 89 01	     2					MOV				Q_PTR [ RCX ] [ 0 * 8 ], RAX
- 000001A7  48/ 89 41 08	     2					MOV				Q_PTR [ RCX ] [ 1 * 8 ], RAX
- 000001AB  48/ 89 41 10	     2					MOV				Q_PTR [ RCX ] [ 2 * 8 ], RAX
- 000001AF  48/ 89 41 18	     2					MOV				Q_PTR [ RCX ] [ 3 * 8 ], RAX
- 000001B3  48/ 89 41 20	     2					MOV				Q_PTR [ RCX ] [ 4 * 8 ], RAX
- 000001B7  48/ 89 41 28	     2					MOV				Q_PTR [ RCX ] [ 5 * 8 ], RAX
- 000001BB  48/ 89 41 30	     2					MOV				Q_PTR [ RCX ] [ 6 * 8 ], RAX
- 000001BF  48/ 89 41 38	     2					MOV				Q_PTR [ RCX ] [ 7 * 8 ], RAX
- 000001C3  48/ 8B 8C 24						MOV				RCX, RDXHome						; reload address of caller overflow
+ 00000142  62 01 85 40/ EF   1					VPXORQ			ZMM31, ZMM31, ZMM31
+	   FF
+ 00000148  62 61 FD 48/ 7F   1					VMOVDQA64		ZM_PTR [ RCX ], ZMM31
+	   39
+ 0000014E  48/ 8B 8C 24						MOV				RCX, RDXHome						; reload address of caller overflow
 	   00000178
 								Zero512			RCX									; zero it
- 000001CB  48/ 33 C0	     1					XOR				RAX, RAX
- 000001CE  48/ 89 01	     2					MOV				Q_PTR [ RCX ] [ 0 * 8 ], RAX
- 000001D1  48/ 89 41 08	     2					MOV				Q_PTR [ RCX ] [ 1 * 8 ], RAX
- 000001D5  48/ 89 41 10	     2					MOV				Q_PTR [ RCX ] [ 2 * 8 ], RAX
- 000001D9  48/ 89 41 18	     2					MOV				Q_PTR [ RCX ] [ 3 * 8 ], RAX
- 000001DD  48/ 89 41 20	     2					MOV				Q_PTR [ RCX ] [ 4 * 8 ], RAX
- 000001E1  48/ 89 41 28	     2					MOV				Q_PTR [ RCX ] [ 5 * 8 ], RAX
- 000001E5  48/ 89 41 30	     2					MOV				Q_PTR [ RCX ] [ 6 * 8 ], RAX
- 000001E9  48/ 89 41 38	     2					MOV				Q_PTR [ RCX ] [ 7 * 8 ], RAX
- 000001ED  EB 96						JMP				@@exit
+ 00000156  62 01 85 40/ EF   1					VPXORQ			ZMM31, ZMM31, ZMM31
+	   FF
+ 0000015C  62 61 FD 48/ 7F   1					VMOVDQA64		ZM_PTR [ RCX ], ZMM31
+	   39
+ 00000162  EB C2						JMP				@@exit
 
 				; multiplying by 1: zero overflow, copy the non-one (multiplier or multiplicand) to the product
- 000001EF  48/ 8B 8C 24		@@copyandexit:	MOV				RCX, RDXHome						; address of passed overflow
+ 00000164  48/ 8B 8C 24		@@copyandexit:	MOV				RCX, RDXHome						; address of passed overflow
 	   00000178
 								Zero512			RCX 								; zero it
- 000001F7  48/ 33 C0	     1					XOR				RAX, RAX
- 000001FA  48/ 89 01	     2					MOV				Q_PTR [ RCX ] [ 0 * 8 ], RAX
- 000001FD  48/ 89 41 08	     2					MOV				Q_PTR [ RCX ] [ 1 * 8 ], RAX
- 00000201  48/ 89 41 10	     2					MOV				Q_PTR [ RCX ] [ 2 * 8 ], RAX
- 00000205  48/ 89 41 18	     2					MOV				Q_PTR [ RCX ] [ 3 * 8 ], RAX
- 00000209  48/ 89 41 20	     2					MOV				Q_PTR [ RCX ] [ 4 * 8 ], RAX
- 0000020D  48/ 89 41 28	     2					MOV				Q_PTR [ RCX ] [ 5 * 8 ], RAX
- 00000211  48/ 89 41 30	     2					MOV				Q_PTR [ RCX ] [ 6 * 8 ], RAX
- 00000215  48/ 89 41 38	     2					MOV				Q_PTR [ RCX ] [ 7 * 8 ], RAX
- 00000219  48/ 8B 8C 24						MOV				RCX, RCXHome						; copy (whichever: multiplier or multiplicand) to callers product
+ 0000016C  62 01 85 40/ EF   1					VPXORQ			ZMM31, ZMM31, ZMM31
+	   FF
+ 00000172  62 61 FD 48/ 7F   1					VMOVDQA64		ZM_PTR [ RCX ], ZMM31
+	   39
+ 00000178  48/ 8B 8C 24						MOV				RCX, RCXHome						; copy (whichever: multiplier or multiplicand) to callers product
 	   00000170
 								Copy512			RCX, RDX							; RDX "passed" here from the jump here (either &multiplier, or &multiplicand in RDX)
- 00000221  48/ 8B 02	     2					MOV				RAX, Q_PTR [ RDX ] [ 0 * 8 ]
- 00000224  48/ 89 01	     2					MOV				Q_PTR [ RCX ] [ 0 * 8 ], RAX
- 00000227  48/ 8B 42 08	     2					MOV				RAX, Q_PTR [ RDX ] [ 1 * 8 ]
- 0000022B  48/ 89 41 08	     2					MOV				Q_PTR [ RCX ] [ 1 * 8 ], RAX
- 0000022F  48/ 8B 42 10	     2					MOV				RAX, Q_PTR [ RDX ] [ 2 * 8 ]
- 00000233  48/ 89 41 10	     2					MOV				Q_PTR [ RCX ] [ 2 * 8 ], RAX
- 00000237  48/ 8B 42 18	     2					MOV				RAX, Q_PTR [ RDX ] [ 3 * 8 ]
- 0000023B  48/ 89 41 18	     2					MOV				Q_PTR [ RCX ] [ 3 * 8 ], RAX
- 0000023F  48/ 8B 42 20	     2					MOV				RAX, Q_PTR [ RDX ] [ 4 * 8 ]
- 00000243  48/ 89 41 20	     2					MOV				Q_PTR [ RCX ] [ 4 * 8 ], RAX
- 00000247  48/ 8B 42 28	     2					MOV				RAX, Q_PTR [ RDX ] [ 5 * 8 ]
- 0000024B  48/ 89 41 28	     2					MOV				Q_PTR [ RCX ] [ 5 * 8 ], RAX
- 0000024F  48/ 8B 42 30	     2					MOV				RAX, Q_PTR [ RDX ] [ 6 * 8 ]
- 00000253  48/ 89 41 30	     2					MOV				Q_PTR [ RCX ] [ 6 * 8 ], RAX
- 00000257  48/ 8B 42 38	     2					MOV				RAX, Q_PTR [ RDX ] [ 7 * 8 ]
- 0000025B  48/ 89 41 38	     2					MOV				Q_PTR [ RCX ] [ 7 * 8 ], RAX
- 0000025F  E9 FFFFFF21						JMP				@@exit								; and exit				
- 00000264			mult_u			ENDP				
+ 00000180  62 61 FD 48/ 6F   1					VMOVDQA64		ZMM31, ZM_PTR [ RDX ]
+	   3A
+ 00000186  62 61 FD 48/ 7F   1					VMOVDQA64		ZM_PTR [ RCX ], ZMM31
+	   39
+ 0000018C  EB 98						JMP				@@exit								; and exit				
+ 0000018E			mult_u			ENDP				
 
 				;
 				;--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -875,112 +824,121 @@ ui512_multiply.asm					     Page 1 - 1
 								Proc_w_Local	mult_uT64, mult64_Locals
  = 00000040		     1	_shadowspace	EQU				40h								; stack space for caller (at top) and callee (at bottom)
  = 00000040		     1	_alignspace		EQU				64								; amount of space that might get truncated to get frame space aligned on specified boundary (64)
- 00000264  00000006 [	     1					DB				6 DUP (0cch)
+ 0000018E  00000006 [	     1					DB				6 DUP (0cch)
 	    CC
 	   ]
- 00000270		     1	mult_uT64		PROC			FRAME
- 00000270  48/ 89 4C 24	     1					MOV				[ RSP + ( 1 * 8) ], RCX
+ 000001A0		     1	mult_uT64		PROC			FRAME
+ 000001A0  48/ 89 4C 24	     1					MOV				[ RSP + ( 1 * 8) ], RCX
 	   08
- 00000275  55		     2					PUSH			RBP
- 00000276  48/ 81 EC	     1					SUB				RSP, _allocspace				; set stack pointer down by space needed (locals+ (2 * shadowspace))
+ 000001A5  55		     2					PUSH			RBP
+ 000001A6  48/ 81 EC	     1					SUB				RSP, _allocspace				; set stack pointer down by space needed (locals+ (2 * shadowspace))
 	   00000100
- 0000027D  48/ 8D AC 24	     1					LEA				RBP, ( _shadowspace + _alignspace ) [ RSP ]
+ 000001AD  48/ 8D AC 24	     1					LEA				RBP, ( _shadowspace + _alignspace ) [ RSP ]
 	   00000080
- 00000285  48/ 83 E5 C0	     1					AND				RBP, -_alignspace				; truncate low bits of base pointer to yield aligned pointer
+ 000001B5  48/ 83 E5 C0	     1					AND				RBP, -_alignspace				; truncate low bits of base pointer to yield aligned pointer
 
 				; Check passed parameters alignment, since this is checked within frame, need to specify exit / cleanup / unwrap label
 								CheckAlign		RCX, @@exit							; (out) Product
 								CheckAlign		R8, @@exit							; (in) Multiplicand
 
 				; caller might be doing multiply 'in-place', so need to save the original multiplicand, prior to clearing callers product (A = A * x), or (A *= x)
- 00000289  4C/ 8D 55 00						LEA				R10, l_Ptr.multiplicand
+ 000001B9  4C/ 8D 55 00						LEA				R10, l_Ptr.multiplicand
 								Copy512			R10, R8
- 0000028D  49/ 8B 00	     2					MOV				RAX, Q_PTR [ R8 ] [ 0 * 8 ]
- 00000290  49/ 89 02	     2					MOV				Q_PTR [ R10 ] [ 0 * 8 ], RAX
- 00000293  49/ 8B 40 08	     2					MOV				RAX, Q_PTR [ R8 ] [ 1 * 8 ]
- 00000297  49/ 89 42 08	     2					MOV				Q_PTR [ R10 ] [ 1 * 8 ], RAX
- 0000029B  49/ 8B 40 10	     2					MOV				RAX, Q_PTR [ R8 ] [ 2 * 8 ]
- 0000029F  49/ 89 42 10	     2					MOV				Q_PTR [ R10 ] [ 2 * 8 ], RAX
- 000002A3  49/ 8B 40 18	     2					MOV				RAX, Q_PTR [ R8 ] [ 3 * 8 ]
- 000002A7  49/ 89 42 18	     2					MOV				Q_PTR [ R10 ] [ 3 * 8 ], RAX
- 000002AB  49/ 8B 40 20	     2					MOV				RAX, Q_PTR [ R8 ] [ 4 * 8 ]
- 000002AF  49/ 89 42 20	     2					MOV				Q_PTR [ R10 ] [ 4 * 8 ], RAX
- 000002B3  49/ 8B 40 28	     2					MOV				RAX, Q_PTR [ R8 ] [ 5 * 8 ]
- 000002B7  49/ 89 42 28	     2					MOV				Q_PTR [ R10 ] [ 5 * 8 ], RAX
- 000002BB  49/ 8B 40 30	     2					MOV				RAX, Q_PTR [ R8 ] [ 6 * 8 ]
- 000002BF  49/ 89 42 30	     2					MOV				Q_PTR [ R10 ] [ 6 * 8 ], RAX
- 000002C3  49/ 8B 40 38	     2					MOV				RAX, Q_PTR [ R8 ] [ 7 * 8 ]
- 000002C7  49/ 89 42 38	     2					MOV				Q_PTR [ R10 ] [ 7 * 8 ], RAX
+ 000001BD  62 41 FD 48/ 6F   1					VMOVDQA64		ZMM31, ZM_PTR [ R8 ]
+	   38
+ 000001C3  62 41 FD 48/ 7F   1					VMOVDQA64		ZM_PTR [ R10 ], ZMM31
+	   3A
 
 				; clear callers product and overflow
 				;	Note: if caller used multiplicand and product as the same variable (memory space),
 				;	this would wipe the multiplicand. Hence the saving of the multiplicand on the stack. (above)
- 000002CB  48/ 33 C0						XOR				RAX, RAX
+ 000001C9  48/ 33 C0						XOR				RAX, RAX
 								Zero512			RCX		   							; clear callers product (multiply uses an addition with carry, so it needs to start zeroed)
- 000002CE  48/ 33 C0	     1					XOR				RAX, RAX
- 000002D1  48/ 89 01	     2					MOV				Q_PTR [ RCX ] [ 0 * 8 ], RAX
- 000002D4  48/ 89 41 08	     2					MOV				Q_PTR [ RCX ] [ 1 * 8 ], RAX
- 000002D8  48/ 89 41 10	     2					MOV				Q_PTR [ RCX ] [ 2 * 8 ], RAX
- 000002DC  48/ 89 41 18	     2					MOV				Q_PTR [ RCX ] [ 3 * 8 ], RAX
- 000002E0  48/ 89 41 20	     2					MOV				Q_PTR [ RCX ] [ 4 * 8 ], RAX
- 000002E4  48/ 89 41 28	     2					MOV				Q_PTR [ RCX ] [ 5 * 8 ], RAX
- 000002E8  48/ 89 41 30	     2					MOV				Q_PTR [ RCX ] [ 6 * 8 ], RAX
- 000002EC  48/ 89 41 38	     2					MOV				Q_PTR [ RCX ] [ 7 * 8 ], RAX
- 000002F0  48/ 89 02						MOV				Q_PTR [ RDX ], RAX					; clear callers overflow
- 000002F3  4C/ 8B D2		 				MOV				R10, RDX							; RDX (pointer to callers overflow) gets used in the MUL: save it in R10 (a volatile reg)
+ 000001CC  62 01 85 40/ EF   1					VPXORQ			ZMM31, ZMM31, ZMM31
+	   FF
+ 000001D2  62 61 FD 48/ 7F   1					VMOVDQA64		ZM_PTR [ RCX ], ZMM31
+	   39
+ 000001D8  48/ 89 02						MOV				Q_PTR [ RDX ], RAX					; clear callers overflow
+ 000001DB  4C/ 8B D2		 				MOV				R10, RDX							; RDX (pointer to callers overflow) gets used in the MUL: save it in R10 (a volatile reg)
 
 				; FOR EACH index of 7 thru 1 (omiting 0): fetch qword of multiplicand, multiply, add 128 bit result (RAX, RDX) to running working product
 								FOR				idx, < 7, 6, 5, 4, 3, 2, 1 >		; Note: this is not a 'real' for statement, this is a macro that generates an unwound loop
 								MOV				RAX, l_Ptr.multiplicand + [ idx * 8 ] ; multiplicand [ idx ] qword -> RAX
+								TEST			RAX, RAX							; skip multiply if zero	
+								JZ				@F
 								MUL				R9									; times multiplier -> RAX, RDX
 								ADD				Q_PTR [ RCX ] [ idx * 8 ], RAX		; add RAX to working product [ idx ] qword
 								ADC				Q_PTR [ RCX ] [ (idx - 1) * 8 ], RDX ; and add RDX with carry to [ idx - 1 ] qword of working product
+				@@:
 								ENDM
- 000002F6  48/ 8B 45 38	     1					MOV				RAX, l_Ptr.multiplicand + [ 7 * 8 ] ; multiplicand [ idx ] qword -> RAX
- 000002FA  49/ F7 E1	     1					MUL				R9									; times multiplier -> RAX, RDX
- 000002FD  48/ 01 41 38	     1					ADD				Q_PTR [ RCX ] [ 7 * 8 ], RAX		; add RAX to working product [ idx ] qword
- 00000301  48/ 11 51 30	     1					ADC				Q_PTR [ RCX ] [ (7 - 1) * 8 ], RDX ; and add RDX with carry to [ idx - 1 ] qword of working product
- 00000305  48/ 8B 45 30	     1					MOV				RAX, l_Ptr.multiplicand + [ 6 * 8 ] ; multiplicand [ idx ] qword -> RAX
- 00000309  49/ F7 E1	     1					MUL				R9									; times multiplier -> RAX, RDX
- 0000030C  48/ 01 41 30	     1					ADD				Q_PTR [ RCX ] [ 6 * 8 ], RAX		; add RAX to working product [ idx ] qword
- 00000310  48/ 11 51 28	     1					ADC				Q_PTR [ RCX ] [ (6 - 1) * 8 ], RDX ; and add RDX with carry to [ idx - 1 ] qword of working product
- 00000314  48/ 8B 45 28	     1					MOV				RAX, l_Ptr.multiplicand + [ 5 * 8 ] ; multiplicand [ idx ] qword -> RAX
- 00000318  49/ F7 E1	     1					MUL				R9									; times multiplier -> RAX, RDX
- 0000031B  48/ 01 41 28	     1					ADD				Q_PTR [ RCX ] [ 5 * 8 ], RAX		; add RAX to working product [ idx ] qword
- 0000031F  48/ 11 51 20	     1					ADC				Q_PTR [ RCX ] [ (5 - 1) * 8 ], RDX ; and add RDX with carry to [ idx - 1 ] qword of working product
- 00000323  48/ 8B 45 20	     1					MOV				RAX, l_Ptr.multiplicand + [ 4 * 8 ] ; multiplicand [ idx ] qword -> RAX
- 00000327  49/ F7 E1	     1					MUL				R9									; times multiplier -> RAX, RDX
- 0000032A  48/ 01 41 20	     1					ADD				Q_PTR [ RCX ] [ 4 * 8 ], RAX		; add RAX to working product [ idx ] qword
- 0000032E  48/ 11 51 18	     1					ADC				Q_PTR [ RCX ] [ (4 - 1) * 8 ], RDX ; and add RDX with carry to [ idx - 1 ] qword of working product
- 00000332  48/ 8B 45 18	     1					MOV				RAX, l_Ptr.multiplicand + [ 3 * 8 ] ; multiplicand [ idx ] qword -> RAX
- 00000336  49/ F7 E1	     1					MUL				R9									; times multiplier -> RAX, RDX
- 00000339  48/ 01 41 18	     1					ADD				Q_PTR [ RCX ] [ 3 * 8 ], RAX		; add RAX to working product [ idx ] qword
- 0000033D  48/ 11 51 10	     1					ADC				Q_PTR [ RCX ] [ (3 - 1) * 8 ], RDX ; and add RDX with carry to [ idx - 1 ] qword of working product
- 00000341  48/ 8B 45 10	     1					MOV				RAX, l_Ptr.multiplicand + [ 2 * 8 ] ; multiplicand [ idx ] qword -> RAX
- 00000345  49/ F7 E1	     1					MUL				R9									; times multiplier -> RAX, RDX
- 00000348  48/ 01 41 10	     1					ADD				Q_PTR [ RCX ] [ 2 * 8 ], RAX		; add RAX to working product [ idx ] qword
- 0000034C  48/ 11 51 08	     1					ADC				Q_PTR [ RCX ] [ (2 - 1) * 8 ], RDX ; and add RDX with carry to [ idx - 1 ] qword of working product
- 00000350  48/ 8B 45 08	     1					MOV				RAX, l_Ptr.multiplicand + [ 1 * 8 ] ; multiplicand [ idx ] qword -> RAX
- 00000354  49/ F7 E1	     1					MUL				R9									; times multiplier -> RAX, RDX
- 00000357  48/ 01 41 08	     1					ADD				Q_PTR [ RCX ] [ 1 * 8 ], RAX		; add RAX to working product [ idx ] qword
- 0000035B  48/ 11 11	     1					ADC				Q_PTR [ RCX ] [ (1 - 1) * 8 ], RDX ; and add RDX with carry to [ idx - 1 ] qword of working product
+ 000001DE  48/ 8B 45 38	     1					MOV				RAX, l_Ptr.multiplicand + [ 7 * 8 ] ; multiplicand [ idx ] qword -> RAX
+ 000001E2  48/ 85 C0	     1					TEST			RAX, RAX							; skip multiply if zero	
+ 000001E5  74 0B	     1					JZ				@F
+ 000001E7  49/ F7 E1	     1					MUL				R9									; times multiplier -> RAX, RDX
+ 000001EA  48/ 01 41 38	     1					ADD				Q_PTR [ RCX ] [ 7 * 8 ], RAX		; add RAX to working product [ idx ] qword
+ 000001EE  48/ 11 51 30	     1					ADC				Q_PTR [ RCX ] [ (7 - 1) * 8 ], RDX ; and add RDX with carry to [ idx - 1 ] qword of working product
+ 000001F2		     1	@@:
+ 000001F2  48/ 8B 45 30	     1					MOV				RAX, l_Ptr.multiplicand + [ 6 * 8 ] ; multiplicand [ idx ] qword -> RAX
+ 000001F6  48/ 85 C0	     1					TEST			RAX, RAX							; skip multiply if zero	
+ 000001F9  74 0B	     1					JZ				@F
+ 000001FB  49/ F7 E1	     1					MUL				R9									; times multiplier -> RAX, RDX
+ 000001FE  48/ 01 41 30	     1					ADD				Q_PTR [ RCX ] [ 6 * 8 ], RAX		; add RAX to working product [ idx ] qword
+ 00000202  48/ 11 51 28	     1					ADC				Q_PTR [ RCX ] [ (6 - 1) * 8 ], RDX ; and add RDX with carry to [ idx - 1 ] qword of working product
+ 00000206		     1	@@:
+ 00000206  48/ 8B 45 28	     1					MOV				RAX, l_Ptr.multiplicand + [ 5 * 8 ] ; multiplicand [ idx ] qword -> RAX
+ 0000020A  48/ 85 C0	     1					TEST			RAX, RAX							; skip multiply if zero	
+ 0000020D  74 0B	     1					JZ				@F
+ 0000020F  49/ F7 E1	     1					MUL				R9									; times multiplier -> RAX, RDX
+ 00000212  48/ 01 41 28	     1					ADD				Q_PTR [ RCX ] [ 5 * 8 ], RAX		; add RAX to working product [ idx ] qword
+ 00000216  48/ 11 51 20	     1					ADC				Q_PTR [ RCX ] [ (5 - 1) * 8 ], RDX ; and add RDX with carry to [ idx - 1 ] qword of working product
+ 0000021A		     1	@@:
+ 0000021A  48/ 8B 45 20	     1					MOV				RAX, l_Ptr.multiplicand + [ 4 * 8 ] ; multiplicand [ idx ] qword -> RAX
+ 0000021E  48/ 85 C0	     1					TEST			RAX, RAX							; skip multiply if zero	
+ 00000221  74 0B	     1					JZ				@F
+ 00000223  49/ F7 E1	     1					MUL				R9									; times multiplier -> RAX, RDX
+ 00000226  48/ 01 41 20	     1					ADD				Q_PTR [ RCX ] [ 4 * 8 ], RAX		; add RAX to working product [ idx ] qword
+ 0000022A  48/ 11 51 18	     1					ADC				Q_PTR [ RCX ] [ (4 - 1) * 8 ], RDX ; and add RDX with carry to [ idx - 1 ] qword of working product
+ 0000022E		     1	@@:
+ 0000022E  48/ 8B 45 18	     1					MOV				RAX, l_Ptr.multiplicand + [ 3 * 8 ] ; multiplicand [ idx ] qword -> RAX
+ 00000232  48/ 85 C0	     1					TEST			RAX, RAX							; skip multiply if zero	
+ 00000235  74 0B	     1					JZ				@F
+ 00000237  49/ F7 E1	     1					MUL				R9									; times multiplier -> RAX, RDX
+ 0000023A  48/ 01 41 18	     1					ADD				Q_PTR [ RCX ] [ 3 * 8 ], RAX		; add RAX to working product [ idx ] qword
+ 0000023E  48/ 11 51 10	     1					ADC				Q_PTR [ RCX ] [ (3 - 1) * 8 ], RDX ; and add RDX with carry to [ idx - 1 ] qword of working product
+ 00000242		     1	@@:
+ 00000242  48/ 8B 45 10	     1					MOV				RAX, l_Ptr.multiplicand + [ 2 * 8 ] ; multiplicand [ idx ] qword -> RAX
+ 00000246  48/ 85 C0	     1					TEST			RAX, RAX							; skip multiply if zero	
+ 00000249  74 0B	     1					JZ				@F
+ 0000024B  49/ F7 E1	     1					MUL				R9									; times multiplier -> RAX, RDX
+ 0000024E  48/ 01 41 10	     1					ADD				Q_PTR [ RCX ] [ 2 * 8 ], RAX		; add RAX to working product [ idx ] qword
+ 00000252  48/ 11 51 08	     1					ADC				Q_PTR [ RCX ] [ (2 - 1) * 8 ], RDX ; and add RDX with carry to [ idx - 1 ] qword of working product
+ 00000256		     1	@@:
+ 00000256  48/ 8B 45 08	     1					MOV				RAX, l_Ptr.multiplicand + [ 1 * 8 ] ; multiplicand [ idx ] qword -> RAX
+ 0000025A  48/ 85 C0	     1					TEST			RAX, RAX							; skip multiply if zero	
+ 0000025D  74 0A	     1					JZ				@F
+ 0000025F  49/ F7 E1	     1					MUL				R9									; times multiplier -> RAX, RDX
+ 00000262  48/ 01 41 08	     1					ADD				Q_PTR [ RCX ] [ 1 * 8 ], RAX		; add RAX to working product [ idx ] qword
+ 00000266  48/ 11 11	     1					ADC				Q_PTR [ RCX ] [ (1 - 1) * 8 ], RDX ; and add RDX with carry to [ idx - 1 ] qword of working product
+ 00000269		     1	@@:
 
 				; Most significant (idx=0), the high order result of the multiply in RDX, goes to the overflow of the caller
- 0000035E  48/ 8B 45 00						MOV				RAX, l_Ptr.multiplicand
- 00000362  49/ F7 E1						MUL				R9
- 00000365  48/ 01 01						ADD				Q_PTR [ RCX ] [ 0 * 8 ], RAX
- 00000368  49/ 11 12						ADC				Q_PTR [ R10 ], RDX					; last qword overflow is also the operation overflow
- 0000036B  48/ 33 C0						XOR				RAX, RAX							; return zero
- 0000036E			@@exit:			Local_Exit
- 0000036E  48/ 81 C4	     1					ADD				RSP,  _allocspace
+ 00000269  48/ 8B 45 00						MOV				RAX, l_Ptr.multiplicand
+ 0000026D  48/ 85 C0						TEST			RAX, RAX							; skip multiply if zero
+ 00000270  74 0C						JZ				@@exit
+ 00000272  49/ F7 E1						MUL				R9
+ 00000275  48/ 01 01						ADD				Q_PTR [ RCX ] [ 0 * 8 ], RAX
+ 00000278  49/ 11 12						ADC				Q_PTR [ R10 ], RDX					; last qword overflow is also the operation overflow
+ 0000027B  48/ 33 C0						XOR				RAX, RAX							; return zero
+ 0000027E			@@exit:			Local_Exit
+ 0000027E  48/ 81 C4	     1					ADD				RSP,  _allocspace
 	   00000100
- 00000375  5D		     1					POP				RBP
- 00000376  C3		     1					RET
+ 00000285  5D		     1					POP				RBP
+ 00000286  C3		     1					RET
 
- 00000377			mult_uT64		ENDP		
- 00000377			ui512_multiply	ENDS
+ 00000287			mult_uT64		ENDP		
+ 00000287			ui512_multiply	ENDS
 								END													; end of module
-Microsoft (R) Macro Assembler (x64) Version 14.50.35721.0   12/26/25 11:15:43
+Microsoft (R) Macro Assembler (x64) Version 14.50.35721.0   12/29/25 19:46:08
 ui512_multiply.asm					     Symbols 2 - 1
 
 
@@ -1043,20 +1001,21 @@ Segments:
 
                 N a m e                  Length   Align   Class
 
-ui512_multiply . . . . . . . . .	 00000377 16	  'CODE'	
+ui512_multiply . . . . . . . . .	 00000287 16	  'CODE'	
 
 
 Procedures, parameters, and locals:
 
                 N a m e                 Type     Value    Attr
 
-mult_uT64  . . . . . . . . . . .	P 	 00000270 ui512_multiply	Length= 00000107 Public
-  @@exit . . . . . . . . . . . .	L 	 0000036E ui512_multiply	
-mult_u . . . . . . . . . . . . .	P 	 00000010 ui512_multiply	Length= 00000254 Public
+mult_uT64  . . . . . . . . . . .	P 	 000001A0 ui512_multiply	Length= 000000E7 Public
+  @@exit . . . . . . . . . . . .	L 	 0000027E ui512_multiply	
+mult_u . . . . . . . . . . . . .	P 	 00000010 ui512_multiply	Length= 0000017E Public
   @@multloop . . . . . . . . . .	L 	 000000B0 ui512_multiply	
-  @@exit . . . . . . . . . . . .	L 	 00000185 ui512_multiply	
-  @@zeroandexit  . . . . . . . .	L 	 00000199 ui512_multiply	
-  @@copyandexit  . . . . . . . .	L 	 000001EF ui512_multiply	
+  @@nextmult . . . . . . . . . .	L 	 000000DE ui512_multiply	
+  @@exit . . . . . . . . . . . .	L 	 00000126 ui512_multiply	
+  @@zeroandexit  . . . . . . . .	L 	 0000013A ui512_multiply	
+  @@copyandexit  . . . . . . . .	L 	 00000164 ui512_multiply	
 
 
 Symbols:
@@ -1088,7 +1047,7 @@ __UseBMI2  . . . . . . . . . . .	Number	 00000001h
 __UseQ . . . . . . . . . . . . .	Number	 00000001h   
 __UseX . . . . . . . . . . . . .	Number	 00000000h   
 __UseY . . . . . . . . . . . . .	Number	 00000000h   
-__UseZ . . . . . . . . . . . . .	Number	 00000000h   
+__UseZ . . . . . . . . . . . . .	Number	 00000001h   
 __VerifyRegs . . . . . . . . . .	Number	 00000001h   
 _alignspace  . . . . . . . . . .	Number	 00000040h   
 _allocspace  . . . . . . . . . .	Number	 00000100h   

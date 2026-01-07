@@ -5,10 +5,10 @@ include listing.inc
 INCLUDELIB MSVCRTD
 INCLUDELIB OLDNAMES
 
-PUBLIC	__@@_PchSym_@00@UfhvihUhfiuzxvLkilLEUlmvwirevUnbLkilqvxghUhlfixvUivklhUfrFBCUfrFBCPfmrgPgvhghUcGEUwvyftUkxsOlyq@4B2008FD98C1DD4
-;	COMDAT __@@_PchSym_@00@UfhvihUhfiuzxvLkilLEUlmvwirevUnbLkilqvxghUhlfixvUivklhUfrFBCUfrFBCPfmrgPgvhghUcGEUwvyftUkxsOlyq@4B2008FD98C1DD4
+PUBLIC	__@@_PchSym_@00@UfhvihUqlsmLobmxsUhlfixvUivklhUfrFBCUfrFBCPfmrgPgvhghUcGEUwvyftUkxsOlyq@4B2008FD98C1DD4
+;	COMDAT __@@_PchSym_@00@UfhvihUqlsmLobmxsUhlfixvUivklhUfrFBCUfrFBCPfmrgPgvhghUcGEUwvyftUkxsOlyq@4B2008FD98C1DD4
 _BSS	SEGMENT
-__@@_PchSym_@00@UfhvihUhfiuzxvLkilLEUlmvwirevUnbLkilqvxghUhlfixvUivklhUfrFBCUfrFBCPfmrgPgvhghUcGEUwvyftUkxsOlyq@4B2008FD98C1DD4 DD 01H DUP (?)
+__@@_PchSym_@00@UfhvihUqlsmLobmxsUhlfixvUivklhUfrFBCUfrFBCPfmrgPgvhghUcGEUwvyftUkxsOlyq@4B2008FD98C1DD4 DD 01H DUP (?)
 _BSS	ENDS
 msvcjmc	SEGMENT
 __ED5CB687_concurrencysal@h DB 01H
@@ -25,10 +25,10 @@ __EA6C9D17_corecrt_memory@h DB 01H
 __0DF2AF52_corecrt_wstring@h DB 01H
 __6E889ECC_string@h DB 01H
 __A51D0F47_cstring DB 01H
-__6C4E5558_CommonTypeDefs@h DB 01H
-__72349D01_ui512_externs@h DB 01H
-__E31EC421_pch@h DB 01H
-__67805D5D_ui512_unit_tests@pch DB 01H
-__63F9177F_pch@cpp DB 01H
+__5E836398_CommonTypeDefs@h DB 01H
+__676EBE2D_ui512_externs@h DB 01H
+__BFCD2E3E_pch@h DB 01H
+__BCDB5C9F_ui512_unit_tests@pch DB 01H
+__EE7C4E54_pch@cpp DB 01H
 msvcjmc	ENDS
 END
