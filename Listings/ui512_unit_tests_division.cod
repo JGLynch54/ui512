@@ -36995,7 +36995,7 @@ $LN41:
 ; 319  : 			// Still relatively easy to check as expected answer is a shift right,
 ; 320  : 			// and expected remainder is a shift left
 ; 321  : 
-; 322  : 			for ( u16 nrShift = 0; nrShift < 512; nrShift++ )	// rather than a random bit, cycle thru all 64 bits 
+; 322  : 			for ( u16 nrShift = 0; nrShift < 512; nrShift++ )	// rather than a random bit, cycle thru all 512 bits 
 
   00118	33 c0		 xor	 eax, eax
   0011a	66 89 85 f4 04

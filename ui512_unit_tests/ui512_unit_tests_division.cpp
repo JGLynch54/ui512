@@ -319,7 +319,7 @@ namespace ui512_Unit_Tests
 			// Still relatively easy to check as expected answer is a shift right,
 			// and expected remainder is a shift left
 
-			for ( u16 nrShift = 0; nrShift < 512; nrShift++ )	// rather than a random bit, cycle thru all 64 bits 
+			for ( u16 nrShift = 0; nrShift < 512; nrShift++ )	// rather than a random bit, cycle thru all 512 bits 
 			{
 				for ( int i = 0; i < test_run_count / 512; i++ )
 				{

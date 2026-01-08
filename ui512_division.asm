@@ -216,6 +216,7 @@ maindivloop:
 
 ; compute qHat and rHat
 				MOVZX			R8, l_Ptr.mIdx						; get mIdx. It is calculated from mDim, which in turn was adjusted for normalization
+				DEC				R8									; mIdx - 1 for high qword of currnumerator for divide
 				MOV				RDX, l_Ptr.currnumerator [ R8 * 8 ]	; the more significant qword of the 128bit dividend for divide
 				MOV				RAX, l_Ptr.currnumerator + 8 [ R8 * 8 ]	; mIdx to get low qword of currnumerator for divide
 		IF __DEBUG_DIVIDE_ESTIMATE__
