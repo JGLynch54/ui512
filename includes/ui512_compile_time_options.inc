@@ -32,5 +32,6 @@ __UseBMI2		EQU				1									; Bit manipulation instructions (Haswell and later) 
 __VerifyRegs	EQU				1									; in debug mode, or with unit tests, define routine to verify non-volatile regs 
 __CheckAlign	EQU				0									; User is expected to pass arguments aligned on 64 byte boundaries, 
 ;																	; This setting enforces that with a check. It should not be necessary, but included to help debugging
+__DEBUG_DIVIDE_ESTIMATE__ EQU	1									; Define debug mode, adds some extra code to help with debugging
 
 ENDIF			; ui512_compile_time_options_INC

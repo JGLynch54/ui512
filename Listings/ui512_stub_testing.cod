@@ -42,6 +42,7 @@ __85E81555___msvc_formatter@hpp DB 01H
 __DAF60B2D___msvc_format_ucd_tables@hpp DB 01H
 __E5CD0F93_format DB 01H
 __73AE2530_ui512_unit_tests@h DB 01H
+__BAB70C7D_ui512_stubexterns@h DB 01H
 __249C6933_ui512_stub_testing@cpp DB 01H
 __92E676FC_CppUnitTestLogger@h DB 01H
 __FFBDF365_locale@h DB 01H
@@ -1605,7 +1606,7 @@ testdata$_B_method	SEGMENT
 	DQ	FLAT:??_C@_0ED@MLBDPENL@ui512_Unit_Tests?3?3ui512_stub_te@
 	DQ	FLAT:??_C@_0IK@KAAEBMLK@?$DP__GetTestMethodInfo_ui512_01?$EAu@
 	DQ	FLAT:??_C@_1JO@OAJKIPCJ@?$AAC?$AA?3?$AA?2?$AAU?$AAs?$AAe?$AAr?$AAs?$AA?2?$AAJ?$AAo?$AAh?$AAn?$AA?5?$AAL@
-	DD	01cH
+	DD	03bH
 	ORG $+4
 testdata$_B_method	ENDS
 ;	COMDAT ??_7ui512_stub_testing@ui512_Unit_Tests@@6B@
@@ -6240,7 +6241,7 @@ __$ArrayPad$ = 408
 this$ = 448
 ?ui512_01@ui512_stub_testing@ui512_Unit_Tests@@AEAAXXZ PROC ; ui512_Unit_Tests::ui512_stub_testing::ui512_01, COMDAT
 
-; 29   : 		{
+; 60   : 		{
 
 $LN6:
   00000	48 89 4c 24 08	 mov	 QWORD PTR [rsp+8], rcx
@@ -6265,7 +6266,7 @@ $LN6:
   00044	e8 00 00 00 00	 call	 __CheckForDebuggerJustMyCode
   00049	90		 npad	 1
 
-; 30   : 			string test_message = string( "***\t\t\t" ) + "Stub Test 01" + "\t\t\t***\n";
+; 61   : 			string test_message = string( "***\t\t\t" ) + "Stub Test 01" + "\t\t\t***\n";
 
   0004a	48 8d 15 00 00
 	00 00		 lea	 rdx, OFFSET FLAT:??_C@_06IHADJIOK@?$CK?$CK?$CK?7?7?7@
@@ -6307,16 +6308,16 @@ $LN6:
   000cd	e8 00 00 00 00	 call	 ??1?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@QEAA@XZ ; std::basic_string<char,std::char_traits<char>,std::allocator<char> >::~basic_string<char,std::char_traits<char>,std::allocator<char> >
   000d2	90		 npad	 1
 
-; 31   : 			//test_message += format( "Samples run:\t\t\t\t{:9d}\n", stat->timing_count );
-; 32   : 			//test_message += format( "Total target function (including c calling set - up) execution cycles :{:10.0f}\n", stat->total );
-; 33   : 			//test_message += format( "Average clock cycles per call: \t{:6.2f}\n", stat->mean );
-; 34   : 			//test_message += format( "Minimum in \t\t\t\t\t\t{:6.0f}\n", stat->min );
-; 35   : 			//test_message += format( "Maximum in \t\t\t\t\t\t{:6.0f}\n", stat->max );
-; 36   : 			//test_message += format( "Sample Variance: \t\t\t{:10.3f}\n", stat->sample_variance );
-; 37   : 			//test_message += format( "Standard Deviation :\t \t{:9.3f}\n", stat->stddev );
-; 38   : 			//test_message += format( "Coefficient of Variation: \t{:10.2f}\n\n", stat->coefficient_of_variation );
-; 39   : 
-; 40   : 			Logger::WriteMessage( test_message.c_str( ) );
+; 62   : 			//test_message += format( "Samples run:\t\t\t\t{:9d}\n", stat->timing_count );
+; 63   : 			//test_message += format( "Total target function (including c calling set - up) execution cycles :{:10.0f}\n", stat->total );
+; 64   : 			//test_message += format( "Average clock cycles per call: \t{:6.2f}\n", stat->mean );
+; 65   : 			//test_message += format( "Minimum in \t\t\t\t\t\t{:6.0f}\n", stat->min );
+; 66   : 			//test_message += format( "Maximum in \t\t\t\t\t\t{:6.0f}\n", stat->max );
+; 67   : 			//test_message += format( "Sample Variance: \t\t\t{:10.3f}\n", stat->sample_variance );
+; 68   : 			//test_message += format( "Standard Deviation :\t \t{:9.3f}\n", stat->stddev );
+; 69   : 			//test_message += format( "Coefficient of Variation: \t{:10.2f}\n\n", stat->coefficient_of_variation );
+; 70   : 
+; 71   : 			Logger::WriteMessage( test_message.c_str( ) );
 
   000d3	48 8d 4d 08	 lea	 rcx, QWORD PTR test_message$[rbp]
   000d7	e8 00 00 00 00	 call	 ?c_str@?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@QEBAPEBDXZ ; std::basic_string<char,std::char_traits<char>,std::allocator<char> >::c_str
@@ -6324,7 +6325,7 @@ $LN6:
   000df	e8 00 00 00 00	 call	 ?WriteMessage@Logger@CppUnitTestFramework@VisualStudio@Microsoft@@SAXPEBD@Z ; Microsoft::VisualStudio::CppUnitTestFramework::Logger::WriteMessage
   000e4	90		 npad	 1
 
-; 41   : 		};
+; 72   : 		};
 
   000e5	48 8d 4d 08	 lea	 rcx, QWORD PTR test_message$[rbp]
   000e9	e8 00 00 00 00	 call	 ??1?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@QEAA@XZ ; std::basic_string<char,std::char_traits<char>,std::allocator<char> >::~basic_string<char,std::char_traits<char>,std::allocator<char> >
@@ -6433,7 +6434,7 @@ text$x	ENDS
 _TEXT	SEGMENT
 ?__GetTestMethodInfo_ui512_01@ui512_stub_testing@ui512_Unit_Tests@@CAPEBUMemberMethodInfo@CppUnitTestFramework@VisualStudio@Microsoft@@XZ PROC ; ui512_Unit_Tests::ui512_stub_testing::__GetTestMethodInfo_ui512_01, COMDAT
 
-; 28   : 		TEST_METHOD( ui512_01 )
+; 59   : 		TEST_METHOD( ui512_01 )
 
 $LN3:
   00000	40 55		 push	 rbp

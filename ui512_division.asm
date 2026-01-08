@@ -147,17 +147,27 @@ mbynDiv:
 				MOV				RDX, R8Home							; using callers dividend
 				MOV				R8W, l_Ptr.normf					; get normalization factor
 				CALL			shl_u								; the same number of bits that the divisor was shifted
+; shift, even if within existing 8 qwords, may have increased dimension of dividend
+				MOV				AX, l_Ptr.normf						; get normalization factor	
+				ADD				AX, l_Ptr.mMSB						; add to msb of dividend
+				MOV				CX, AX								; save total bit count for possible later shift
+				SHR				AX, 6								; get new dimension of dividend
+				MOV				l_Ptr.mDim, AX						; save new dimension of dividend
 
-; Check: did we shift out msb bits of dividend?
-				MOV				AX, l_Ptr.mMSB						; get (as given) msb of dividend (prior to shift) 
-				ADD				AX, l_Ptr.normf						; add in shift count
-				CMP				AX, 511								; did we shift out bits?
+; Check: did we shift out msb bits of dividend? We shifted left normf bits, so if (original msb + normf) >= 512, we shifted out bits
+; if so, need to increment dimension of dividend (already done above), and put shifted out bits into new msb qword of currnumerator (at inxes = 7)
+; the shifted out bits are the high bits of the high word of the original dividend shifted left by normf bits
+
+				CMP				CX, 511								; did we shift out bits?
 				JLE				normdivdone							; no
-				INC				l_Ptr.mDim							; yes, increment dimension of dividend
-				MOV				R8W, l_Ptr.nMSB						; get msb of divisor
-				LEA				RCX, l_Ptr.currnumerator [ 0 * 8 ]	; put the shifted out bits at the 'front' of the currnumerator
-				MOV				RDX, R8Home							; using callers dividend
-				Call			shl_u								; left to get shifted out bits Note: we shift entire 512 bits - msb
+				MOV				AX, CX
+				AND				AX, 63								; get bit position within qword
+				LEA				ECX, [ 63 ]
+				SUB				CL, AL								; get count of bits to shift right to get shifted out bits
+				MOV				RAX, R8Home
+				MOV				RAX, Q_PTR [ RAX ]					; get most significant qword of original dividend
+				SHR				RAX, CL								; shifted out bits now in low part of RAX
+				MOV				l_Ptr.currnumerator [ 7 * 8 ], RAX	; put the shifted out bits at the 'front' of the currnumerator
 normdivdone:														; putting low into new msb ninth word of currnumerator	
 
 ; We have normalized divisor and dividend, and set up dimensions of each
@@ -205,10 +215,16 @@ normdivdone:														; putting low into new msb ninth word of currnumerator
 maindivloop:
 
 ; compute qHat and rHat
-				MOVZX			R8, l_Ptr.mIdx	
-			;	DEC				R8									; mIdx - 1 to get high word of currnumerator for divide
-				MOV				RDX, l_Ptr.currnumerator [ R8 * 8 ]	;
-				MOV				RAX, l_Ptr.currnumerator + 8 [ R8 * 8 ]	; mIdx to get low word of currnumerator for divide
+				MOVZX			R8, l_Ptr.mIdx						; get mIdx. It is calculated from mDim, which in turn was adjusted for normalization
+				MOV				RDX, l_Ptr.currnumerator [ R8 * 8 ]	; the more significant qword of the 128bit dividend for divide
+				MOV				RAX, l_Ptr.currnumerator + 8 [ R8 * 8 ]	; mIdx to get low qword of currnumerator for divide
+		IF __DEBUG_DIVIDE_ESTIMATE__
+		; Debug output of qHat estimate
+		CMP RDX, l_Ptr.nDiv
+		JB @ok
+		INT 3  ; Or jump to error
+		@ok:
+		ENDIF ;__DEBUG_DIVIDE_ESTIMATE__
 				DIV				l_Ptr.nDiv							; first qword of normalized divisor
 				MOV				l_Ptr.qHat, RAX						; our "trial" digit of quotient
 				MOV				l_Ptr.rHat, RDX
@@ -220,22 +236,35 @@ checkqhat:
 adjustqhat:
 				MOV				RAX, l_Ptr.qHat
 				MUL				R10									; times multiplicand -> RAX, RDX
-				CMP				RAX, l_Ptr.rHat						; compare low of product to rHat
-				JBE				qhatok								; ok
-				DEC				R15
-				JZ				divbyzero							; too many adjustments, exit with exception
-				; adjust qHat and rHat
-				INC				l_Ptr.qHat							; decrement qHat
+
+				MOVZX			R8, l_Ptr.mIdx
+				ADD				R8, 2                               ; mIdx + 2 for u[j+2]
+				MOV				RCX, l_Ptr.currnumerator [R8 * 8]   ; u[j+2]
+				MOV				R11, l_Ptr.rHat                     ; Load rHat for comparison
+				CMP				RDX, R11                            ; Compare high part first
+				JA				overestimate
+				JB				qhatok
+				; RDX == rHat, now compare low: RAX > u[j+2]?
+				CMP				RAX, RCX
+				JBE				qhatok
+overestimate:
+				DEC				R15                                 ; Adjustment counter
+				JZ				divbyzero							; Too many (safety)
+				DEC				l_Ptr.qHat							; Decrement qHat
+				MOV				RDX, l_Ptr.rHat
 				ADD				RDX, l_Ptr.nDiv						; add back nDiv to rHat
-				CMP				RDX, l_Ptr.nDiv						; did we overflow?
-				JB				adjustqhat							; yes, loop
+				JC				adjustqhat							; If carry (rHat overflow), re-test (rare)
+				JMP				adjustqhat							; Re-MUL and test
 qhatok:
 
 ; Multiply and subtract
 
 				CALL			multiply_and_subtract				; multiply qHat * divisor, subtract from currnumerator
 				JNC				no_addback							; if no borrow from subtract, skip add back
-; Add back
+
+				LEA				R14, [ 3 ]							; max adjustments to add back (shouldnt be needed, but the code just looks like endless loop possible)
+@addback:
+
 ; from multiply and subtract, have base addresses of currnumerator (R10) and subtracted product (R11), and length of add in R12
 				MOV				R9, R12								; length of add
 				CLC
@@ -245,6 +274,9 @@ qhatok:
 				DEC				R9
 				JGE				@B
 				DEC				l_Ptr.qHat							; decrement qHat
+				DEC				R14									; adjustment counter
+				JZ				divbyzero							; too many (safety)
+				JC				@addback							; if borrow, need to add back again
 
 no_addback:
 ; Store digit of quotient

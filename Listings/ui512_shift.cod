@@ -1,4 +1,4 @@
-Microsoft (R) Macro Assembler (x64) Version 14.50.35721.0   12/29/25 19:46:08
+Microsoft (R) Macro Assembler (x64) Version 14.50.35721.0   01/07/26 13:57:00
 ui512_shift.asm						     Page 1 - 1
 
 
@@ -216,6 +216,7 @@ ui512_shift.asm						     Page 1 - 1
 			      C RDXHome			EQU				Q_PTR [ RSP + ( 2 * 8 ) ]
 			      C R8Home			EQU				Q_PTR [ RSP + ( 3 * 8 ) ]
 			      C R9Home			EQU				Q_PTR [ RSP + ( 4 * 8 ) ]
+			      C 				MOV				RCXHome, RCX					; in 'fastcall' home param space is reserved, but regs not saved, so save at least RCX
 			      C 				ENDM
 			      C ;--------------------------------------------------------------------------------------------------------------------------------------------------------------
 			      C ; Proc_w_Local	ProcName, LocalStructName, NV_Regs_Used:vararg
@@ -230,9 +231,8 @@ ui512_shift.asm						     Page 1 - 1
 			      C 				DB				6 DUP (0cch)
 			      C 				ALIGN			16
 			      C 				PUBLIC			ProcName						; Declare code section, public proc, no prolog, no frame, exceptions handled by caller
-			      C ProcName		PROC			FRAME
-			      C 				
-			      C 				MOV				[ RSP + ( 1 * 8) ], RCX
+			      C ProcName		PROC			FRAME				
+			      C 				MOV				[ RSP + ( 1 * 8) ], RCX			; in 'fastcall' home param space is reserved, but regs not saved, so save at least RCX
 			      C 				push_reg        RBP								; standard prologue code
 			      C 
 			      C 	nRegs = 1
@@ -818,64 +818,66 @@ ui512_shift.asm						     Page 1 - 1
 	    CC
 	   ]
  00000420		     1	shr_u			PROC
+ 00000420  48/ 89 4C 24	     1					MOV				RCXHome, RCX					; in 'fastcall' home param space is reserved, but regs not saved, so save at least RCX
+	   08
 								CheckAlign		RCX								; (OUT) destination of shifted 8 QWORDs
 								CheckAlign		RDX								; (IN)	source of 8 QWORDS
 
- 00000420  66| 41/ 81 F8					CMP				R8W, 512						; handle edge case, shift 512 or more bits
+ 00000425  66| 41/ 81 F8					CMP				R8W, 512						; handle edge case, shift 512 or more bits
 	   0200
- 00000426  7C 0D						JL				@F
+ 0000042B  7C 0D						JL				@F
 								Zero512			RCX								; zero destination, return
- 00000428  62 01 85 40/ EF   1					VPXORQ			ZMM31, ZMM31, ZMM31
+ 0000042D  62 01 85 40/ EF   1					VPXORQ			ZMM31, ZMM31, ZMM31
 	   FF
- 0000042E  62 61 FD 48/ 7F   1					VMOVDQA64		ZM_PTR [ RCX ], ZMM31
+ 00000433  62 61 FD 48/ 7F   1					VMOVDQA64		ZM_PTR [ RCX ], ZMM31
 	   39
- 00000434  C3							RET
+ 00000439  C3							RET
 
- 00000435  49/ 81 E0		@@:				AND				R8, 511							; ensure no high bits above shift count
+ 0000043A  49/ 81 E0		@@:				AND				R8, 511							; ensure no high bits above shift count
 	   000001FF
- 0000043C  75 12						JNZ				@@shift							; handle edge case, zero bits to shift
- 0000043E  48/ 3B CA						CMP				RCX, RDX
- 00000441  74 0C						JE				@F								; destination is the same as the source: no copy needed
+ 00000441  75 12						JNZ				@@shift							; handle edge case, zero bits to shift
+ 00000443  48/ 3B CA						CMP				RCX, RDX
+ 00000446  74 0C						JE				@F								; destination is the same as the source: no copy needed
 								Copy512			RCX, RDX						; no shift, just copy (destination, source already in regs), return
- 00000443  62 61 FD 48/ 6F   1					VMOVDQA64		ZMM31, ZM_PTR [ RDX ]
+ 00000448  62 61 FD 48/ 6F   1					VMOVDQA64		ZMM31, ZM_PTR [ RDX ]
 	   3A
- 00000449  62 61 FD 48/ 7F   1					VMOVDQA64		ZM_PTR [ RCX ], ZMM31
+ 0000044E  62 61 FD 48/ 7F   1					VMOVDQA64		ZM_PTR [ RCX ], ZMM31
 	   39
- 0000044F  C3			@@:				RET
+ 00000454  C3			@@:				RET
 
- 00000450  62 61 FD 48/ 6F	@@shift:		VMOVDQA64		ZMM31, ZM_PTR [ RDX ]			; load the 8 qwords into zmm reg (note: word order)
+ 00000455  62 61 FD 48/ 6F	@@shift:		VMOVDQA64		ZMM31, ZM_PTR [ RDX ]			; load the 8 qwords into zmm reg (note: word order)
 	   3A
- 00000456  49/ 8D 00						LEA				RAX, [ R8 ]
- 00000459  66| 83 E0 3F						AND				AX, 03fh						; limit shift count to 63 (shifting bits only here, not words)
- 0000045D  74 19						JZ				@F								; if true, must be multiple of 64 bits to shift, no bits, just words to shift
- 0000045F  62 62 FD 48/ 7C					VPBROADCASTQ	ZMM29, RAX						; Nr bits to shift right
+ 0000045B  49/ 8D 00						LEA				RAX, [ R8 ]
+ 0000045E  66| 83 E0 3F						AND				AX, 03fh						; limit shift count to 63 (shifting bits only here, not words)
+ 00000462  74 19						JZ				@F								; if true, must be multiple of 64 bits to shift, no bits, just words to shift
+ 00000464  62 62 FD 48/ 7C					VPBROADCASTQ	ZMM29, RAX						; Nr bits to shift right
 	   E8
- 00000465  62 01 9D 40/ EF					VPXORQ			ZMM28, ZMM28, ZMM28				; 
+ 0000046A  62 01 9D 40/ EF					VPXORQ			ZMM28, ZMM28, ZMM28				; 
 	   E4
- 0000046B  62 03 85 40/ 03					VALIGNQ			ZMM30, ZMM31, ZMM28, 7			; shift copy of words left one word (to get low order bits aligned for shift)
+ 00000470  62 03 85 40/ 03					VALIGNQ			ZMM30, ZMM31, ZMM28, 7			; shift copy of words left one word (to get low order bits aligned for shift)
 	   F4 07
- 00000472  62 02 8D 40/ 73					VPSHRDVQ		ZMM31, ZMM30, ZMM29				; shift, concatenating low bits of next word with each word to shift in
+ 00000477  62 02 8D 40/ 73					VPSHRDVQ		ZMM31, ZMM30, ZMM29				; shift, concatenating low bits of next word with each word to shift in
 	   FD
 
 				; with the bits shifted within the words (if needed), if the desired shift is more than 64 bits, word shifts are required
- 00000478  48/ 8D 05		@@:				LEA				RAX, ShiftMaskRt	
+ 0000047D  48/ 8D 05		@@:				LEA				RAX, ShiftMaskRt	
 	   00000400 R
- 0000047F  66| 41/ C1 E8					SHR				R8W, 6							; divide Nr bits to shift by 64 giving Nr words to shift (can only be 0-7 based on above validation)
+ 00000484  66| 41/ C1 E8					SHR				R8W, 6							; divide Nr bits to shift by 64 giving Nr words to shift (can only be 0-7 based on above validation)
 	   06
- 00000484  4A/ 8D 04 00						LEA				RAX,  [ RAX ] [ R8 ]			; Add index to base address of mask table
- 00000488  C5 F9/ 90 08						KMOVB			K1, B_PTR [ RAX ]				; load mask for words to be zeroed
- 0000048C  48/ 8D 05						LEA				RAX, ShiftPermuteRt				; address of permute table
+ 00000489  4A/ 8D 04 00						LEA				RAX,  [ RAX ] [ R8 ]			; Add index to base address of mask table
+ 0000048D  C5 F9/ 90 08						KMOVB			K1, B_PTR [ RAX ]				; load mask for words to be zeroed
+ 00000491  48/ 8D 05						LEA				RAX, ShiftPermuteRt				; address of permute table
 	   00000000 R
- 00000493  66| 41/ C1 E0					SHL				R8W, 6							; multiply by 64 to get offset into permute table		
+ 00000498  66| 41/ C1 E0					SHL				R8W, 6							; multiply by 64 to get offset into permute table		
 	   06
- 00000498  62 41 FD 48/ 6F					VMOVDQA64		ZMM29, ZM_PTR [R8] [ RAX ]		; load permute indices (with calculated offset)
+ 0000049D  62 41 FD 48/ 6F					VMOVDQA64		ZMM29, ZM_PTR [R8] [ RAX ]		; load permute indices (with calculated offset)
 	   2C 00
- 0000049F  62 02 95 C1/ 36					VPERMQ			ZMM31 {k1}{z}, ZMM29, ZMM31		; permute words in zmm31 to achieve word shift
+ 000004A4  62 02 95 C1/ 36					VPERMQ			ZMM31 {k1}{z}, ZMM29, ZMM31		; permute words in zmm31 to achieve word shift
 	   FF
- 000004A5  62 61 FD 48/ 7F					VMOVDQA64		ZM_PTR [ RCX ], ZMM31			; store result at callers destination
+ 000004AA  62 61 FD 48/ 7F					VMOVDQA64		ZM_PTR [ RCX ], ZMM31			; store result at callers destination
 	   39
- 000004AB  C3							RET
- 000004AC			shr_u			ENDP
+ 000004B0  C3							RET
+ 000004B1			shr_u			ENDP
 
 					ELSE
 				ENDIF
@@ -889,74 +891,76 @@ ui512_shift.asm						     Page 1 - 1
 
 				IF	__UseZ
 								Leaf_Entry		shl_u				; Declare code section, public proc, no prolog, no frame, exceptions handled by caller
- 000004AC  00000006 [	     1					DB				6 DUP (0cch)
+ 000004B1  00000006 [	     1					DB				6 DUP (0cch)
 	    CC
 	   ]
  000004C0		     1	shl_u			PROC
+ 000004C0  48/ 89 4C 24	     1					MOV				RCXHome, RCX					; in 'fastcall' home param space is reserved, but regs not saved, so save at least RCX
+	   08
 								CheckAlign		RCX								; (OUT) destination of shifted 8 QWORDs
 								CheckAlign		RDX								; (IN)	source of 8 QWORDS
 
- 000004C0  66| 41/ 81 F8					CMP				R8W, 512						; handle edge case, shift 512 or more bits
+ 000004C5  66| 41/ 81 F8					CMP				R8W, 512						; handle edge case, shift 512 or more bits
 	   0200
- 000004C6  7C 0D						JL				@F
+ 000004CB  7C 0D						JL				@F
 								Zero512			RCX								; zero destination
- 000004C8  62 01 85 40/ EF   1					VPXORQ			ZMM31, ZMM31, ZMM31
+ 000004CD  62 01 85 40/ EF   1					VPXORQ			ZMM31, ZMM31, ZMM31
 	   FF
- 000004CE  62 61 FD 48/ 7F   1					VMOVDQA64		ZM_PTR [ RCX ], ZMM31
+ 000004D3  62 61 FD 48/ 7F   1					VMOVDQA64		ZM_PTR [ RCX ], ZMM31
 	   39
- 000004D4  C3							RET
- 000004D5  49/ 81 E0		@@:				AND				R8, 511							; mask out high bits above shift count, test for 0
+ 000004D9  C3							RET
+ 000004DA  49/ 81 E0		@@:				AND				R8, 511							; mask out high bits above shift count, test for 0
 	   000001FF
- 000004DC  75 12						JNE				@F								; handle edge case, shift zero bits
- 000004DE  48/ 3B CA						CMP				RCX, RDX						; destination same as source?
- 000004E1  74 0C						JE				@@r								; no copy needed
+ 000004E1  75 12						JNE				@F								; handle edge case, shift zero bits
+ 000004E3  48/ 3B CA						CMP				RCX, RDX						; destination same as source?
+ 000004E6  74 0C						JE				@@r								; no copy needed
 								Copy512			RCX, RDX						; no shift, just copy (destination, source already in regs)
- 000004E3  62 61 FD 48/ 6F   1					VMOVDQA64		ZMM31, ZM_PTR [ RDX ]
+ 000004E8  62 61 FD 48/ 6F   1					VMOVDQA64		ZMM31, ZM_PTR [ RDX ]
 	   3A
- 000004E9  62 61 FD 48/ 7F   1					VMOVDQA64		ZM_PTR [ RCX ], ZMM31
+ 000004EE  62 61 FD 48/ 7F   1					VMOVDQA64		ZM_PTR [ RCX ], ZMM31
 	   39
- 000004EF  C3			@@r:			RET
- 000004F0  62 61 FD 48/ 6F	@@:				VMOVDQA64		ZMM31, ZM_PTR [ RDX ]			; load the 8 qwords into zmm reg (note: word order)
+ 000004F4  C3			@@r:			RET
+ 000004F5  62 61 FD 48/ 6F	@@:				VMOVDQA64		ZMM31, ZM_PTR [ RDX ]			; load the 8 qwords into zmm reg (note: word order)
 	   3A
- 000004F6  49/ 8D 00						LEA				RAX, [ R8 ]
- 000004F9  66| 83 E0 3F						AND				AX, 03fh
- 000004FD  74 19						JZ				@F								; must be multiple of 64 bits to shift, no bits, just words to shift
+ 000004FB  49/ 8D 00						LEA				RAX, [ R8 ]
+ 000004FE  66| 83 E0 3F						AND				AX, 03fh
+ 00000502  74 19						JZ				@F								; must be multiple of 64 bits to shift, no bits, just words to shift
 
 				; Do the shift of bits within the 64 bit words
- 000004FF  62 62 FD 48/ 7C					VPBROADCASTQ	ZMM29, RAX						; Nr bits to shift left
+ 00000504  62 62 FD 48/ 7C					VPBROADCASTQ	ZMM29, RAX						; Nr bits to shift left
 	   E8
- 00000505  62 01 9D 40/ EF					VPXORQ			ZMM28, ZMM28, ZMM28				; 
+ 0000050A  62 01 9D 40/ EF					VPXORQ			ZMM28, ZMM28, ZMM28				; 
 	   E4
- 0000050B  62 03 9D 40/ 03					VALIGNQ			ZMM30, ZMM28, ZMM31, 1			; shift copy of words right one word (to get low order bits aligned for shift)
+ 00000510  62 03 9D 40/ 03					VALIGNQ			ZMM30, ZMM28, ZMM31, 1			; shift copy of words right one word (to get low order bits aligned for shift)
 	   F7 01
- 00000512  62 02 8D 40/ 71					VPSHLDVQ		ZMM31, ZMM30, ZMM29				; shift, concatenating low bits of next word with each word to shift in
+ 00000517  62 02 8D 40/ 71					VPSHLDVQ		ZMM31, ZMM30, ZMM29				; shift, concatenating low bits of next word with each word to shift in
 	   FD
 
 				; with the bits shifted within the words, if the desired shift is more than 64 bits, word shifts are required
- 00000518  48/ 8D 05		@@:				LEA				RAX, ShiftMaskLt	
+ 0000051D  48/ 8D 05		@@:				LEA				RAX, ShiftMaskLt	
 	   00000408 R
- 0000051F  66| 41/ C1 E8					SHR				R8W, 6							; divide Nr bits to shift by 64 giving Nr words to shift (can only be 0-7 based on above validation)
+ 00000524  66| 41/ C1 E8					SHR				R8W, 6							; divide Nr bits to shift by 64 giving Nr words to shift (can only be 0-7 based on above validation)
 	   06
- 00000524  4A/ 8D 04 00						LEA				RAX, [ RAX ] [ R8 ]				; Add index to base address of mask table
- 00000528  C5 F9/ 90 08						KMOVB			K1, B_PTR [ RAX ]				; create mask for words to be zeroed
- 0000052C  48/ 8D 05						LEA				RAX, ShiftPermuteLt				; address of permute table
+ 00000529  4A/ 8D 04 00						LEA				RAX, [ RAX ] [ R8 ]				; Add index to base address of mask table
+ 0000052D  C5 F9/ 90 08						KMOVB			K1, B_PTR [ RAX ]				; create mask for words to be zeroed
+ 00000531  48/ 8D 05						LEA				RAX, ShiftPermuteLt				; address of permute table
 	   00000200 R
- 00000533  66| 41/ C1 E0					SHL				R8W, 6							; multiply by 64 to get offset into permute table		
+ 00000538  66| 41/ C1 E0					SHL				R8W, 6							; multiply by 64 to get offset into permute table		
 	   06
- 00000538  62 41 FD 48/ 6F					VMOVDQA64		ZMM29, ZM_PTR [ R8 ] [ RAX ]	; load permute indices (with calculated offset)
+ 0000053D  62 41 FD 48/ 6F					VMOVDQA64		ZMM29, ZM_PTR [ R8 ] [ RAX ]	; load permute indices (with calculated offset)
 	   2C 00
- 0000053F  62 02 95 C1/ 36					VPERMQ			ZMM31 {k1}{z}, ZMM29, ZMM31		; permute words in zmm31 to achieve word shift
+ 00000544  62 02 95 C1/ 36					VPERMQ			ZMM31 {k1}{z}, ZMM29, ZMM31		; permute words in zmm31 to achieve word shift
 	   FF
- 00000545  62 61 FD 48/ 7F					VMOVDQA64		ZM_PTR [ RCX ], ZMM31			; store result at callers destination
+ 0000054A  62 61 FD 48/ 7F					VMOVDQA64		ZM_PTR [ RCX ], ZMM31			; store result at callers destination
 	   39
- 0000054B  C3							RET
- 0000054C			shl_u			ENDP			
+ 00000550  C3							RET
+ 00000551			shl_u			ENDP			
 					ELSE
 					ENDIF
 
- 0000054C			ui512_shift		ENDS												; end of section
+ 00000551			ui512_shift		ENDS												; end of section
 								END													; end of module
-Microsoft (R) Macro Assembler (x64) Version 14.50.35721.0   12/29/25 19:46:08
+Microsoft (R) Macro Assembler (x64) Version 14.50.35721.0   01/07/26 13:57:00
 ui512_shift.asm						     Symbols 2 - 1
 
 
@@ -1010,17 +1014,17 @@ Segments:
 
                 N a m e                  Length   Align   Class
 
-ui512_shift  . . . . . . . . . .	 0000054C 16	  'CODE'	
+ui512_shift  . . . . . . . . . .	 00000551 16	  'CODE'	
 
 
 Procedures, parameters, and locals:
 
                 N a m e                 Type     Value    Attr
 
-shl_u  . . . . . . . . . . . . .	P 	 000004C0 ui512_shift	Length= 0000008C Public
-  @@r  . . . . . . . . . . . . .	L 	 000004EF ui512_shift	
-shr_u  . . . . . . . . . . . . .	P 	 00000420 ui512_shift	Length= 0000008C Public
-  @@shift  . . . . . . . . . . .	L 	 00000450 ui512_shift	
+shl_u  . . . . . . . . . . . . .	P 	 000004C0 ui512_shift	Length= 00000091 Public
+  @@r  . . . . . . . . . . . . .	L 	 000004F4 ui512_shift	
+shr_u  . . . . . . . . . . . . .	P 	 00000420 ui512_shift	Length= 00000091 Public
+  @@shift  . . . . . . . . . . .	L 	 00000455 ui512_shift	
 
 
 Symbols:

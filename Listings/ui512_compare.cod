@@ -1,4 +1,4 @@
-Microsoft (R) Macro Assembler (x64) Version 14.50.35721.0   12/29/25 19:46:08
+Microsoft (R) Macro Assembler (x64) Version 14.50.35721.0   01/07/26 13:57:00
 ui512_compare.asm					     Page 1 - 1
 
 
@@ -216,6 +216,7 @@ ui512_compare.asm					     Page 1 - 1
 			      C RDXHome			EQU				Q_PTR [ RSP + ( 2 * 8 ) ]
 			      C R8Home			EQU				Q_PTR [ RSP + ( 3 * 8 ) ]
 			      C R9Home			EQU				Q_PTR [ RSP + ( 4 * 8 ) ]
+			      C 				MOV				RCXHome, RCX					; in 'fastcall' home param space is reserved, but regs not saved, so save at least RCX
 			      C 				ENDM
 			      C ;--------------------------------------------------------------------------------------------------------------------------------------------------------------
 			      C ; Proc_w_Local	ProcName, LocalStructName, NV_Regs_Used:vararg
@@ -230,9 +231,8 @@ ui512_compare.asm					     Page 1 - 1
 			      C 				DB				6 DUP (0cch)
 			      C 				ALIGN			16
 			      C 				PUBLIC			ProcName						; Declare code section, public proc, no prolog, no frame, exceptions handled by caller
-			      C ProcName		PROC			FRAME
-			      C 				
-			      C 				MOV				[ RSP + ( 1 * 8) ], RCX
+			      C ProcName		PROC			FRAME				
+			      C 				MOV				[ RSP + ( 1 * 8) ], RCX			; in 'fastcall' home param space is reserved, but regs not saved, so save at least RCX
 			      C 				push_reg        RBP								; standard prologue code
 			      C 
 			      C 	nRegs = 1
@@ -637,43 +637,45 @@ ui512_compare.asm					     Page 1 - 1
 	    CC
 	   ]
  00000010		     1	compare_u			PROC
+ 00000010  48/ 89 4C 24	     1					MOV				RCXHome, RCX					; in 'fastcall' home param space is reserved, but regs not saved, so save at least RCX
+	   08
 								CheckAlign		RCX									; (IN) left hand (LH) operand to compare
 								CheckAlign		RDX									; (IN) right hand (RH) operand in the compare 
 
 					IF __UseZ
- 00000010  62 61 FD 48/ 6F					VMOVDQA64		ZMM30, ZM_PTR [ RCX ]				; Load parameters
+ 00000015  62 61 FD 48/ 6F					VMOVDQA64		ZMM30, ZM_PTR [ RCX ]				; Load parameters
 	   31
- 00000016  62 61 FD 48/ 6F					VMOVDQA64		ZMM31, ZM_PTR [ RDX ]
+ 0000001B  62 61 FD 48/ 6F					VMOVDQA64		ZMM31, ZM_PTR [ RDX ]
 	   3A
- 0000001C  62 93 8D 40/ 1E					VPCMPUQ			k1, ZMM30, ZMM31, CPLT				; in-lane compare 8 words for 'less than'
+ 00000021  62 93 8D 40/ 1E					VPCMPUQ			k1, ZMM30, ZMM31, CPLT				; in-lane compare 8 words for 'less than'
 	   CF 01
- 00000023  62 93 8D 40/ 1E					VPCMPUQ			k2, ZMM30, ZMM31, CPGT				; do the same for 'greater than' (interleave these two compares to hide latencies)
+ 00000028  62 93 8D 40/ 1E					VPCMPUQ			k2, ZMM30, ZMM31, CPGT				; do the same for 'greater than' (interleave these two compares to hide latencies)
 	   D7 06
- 0000002A  C5 78/ 93 C1						KMOVW			R8D, k1
- 0000002E  C5 F8/ 93 C2						KMOVW			EAX, k2
- 00000032  41/ 81 C8						OR				R8D, MASK kMask.b8					; OR in a high bit to make an equal compare not zero	
+ 0000002F  C5 78/ 93 C1						KMOVW			R8D, k1
+ 00000033  C5 F8/ 93 C2						KMOVW			EAX, k2
+ 00000037  41/ 81 C8						OR				R8D, MASK kMask.b8					; OR in a high bit to make an equal compare not zero	
 	   00000100
- 00000039  0D 00000100						OR				EAX, MASK kMask.b8
- 0000003E  41/ D1 E0						SHL				R8D, 1								; shift to get bits 2 through 8
- 00000041  D1 E0						SHL				EAX, 1
+ 0000003E  0D 00000100						OR				EAX, MASK kMask.b8
+ 00000043  41/ D1 E0						SHL				R8D, 1								; shift to get bits 2 through 8
+ 00000046  D1 E0						SHL				EAX, 1
 						IF __UseBMI2
- 00000043  F3/ 45/ 0F BC C0					TZCNT			R8D, R8D							; get bit number of right-most (most significant) 1 thru 8
- 00000048  F3/ 0F BC C0						TZCNT			EAX, EAX
+ 00000048  F3/ 45/ 0F BC C0					TZCNT			R8D, R8D							; get bit number of right-most (most significant) 1 thru 8
+ 0000004D  F3/ 0F BC C0						TZCNT			EAX, EAX
 
 						ELSE		
 						ENDIF
- 0000004C  44/ 3B C0						CMP				R8D, EAX							; compare: which is most significant? LT or GT? (or zero - equal)
- 0000004F  8D 04 25						LEA				EAX, [ retcode_zero ]
+ 00000051  44/ 3B C0						CMP				R8D, EAX							; compare: which is most significant? LT or GT? (or zero - equal)
+ 00000054  8D 04 25						LEA				EAX, [ retcode_zero ]
 	   00000000
- 00000056  0F 47 05						CMOVA			EAX, ret_one
+ 0000005B  0F 47 05						CMOVA			EAX, ret_one
 	   00000000 E
- 0000005D  0F 42 05						CMOVB			EAX, ret_neg_one
+ 00000062  0F 42 05						CMOVB			EAX, ret_neg_one
 	   00000000 E
- 00000064  C3							RET
+ 00000069  C3							RET
 
 					ELSEIF	__UseY
 					ENDIF
- 00000065			compare_u		ENDP
+ 0000006A			compare_u		ENDP
 
 				;
 				;--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -686,52 +688,54 @@ ui512_compare.asm					     Page 1 - 1
 				;
 
 								Leaf_Entry		compare_uT64
- 00000065  00000006 [	     1					DB				6 DUP (0cch)
+ 0000006A  00000006 [	     1					DB				6 DUP (0cch)
 	    CC
 	   ]
  00000070		     1	compare_uT64			PROC
+ 00000070  48/ 89 4C 24	     1					MOV				RCXHome, RCX					; in 'fastcall' home param space is reserved, but regs not saved, so save at least RCX
+	   08
 								CheckAlign		RCX									; (IN) left hand (LH) operand to compare 
 
 					IF		__UseZ
- 00000070  62 61 FD 48/ 6F					VMOVDQA64		ZMM30, ZM_PTR [ RCX ]				; Load lh-op parameter
+ 00000075  62 61 FD 48/ 6F					VMOVDQA64		ZMM30, ZM_PTR [ RCX ]				; Load lh-op parameter
 	   31
- 00000076  C5 F9/ 90 0D						KMOVB			k1, B_PTR [ mskB7 ]
+ 0000007B  C5 F9/ 90 0D						KMOVB			k1, B_PTR [ mskB7 ]
 	   00000000 E
- 0000007E  62 62 FD C9/ 7C					VPBROADCASTQ 	ZMM31 {k1}{z}, RDX					; load rh_op parameter (both now in Z regs)
+ 00000083  62 62 FD C9/ 7C					VPBROADCASTQ 	ZMM31 {k1}{z}, RDX					; load rh_op parameter (both now in Z regs)
 	   FA
- 00000084  62 93 8D 40/ 1E					VPCMPUQ			k1, ZMM30, ZMM31, CPLT				; in-lane compare for LT
+ 00000089  62 93 8D 40/ 1E					VPCMPUQ			k1, ZMM30, ZMM31, CPLT				; in-lane compare for LT
 	   CF 01
- 0000008B  62 93 8D 40/ 1E					VPCMPUQ			k2, ZMM30, ZMM31, CPGT				; do the same for 'greater than'
+ 00000090  62 93 8D 40/ 1E					VPCMPUQ			k2, ZMM30, ZMM31, CPGT				; do the same for 'greater than'
 	   D7 06
- 00000092  C5 78/ 93 C1						KMOVW			R8D, k1
- 00000096  C5 F8/ 93 C2						KMOVW			EAX, k2
- 0000009A  41/ 81 C8						OR				R8D, MASK kMask.b8					; OR in a high bit to make an equal compare not zero	
+ 00000097  C5 78/ 93 C1						KMOVW			R8D, k1
+ 0000009B  C5 F8/ 93 C2						KMOVW			EAX, k2
+ 0000009F  41/ 81 C8						OR				R8D, MASK kMask.b8					; OR in a high bit to make an equal compare not zero	
 	   00000100
- 000000A1  0D 00000100						OR				EAX, MASK kMask.b8
- 000000A6  41/ D1 E0						SHL				R8D, 1								; shift to get bits 2 through 8
- 000000A9  D1 E0						SHL				EAX, 1
+ 000000A6  0D 00000100						OR				EAX, MASK kMask.b8
+ 000000AB  41/ D1 E0						SHL				R8D, 1								; shift to get bits 2 through 8
+ 000000AE  D1 E0						SHL				EAX, 1
 
 						IF __UseBMI2
- 000000AB  F3/ 45/ 0F BC C0					TZCNT			R8D, R8D							; get bit number of right-most (most significant) 1 thru 8
- 000000B0  F3/ 0F BC C0						TZCNT			EAX, EAX
+ 000000B0  F3/ 45/ 0F BC C0					TZCNT			R8D, R8D							; get bit number of right-most (most significant) 1 thru 8
+ 000000B5  F3/ 0F BC C0						TZCNT			EAX, EAX
 
 						ELSE														; TZCNT/BSF: source guaranteed non-zero because of sentinel bit
 						ENDIF
- 000000B4  44/ 3B C0						CMP				R8D, EAX							; compare: which is most significant? LT or GT? (or zero - equal)
- 000000B7  8D 04 25						LEA				EAX, [ retcode_zero ]
+ 000000B9  44/ 3B C0						CMP				R8D, EAX							; compare: which is most significant? LT or GT? (or zero - equal)
+ 000000BC  8D 04 25						LEA				EAX, [ retcode_zero ]
 	   00000000
- 000000BE  0F 47 05						CMOVA			EAX, ret_one
+ 000000C3  0F 47 05						CMOVA			EAX, ret_one
 	   00000000 E
- 000000C5  0F 42 05						CMOVB			EAX, ret_neg_one
+ 000000CA  0F 42 05						CMOVB			EAX, ret_neg_one
 	   00000000 E
- 000000CC  C3							RET
+ 000000D1  C3							RET
 
 					ELSE
 					ENDIF
- 000000CD			compare_uT64	ENDP												; end of proc
- 000000CD			ui512_compare	ENDS												; end of section
+ 000000D2			compare_uT64	ENDP												; end of proc
+ 000000D2			ui512_compare	ENDS												; end of section
 								END													; end of module
-Microsoft (R) Macro Assembler (x64) Version 14.50.35721.0   12/29/25 19:46:08
+Microsoft (R) Macro Assembler (x64) Version 14.50.35721.0   01/07/26 13:57:00
 ui512_compare.asm					     Symbols 2 - 1
 
 
@@ -783,15 +787,15 @@ Segments:
 
                 N a m e                  Length   Align   Class
 
-ui512_compare  . . . . . . . . .	 000000CD 16	  'CODE'	
+ui512_compare  . . . . . . . . .	 000000D2 16	  'CODE'	
 
 
 Procedures, parameters, and locals:
 
                 N a m e                 Type     Value    Attr
 
-compare_uT64 . . . . . . . . . .	P 	 00000070 ui512_compare	Length= 0000005D Public
-compare_u  . . . . . . . . . . .	P 	 00000010 ui512_compare	Length= 00000055 Public
+compare_uT64 . . . . . . . . . .	P 	 00000070 ui512_compare	Length= 00000062 Public
+compare_u  . . . . . . . . . . .	P 	 00000010 ui512_compare	Length= 0000005A Public
 
 
 Symbols:

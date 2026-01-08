@@ -1,4 +1,4 @@
-Microsoft (R) Macro Assembler (x64) Version 14.50.35721.0   12/29/25 19:46:08
+Microsoft (R) Macro Assembler (x64) Version 14.50.35721.0   01/07/26 13:57:00
 ui512_multiply.asm					     Page 1 - 1
 
 
@@ -216,6 +216,7 @@ ui512_multiply.asm					     Page 1 - 1
 			      C RDXHome			EQU				Q_PTR [ RSP + ( 2 * 8 ) ]
 			      C R8Home			EQU				Q_PTR [ RSP + ( 3 * 8 ) ]
 			      C R9Home			EQU				Q_PTR [ RSP + ( 4 * 8 ) ]
+			      C 				MOV				RCXHome, RCX					; in 'fastcall' home param space is reserved, but regs not saved, so save at least RCX
 			      C 				ENDM
 			      C ;--------------------------------------------------------------------------------------------------------------------------------------------------------------
 			      C ; Proc_w_Local	ProcName, LocalStructName, NV_Regs_Used:vararg
@@ -230,9 +231,8 @@ ui512_multiply.asm					     Page 1 - 1
 			      C 				DB				6 DUP (0cch)
 			      C 				ALIGN			16
 			      C 				PUBLIC			ProcName						; Declare code section, public proc, no prolog, no frame, exceptions handled by caller
-			      C ProcName		PROC			FRAME
-			      C 				
-			      C 				MOV				[ RSP + ( 1 * 8) ], RCX
+			      C ProcName		PROC			FRAME				
+			      C 				MOV				[ RSP + ( 1 * 8) ], RCX			; in 'fastcall' home param space is reserved, but regs not saved, so save at least RCX
 			      C 				push_reg        RBP								; standard prologue code
 			      C 
 			      C 	nRegs = 1
@@ -647,8 +647,8 @@ ui512_multiply.asm					     Page 1 - 1
  00000000  00000006 [	     1					DB				6 DUP (0cch)
 	    CC
 	   ]
- 00000010		     1	mult_u		PROC			FRAME
- 00000010  48/ 89 4C 24	     1					MOV				[ RSP + ( 1 * 8) ], RCX
+ 00000010		     1	mult_u		PROC			FRAME				
+ 00000010  48/ 89 4C 24	     1					MOV				[ RSP + ( 1 * 8) ], RCX			; in 'fastcall' home param space is reserved, but regs not saved, so save at least RCX
 	   08
  00000015  55		     2					PUSH			RBP
  00000016  41/ 54	     3					PUSH			R12
@@ -827,8 +827,8 @@ ui512_multiply.asm					     Page 1 - 1
  0000018E  00000006 [	     1					DB				6 DUP (0cch)
 	    CC
 	   ]
- 000001A0		     1	mult_uT64		PROC			FRAME
- 000001A0  48/ 89 4C 24	     1					MOV				[ RSP + ( 1 * 8) ], RCX
+ 000001A0		     1	mult_uT64		PROC			FRAME				
+ 000001A0  48/ 89 4C 24	     1					MOV				[ RSP + ( 1 * 8) ], RCX			; in 'fastcall' home param space is reserved, but regs not saved, so save at least RCX
 	   08
  000001A5  55		     2					PUSH			RBP
  000001A6  48/ 81 EC	     1					SUB				RSP, _allocspace				; set stack pointer down by space needed (locals+ (2 * shadowspace))
@@ -938,7 +938,7 @@ ui512_multiply.asm					     Page 1 - 1
  00000287			mult_uT64		ENDP		
  00000287			ui512_multiply	ENDS
 								END													; end of module
-Microsoft (R) Macro Assembler (x64) Version 14.50.35721.0   12/29/25 19:46:08
+Microsoft (R) Macro Assembler (x64) Version 14.50.35721.0   01/07/26 13:57:00
 ui512_multiply.asm					     Symbols 2 - 1
 
 

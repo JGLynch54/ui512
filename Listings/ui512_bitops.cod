@@ -1,4 +1,4 @@
-Microsoft (R) Macro Assembler (x64) Version 14.50.35721.0   12/29/25 19:46:07
+Microsoft (R) Macro Assembler (x64) Version 14.50.35721.0   01/07/26 13:57:00
 ui512_bitops.asm					     Page 1 - 1
 
 
@@ -216,6 +216,7 @@ ui512_bitops.asm					     Page 1 - 1
 			      C RDXHome			EQU				Q_PTR [ RSP + ( 2 * 8 ) ]
 			      C R8Home			EQU				Q_PTR [ RSP + ( 3 * 8 ) ]
 			      C R9Home			EQU				Q_PTR [ RSP + ( 4 * 8 ) ]
+			      C 				MOV				RCXHome, RCX					; in 'fastcall' home param space is reserved, but regs not saved, so save at least RCX
 			      C 				ENDM
 			      C ;--------------------------------------------------------------------------------------------------------------------------------------------------------------
 			      C ; Proc_w_Local	ProcName, LocalStructName, NV_Regs_Used:vararg
@@ -230,9 +231,8 @@ ui512_bitops.asm					     Page 1 - 1
 			      C 				DB				6 DUP (0cch)
 			      C 				ALIGN			16
 			      C 				PUBLIC			ProcName						; Declare code section, public proc, no prolog, no frame, exceptions handled by caller
-			      C ProcName		PROC			FRAME
-			      C 				
-			      C 				MOV				[ RSP + ( 1 * 8) ], RCX
+			      C ProcName		PROC			FRAME				
+			      C 				MOV				[ RSP + ( 1 * 8) ], RCX			; in 'fastcall' home param space is reserved, but regs not saved, so save at least RCX
 			      C 				push_reg        RBP								; standard prologue code
 			      C 
 			      C 	nRegs = 1
@@ -636,22 +636,24 @@ ui512_bitops.asm					     Page 1 - 1
 	    CC
 	   ]
  00000010		     1	and_u			PROC
+ 00000010  48/ 89 4C 24	     1					MOV				RCXHome, RCX					; in 'fastcall' home param space is reserved, but regs not saved, so save at least RCX
+	   08
 								CheckAlign		RCX
 								CheckAlign		RDX
 								CheckAlign		R8
 
 					IF __UseZ	
- 00000010  62 61 FD 48/ 6F					VMOVDQA64		ZMM31, ZM_PTR [ RDX ]			; load lh_op	
+ 00000015  62 61 FD 48/ 6F					VMOVDQA64		ZMM31, ZM_PTR [ RDX ]			; load lh_op	
 	   3A
- 00000016  62 41 85 40/ DB					VPANDQ			ZMM31, ZMM31, ZM_PTR [ R8 ]		; 'AND' with rh_op
+ 0000001B  62 41 85 40/ DB					VPANDQ			ZMM31, ZMM31, ZM_PTR [ R8 ]		; 'AND' with rh_op
 	   38
- 0000001C  62 61 FD 48/ 7F					VMOVDQA64		ZM_PTR [ RCX ], ZMM31			; store at destination address
+ 00000021  62 61 FD 48/ 7F					VMOVDQA64		ZM_PTR [ RCX ], ZMM31			; store at destination address
 	   39
 
 					ELSEIF __UseY
 					ENDIF
- 00000022  C3							RET	
- 00000023			and_u			ENDP
+ 00000027  C3							RET	
+ 00000028			and_u			ENDP
 
 				;--------------------------------------------------------------------------------------------------------------------------------------------------------------
 				;			or_u		-	logical 'OR' bits in lh_op, rh_op, put result in destination
@@ -662,26 +664,28 @@ ui512_bitops.asm					     Page 1 - 1
 				;			returns		-	nothing (0)
 
 								Leaf_Entry		or_u
- 00000023  00000006 [	     1					DB				6 DUP (0cch)
+ 00000028  00000006 [	     1					DB				6 DUP (0cch)
 	    CC
 	   ]
  00000030		     1	or_u			PROC
+ 00000030  48/ 89 4C 24	     1					MOV				RCXHome, RCX					; in 'fastcall' home param space is reserved, but regs not saved, so save at least RCX
+	   08
 								CheckAlign		RCX
 								CheckAlign		RDX
 								CheckAlign		R8
 
 					IF __UseZ	
- 00000030  62 61 FD 48/ 6F					VMOVDQA64		ZMM31, ZM_PTR [ RDX ]			
+ 00000035  62 61 FD 48/ 6F					VMOVDQA64		ZMM31, ZM_PTR [ RDX ]			
 	   3A
- 00000036  62 41 85 40/ EB					VPORQ			ZMM31, ZMM31, ZM_PTR [ R8 ]
+ 0000003B  62 41 85 40/ EB					VPORQ			ZMM31, ZMM31, ZM_PTR [ R8 ]
 	   38
- 0000003C  62 61 FD 48/ 7F					VMOVDQA64		ZM_PTR [ RCX ], ZMM31
+ 00000041  62 61 FD 48/ 7F					VMOVDQA64		ZM_PTR [ RCX ], ZMM31
 	   39
 
 					ELSEIF __UseY
 					ENDIF
- 00000042  C3							RET 
- 00000043			or_u			ENDP
+ 00000047  C3							RET 
+ 00000048			or_u			ENDP
 
 				;--------------------------------------------------------------------------------------------------------------------------------------------------------------
 				;			xor_u		-	logical 'XOR' bits in lh_op, rh_op, put result in destination
@@ -692,26 +696,28 @@ ui512_bitops.asm					     Page 1 - 1
 				;			returns		-	nothing (0)
 
 								Leaf_Entry		xor_u
- 00000043  00000006 [	     1					DB				6 DUP (0cch)
+ 00000048  00000006 [	     1					DB				6 DUP (0cch)
 	    CC
 	   ]
  00000050		     1	xor_u			PROC
+ 00000050  48/ 89 4C 24	     1					MOV				RCXHome, RCX					; in 'fastcall' home param space is reserved, but regs not saved, so save at least RCX
+	   08
 								CheckAlign		RCX
 								CheckAlign		RDX
 								CheckAlign		R8
 
 					IF __UseZ	
- 00000050  62 61 FD 48/ 6F					VMOVDQA64		ZMM31, ZM_PTR [ RDX ]			
+ 00000055  62 61 FD 48/ 6F					VMOVDQA64		ZMM31, ZM_PTR [ RDX ]			
 	   3A
- 00000056  62 41 85 40/ EF					VPXORQ			ZMM31, ZMM31, ZM_PTR [ R8 ]
+ 0000005B  62 41 85 40/ EF					VPXORQ			ZMM31, ZMM31, ZM_PTR [ R8 ]
 	   38
- 0000005C  62 61 FD 48/ 7F					VMOVDQA64		ZM_PTR [ RCX ], ZMM31
+ 00000061  62 61 FD 48/ 7F					VMOVDQA64		ZM_PTR [ RCX ], ZMM31
 	   39
 
 					ELSEIF __UseY
 					ENDIF
- 00000062  C3							RET 
- 00000063			xor_u			ENDP
+ 00000067  C3							RET 
+ 00000068			xor_u			ENDP
 
 				;--------------------------------------------------------------------------------------------------------------------------------------------------------------
 				;			not_u		-	logical 'NOT' bits in source, put result in destination
@@ -721,29 +727,31 @@ ui512_bitops.asm					     Page 1 - 1
 				;			returns		-	nothing (0)
 
 								Leaf_Entry		not_u
- 00000063  00000006 [	     1					DB				6 DUP (0cch)
+ 00000068  00000006 [	     1					DB				6 DUP (0cch)
 	    CC
 	   ]
  00000070		     1	not_u			PROC
+ 00000070  48/ 89 4C 24	     1					MOV				RCXHome, RCX					; in 'fastcall' home param space is reserved, but regs not saved, so save at least RCX
+	   08
 								CheckAlign		RCX
 								CheckAlign		RDX
 
 					IF __UseZ	
- 00000070  62 61 FD 48/ 6F					VMOVDQA64		ZMM31, ZM_PTR [RDX]			
+ 00000075  62 61 FD 48/ 6F					VMOVDQA64		ZMM31, ZM_PTR [RDX]			
 	   3A
- 00000076  62 61 85 40/ DF					VPANDNQ			ZMM31, ZMM31, qOnes					; qOnes (declared in the data section of this module) is 8 QWORDS, binary all ones
+ 0000007B  62 61 85 40/ DF					VPANDNQ			ZMM31, ZMM31, qOnes					; qOnes (declared in the data section of this module) is 8 QWORDS, binary all ones
 	   3D 00000000 E
- 00000080  62 61 FD 48/ 7F					VMOVDQA64		ZM_PTR [RCX], ZMM31
+ 00000085  62 61 FD 48/ 7F					VMOVDQA64		ZM_PTR [RCX], ZMM31
 	   39
 
 					ELSEIF __UseY
 					ENDIF
- 00000086  C3							RET	
+ 0000008B  C3							RET	
 
- 00000087			not_u			ENDP
- 00000087			ui512_bitops	ENDS												; end of section
+ 0000008C			not_u			ENDP
+ 0000008C			ui512_bitops	ENDS												; end of section
 								END													; end of module
-Microsoft (R) Macro Assembler (x64) Version 14.50.35721.0   12/29/25 19:46:07
+Microsoft (R) Macro Assembler (x64) Version 14.50.35721.0   01/07/26 13:57:00
 ui512_bitops.asm					     Symbols 2 - 1
 
 
@@ -795,17 +803,17 @@ Segments:
 
                 N a m e                  Length   Align   Class
 
-ui512_bitops . . . . . . . . . .	 00000087 16	  'CODE'	
+ui512_bitops . . . . . . . . . .	 0000008C 16	  'CODE'	
 
 
 Procedures, parameters, and locals:
 
                 N a m e                 Type     Value    Attr
 
-and_u  . . . . . . . . . . . . .	P 	 00000010 ui512_bitops	Length= 00000013 Public
-not_u  . . . . . . . . . . . . .	P 	 00000070 ui512_bitops	Length= 00000017 Public
-or_u . . . . . . . . . . . . . .	P 	 00000030 ui512_bitops	Length= 00000013 Public
-xor_u  . . . . . . . . . . . . .	P 	 00000050 ui512_bitops	Length= 00000013 Public
+and_u  . . . . . . . . . . . . .	P 	 00000010 ui512_bitops	Length= 00000018 Public
+not_u  . . . . . . . . . . . . .	P 	 00000070 ui512_bitops	Length= 0000001C Public
+or_u . . . . . . . . . . . . . .	P 	 00000030 ui512_bitops	Length= 00000018 Public
+xor_u  . . . . . . . . . . . . .	P 	 00000050 ui512_bitops	Length= 00000018 Public
 
 
 Symbols:

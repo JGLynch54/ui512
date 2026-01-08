@@ -1,4 +1,4 @@
-Microsoft (R) Macro Assembler (x64) Version 14.50.35721.0   12/29/25 19:46:08
+Microsoft (R) Macro Assembler (x64) Version 14.50.35721.0   01/07/26 13:57:00
 ui512_significance.asm					     Page 1 - 1
 
 
@@ -216,6 +216,7 @@ ui512_significance.asm					     Page 1 - 1
 			      C RDXHome			EQU				Q_PTR [ RSP + ( 2 * 8 ) ]
 			      C R8Home			EQU				Q_PTR [ RSP + ( 3 * 8 ) ]
 			      C R9Home			EQU				Q_PTR [ RSP + ( 4 * 8 ) ]
+			      C 				MOV				RCXHome, RCX					; in 'fastcall' home param space is reserved, but regs not saved, so save at least RCX
 			      C 				ENDM
 			      C ;--------------------------------------------------------------------------------------------------------------------------------------------------------------
 			      C ; Proc_w_Local	ProcName, LocalStructName, NV_Regs_Used:vararg
@@ -230,9 +231,8 @@ ui512_significance.asm					     Page 1 - 1
 			      C 				DB				6 DUP (0cch)
 			      C 				ALIGN			16
 			      C 				PUBLIC			ProcName						; Declare code section, public proc, no prolog, no frame, exceptions handled by caller
-			      C ProcName		PROC			FRAME
-			      C 				
-			      C 				MOV				[ RSP + ( 1 * 8) ], RCX
+			      C ProcName		PROC			FRAME				
+			      C 				MOV				[ RSP + ( 1 * 8) ], RCX			; in 'fastcall' home param space is reserved, but regs not saved, so save at least RCX
 			      C 				push_reg        RBP								; standard prologue code
 			      C 
 			      C 	nRegs = 1
@@ -636,35 +636,37 @@ ui512_significance.asm					     Page 1 - 1
 	    CC
 	   ]
  00000010		     1	msb_u			PROC
+ 00000010  48/ 89 4C 24	     1					MOV				RCXHome, RCX					; in 'fastcall' home param space is reserved, but regs not saved, so save at least RCX
+	   08
 								CheckAlign		RCX								; (IN) source to scan 
 
 					IF __UseZ
- 00000010  62 61 FD 48/ 6F					VMOVDQA64		ZMM31, ZM_PTR [RCX]				; Load source 
+ 00000015  62 61 FD 48/ 6F					VMOVDQA64		ZMM31, ZM_PTR [RCX]				; Load source 
 	   39
- 00000016  62 92 85 40/ 27					VPTESTMQ		k1, ZMM31, ZMM31				; find non-zero words (if any)
+ 0000001B  62 92 85 40/ 27					VPTESTMQ		k1, ZMM31, ZMM31				; find non-zero words (if any)
 	   CF
- 0000001C  C5 F9/ 93 C1						KMOVB			EAX, k1							; ZMM regs in least significant word to most ([0] lsw to [7] msw)
- 00000020  F3/ 0F BC C8						TZCNT			ECX, EAX						; determine index of word from last (trailing) non-zero bit in mask
- 00000024  73 08						JNC				@F								; all words zero?
- 00000026  8D 04 25						LEA				EAX, [ retcode_neg_one ]		; exit with -1 if all eight qwords are zero (no significant bit)
+ 00000021  C5 F9/ 93 C1						KMOVB			EAX, k1							; ZMM regs in least significant word to most ([0] lsw to [7] msw)
+ 00000025  F3/ 0F BC C8						TZCNT			ECX, EAX						; determine index of word from last (trailing) non-zero bit in mask
+ 00000029  73 08						JNC				@F								; all words zero?
+ 0000002B  8D 04 25						LEA				EAX, [ retcode_neg_one ]		; exit with -1 if all eight qwords are zero (no significant bit)
 	   FFFFFFFF
- 0000002D  C3							RET
+ 00000032  C3							RET
 
- 0000002E  8D 04 25		@@:				LEA				EAX, [ 7 ]						; numbering of words in Z regs (and hence in k1 mask) is reverse in significance order
+ 00000033  8D 04 25		@@:				LEA				EAX, [ 7 ]						; numbering of words in Z regs (and hence in k1 mask) is reverse in significance order
 	   00000007
- 00000035  2B C1						SUB				EAX, ECX						; so 7 minus leading k bit index becomes index to our ui512 bit qword
- 00000037  C1 E0 06						SHL				EAX, 6							; convert index to offset
- 0000003A  62 62 FD C9/ 8B					VPCOMPRESSQ		ZMM0 {k1}{z}, ZMM31				; compress it into first word of ZMM0, which is also XMM0
+ 0000003A  2B C1						SUB				EAX, ECX						; so 7 minus leading k bit index becomes index to our ui512 bit qword
+ 0000003C  C1 E0 06						SHL				EAX, 6							; convert index to offset
+ 0000003F  62 62 FD C9/ 8B					VPCOMPRESSQ		ZMM0 {k1}{z}, ZMM31				; compress it into first word of ZMM0, which is also XMM0
 	   F8
- 00000040  C4 E1 F9/ 7E C1					VMOVQ			RCX, XMM0						; extract the non-zero word (k1 still has index to it)
- 00000045  F3/ 48/ 0F BD C9					LZCNT			RCX, RCX						; get the index of the non-zero bit within the word
- 0000004A  83 C0 3F						ADD				EAX, 63							; LZCNT counts leading non-zero bits. Subtract from 63 to get our bit index
- 0000004D  2B C1						SUB				EAX, ECX						; Word index * 64 + bit index becomes bit index to first non-zero bit (0 to 511, where )
+ 00000045  C4 E1 F9/ 7E C1					VMOVQ			RCX, XMM0						; extract the non-zero word (k1 still has index to it)
+ 0000004A  F3/ 48/ 0F BD C9					LZCNT			RCX, RCX						; get the index of the non-zero bit within the word
+ 0000004F  83 C0 3F						ADD				EAX, 63							; LZCNT counts leading non-zero bits. Subtract from 63 to get our bit index
+ 00000052  2B C1						SUB				EAX, ECX						; Word index * 64 + bit index becomes bit index to first non-zero bit (0 to 511, where )
 
 					ELSE
 					ENDIF
- 0000004F  C3							RET
- 00000050			msb_u			ENDP
+ 00000054  C3							RET
+ 00000055			msb_u			ENDP
 
 				;--------------------------------------------------------------------------------------------------------------------------------------------------------------
 				;			lsb_u		-	find least significant bit in supplied source 512bit (8 QWORDS)
@@ -675,46 +677,48 @@ ui512_significance.asm					     Page 1 - 1
 				;					a returned 511 means bit63 of the first word (the left most bit)
 
 								Leaf_Entry		lsb_u							; Declare public proc, no prolog, no frame, exceptions handled by caller
- 00000050  00000006 [	     1					DB				6 DUP (0cch)
+ 00000055  00000006 [	     1					DB				6 DUP (0cch)
 	    CC
 	   ]
  00000060		     1	lsb_u			PROC
+ 00000060  48/ 89 4C 24	     1					MOV				RCXHome, RCX					; in 'fastcall' home param space is reserved, but regs not saved, so save at least RCX
+	   08
 								CheckAlign		RCX								; (IN) source to scan
 
 					IF __UseZ
- 00000060  62 61 FD 48/ 6F					VMOVDQA64		ZMM31, ZM_PTR [ RCX ]			; Load source 
+ 00000065  62 61 FD 48/ 6F					VMOVDQA64		ZMM31, ZM_PTR [ RCX ]			; Load source 
 	   39
- 00000066  62 92 85 40/ 27					VPTESTMQ		k1, ZMM31, ZMM31				; find non-zero words (if any)
+ 0000006B  62 92 85 40/ 27					VPTESTMQ		k1, ZMM31, ZMM31				; find non-zero words (if any)
 	   CF
- 0000006C  C5 F9/ 93 C1						KMOVB			EAX, k1
- 00000070  F3/ 44/ 0F BD D0					LZCNT			R10D, EAX						; ZMM regs in least significant word to most ([0] lsw to [7] msw)
- 00000075  73 08						JNC				@F
- 00000077  8D 04 25						LEA				EAX, [ retcode_neg_one ]		; exit with -1 if all eight qwords are zero (no significant bit)
+ 00000071  C5 F9/ 93 C1						KMOVB			EAX, k1
+ 00000075  F3/ 44/ 0F BD D0					LZCNT			R10D, EAX						; ZMM regs in least significant word to most ([0] lsw to [7] msw)
+ 0000007A  73 08						JNC				@F
+ 0000007C  8D 04 25						LEA				EAX, [ retcode_neg_one ]		; exit with -1 if all eight qwords are zero (no significant bit)
 	   FFFFFFFF
- 0000007E  C3							RET
+ 00000083  C3							RET
 
- 0000007F  49/ 83 E2 07		@@:				AND				R10, 7							; mask out all but 0 -> 7
- 00000083  8D 04 25						LEA				EAX, [ 7 ]						; numbering of words in Z regs (and hence in k1 mask) is reverse in significance order
+ 00000084  49/ 83 E2 07		@@:				AND				R10, 7							; mask out all but 0 -> 7
+ 00000088  8D 04 25						LEA				EAX, [ 7 ]						; numbering of words in Z regs (and hence in k1 mask) is reverse in significance order
 	   00000007
- 0000008A  41/ 2B C2						SUB				EAX, R10D						; so 7 minus leading k bit index becomes index to our ui512 bit qword
- 0000008D  45/ 33 C9						XOR				R9D, R9D
- 00000090  41/ FF C1						INC				R9D
- 00000093  8A C8						MOV				CL, AL
- 00000095  41/ D3 E1						SHL				R9D, CL
- 00000098  C4 C1 79/ 92 C9					KMOVB			k1, R9D
- 0000009D  62 62 FD C9/ 8B					VPCOMPRESSQ		ZMM0 {k1}{z}, ZMM31
+ 0000008F  41/ 2B C2						SUB				EAX, R10D						; so 7 minus leading k bit index becomes index to our ui512 bit qword
+ 00000092  45/ 33 C9						XOR				R9D, R9D
+ 00000095  41/ FF C1						INC				R9D
+ 00000098  8A C8						MOV				CL, AL
+ 0000009A  41/ D3 E1						SHL				R9D, CL
+ 0000009D  C4 C1 79/ 92 C9					KMOVB			k1, R9D
+ 000000A2  62 62 FD C9/ 8B					VPCOMPRESSQ		ZMM0 {k1}{z}, ZMM31
 	   F8
- 000000A3  C4 E1 F9/ 7E C0					VMOVQ			RAX, XMM0						; extract the non-zero word
- 000000A8  41/ C1 E2 06						SHL				R10D, 6							; convert index to offset
- 000000AC  F3/ 48/ 0F BC C0					TZCNT			RAX, RAX						; get the index of the non-zero bit within the word
- 000000B1  41/ 03 C2						ADD				EAX, R10D						; Word index * 64 + bit index becomes bit index to first non-zero bit (0 to 511, where )
- 000000B4  C3							RET
+ 000000A8  C4 E1 F9/ 7E C0					VMOVQ			RAX, XMM0						; extract the non-zero word
+ 000000AD  41/ C1 E2 06						SHL				R10D, 6							; convert index to offset
+ 000000B1  F3/ 48/ 0F BC C0					TZCNT			RAX, RAX						; get the index of the non-zero bit within the word
+ 000000B6  41/ 03 C2						ADD				EAX, R10D						; Word index * 64 + bit index becomes bit index to first non-zero bit (0 to 511, where )
+ 000000B9  C3							RET
 					ELSE
 					ENDIF
- 000000B5			lsb_u			ENDP
- 000000B5			ui512_significance ENDS											; end of section
+ 000000BA			lsb_u			ENDP
+ 000000BA			ui512_significance ENDS											; end of section
 								END												; end of module
-Microsoft (R) Macro Assembler (x64) Version 14.50.35721.0   12/29/25 19:46:08
+Microsoft (R) Macro Assembler (x64) Version 14.50.35721.0   01/07/26 13:57:00
 ui512_significance.asm					     Symbols 2 - 1
 
 
@@ -766,15 +770,15 @@ Segments:
 
                 N a m e                  Length   Align   Class
 
-ui512_significance . . . . . . .	 000000B5 16	  'CODE'	
+ui512_significance . . . . . . .	 000000BA 16	  'CODE'	
 
 
 Procedures, parameters, and locals:
 
                 N a m e                 Type     Value    Attr
 
-lsb_u  . . . . . . . . . . . . .	P 	 00000060 ui512_significance	Length= 00000055 Public
-msb_u  . . . . . . . . . . . . .	P 	 00000010 ui512_significance	Length= 00000040 Public
+lsb_u  . . . . . . . . . . . . .	P 	 00000060 ui512_significance	Length= 0000005A Public
+msb_u  . . . . . . . . . . . . .	P 	 00000010 ui512_significance	Length= 00000045 Public
 
 
 Symbols:
