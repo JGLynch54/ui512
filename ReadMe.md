@@ -315,5 +315,3 @@ License
 Contact Information
 
     This project is posted at Github, User Name JGLynch54.
-ed at Github, User Name JGLynch54.
-
