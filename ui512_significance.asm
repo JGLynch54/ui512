@@ -5,7 +5,7 @@
 ;
 ;			File:			ui512_significaance.asm
 ;			Author:			John G. Lynch
-;			Legal:			Copyright @2025, per MIT License below
+;			Legal:			Copyright @2026, per MIT License below
 ;			Date:			November 19, 2025  (file creation)
 
 				INCLUDE			ui512_legalnotes.inc

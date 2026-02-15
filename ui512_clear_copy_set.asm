@@ -5,8 +5,8 @@
 ;
 ;			File:			ui512_clear_copy_set.asm
 ;			Author:			John G. Lynch
-;			Legal:			Copyright @2024, per MIT License below
-;			Date:			October 29, 2025
+;			Legal:			Copyright @2026, per MIT License below
+;			Date:			October 29, 2025 (file creation)
 
 				INCLUDE			ui512_legalnotes.inc
 				INCLUDE			ui512_compile_time_options.inc
@@ -14,12 +14,6 @@
 				INCLUDE			ui512_externs.inc
 .NOLISTIF
 				OPTION			CASEMAP:NONE
-
-IF				__VerifyRegs	
-Verify_Regs		SEGMENT			PARA 'CODE'				
-				VerifyRegs
-Verify_Regs		ENDS
-ENDIF
 
 clear_copy_set	SEGMENT			PARA 'CODE'
 

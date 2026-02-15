@@ -5,8 +5,8 @@
 ;
 ;			File:			ui512_subtraction.asm
 ;			Author:			John G. Lynch
-;			Legal:			Copyright @2024, per MIT License below
-;			Date:			October 29, 2025
+;			Legal:			Copyright @2026, per MIT License below
+;			Date:			October 29, 2025 (file creation)
 
 				INCLUDE			ui512_legalnotes.inc
 				INCLUDE			ui512_compile_time_options.inc
