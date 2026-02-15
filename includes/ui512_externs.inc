@@ -5,8 +5,8 @@
 ;
 ;			File:			ui512_externs.inc
 ;			Author:			John G. Lynch
-;			Legal:			Copyright @2025, per MIT License included
-;			Date:			October 24, 2025
+;			Legal:			Copyright @2026, per MIT License included
+;			Date:			October 24, 2025 (file creation)
 ;
 IFNDEF							ui512_externs_INC
 ui512_externs_INC				EQU		<1>
@@ -51,7 +51,7 @@ EXTERNDEF		compare_uT64:PROC
 ;	// returns: zero for no carry, 1 for carry (overflow)
 EXTERNDEF		add_u:PROC
 
-;	// s16 add_u_wc ( u64* sum, u64* addend1, u64* addend2, s16 carry );
+;	// s16 add_u_wc ( u64* sum, u64* addend1, u64* addend2, s16 carryin );
 ;	// add supplied 512bit (8 QWORDS) sources, with passed-in carry, place in supplied destination
 ;	// returns: zero for no carry, 1 for carry (overflow)
 EXTERNDEF		add_u_wc:PROC
@@ -69,7 +69,7 @@ EXTERNDEF		add_uT64:PROC
 ;	// returns: zero for no borrow, 1 for borrow (underflow)
 EXTERNDEF		sub_u:PROC
 
-;	// s16 sub_u_wc ( u64* difference, u64* left operand, u64* right operand, s16 borrow );
+;	// s16 sub_u_wc ( u64* difference, u64* left operand, u64* right operand, s16 borrowin );
 ;	// subtract supplied 512bit (8 QWORDS) RH OP from LH OP, with passed-in borrow giving difference in destination
 ;	// returns: zero for no borrow, 1 for borrow (underflow)
 EXTERNDEF		sub_u_wb:PROC
@@ -82,37 +82,41 @@ EXTERNDEF		sub_uT64:PROC
 ;--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ; from ui512_multiply.asm
 ;
-; //			mult_uT64		-	multiply 512 bit multiplicand by 64 bit multiplier, giving 512 product, 64 bit overflow
-; //			Prototype:		-	s16 mult_uT64( u64* product, u64* overflow, u64* multiplicand, u64 multiplier);
-EXTERNDEF		mult_uT64:PROC	;	s16 mult_uT64( u64* product, u64* overflow, u64* multiplicand, u64 multiplier);
-
-; //			mult_u			-	multiply 512 multiplicand by 512 multiplier, giving 512 product, overflow
-; //			Prototype:		-	s16 mult_u( u64* product, u64* overflow, u64* multiplicand, u64* multiplier);
+;	// s16 mult_u( u64* product, u64* overflow, u64* multiplicand, u64* multiplier);
+;	// multiply 512 multiplicand by 512 multiplier, giving 512 product, overflow
+;	// returns: zero for success, else GP (alignment) fault (if arguments not aligned on 64 byte boundaries)
 EXTERNDEF		mult_u:PROC		;	s16 mult_u( u64* product, u64* overflow, u64* multiplicand, u64* multiplier);
+
+;	// s16 mult_uT64( u64* product, u64* overflow, u64* multiplicand, u64 multiplier);
+;	// multiply 512 bit multiplicand by 64 bit multiplier, giving 512 product, 64 bit overflow
+;	// returns: zero for success, else GP (alignment) faullt (if arguments not aligned on 64 byte boundaries)
+EXTERNDEF		mult_uT64:PROC	;	s16 mult_uT64( u64* product, u64* overflow, u64* multiplicand, u64 multiplier);
 
 ;--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ; from ui512_division.asm
 ;
-; //			div_uT64		-	divide 512 bit dividend by 64 bit bit divisor, giving 512 bit quotient and 64 bit remainder
-; //			Prototype:		-	s16 div_u( u64* quotient, u64* remainder, u64* dividend, u64 divisor,);
-EXTERNDEF		div_uT64:PROC	;	s16 div_uT64( u64* quotient, u64* remainder, u64* dividend, u64 divisor);
-
-; //			div_u			-	divide 512 bit dividend by 512 bit divisor, giving 512 bit quotient and remainder
-; //			Prototype:		-	s16 div_u( u64* quotient, u64* remainder, u64* dividend, u64* divisor);
+;	// s16 div_u( u64* quotient, u64* remainder, u64* dividend, u64* divisor);
+;	// divide 512 bit dividend by 512 bit divisor, giving 512 bit quotient and remainder
+;	// returns: zero for success, else GP (alignment) fault (if arguments not aligned on 64 byte boundaries), or -1 if divisor is zero
 EXTERNDEF		div_u:PROC		;	s16 div_u( u64* quotient, u64* remainder, u64* dividend, u64* divisor);
+
+;	// s16 div_u( u64* quotient, u64* remainder, u64* dividend, u64 divisor,);
+;	// divide 512 bit dividend by 64 bit bit divisor, giving 512 bit quotient and 64 bit remainder
+; 	// returns: zero for success, else GP (alignment) fault (if arguments not aligned on 64 byte boundaries), or -1 if divisor is zero
+EXTERNDEF		div_uT64:PROC	;	s16 div_uT64( u64* quotient, u64* remainder, u64* dividend, u64 divisor);
 
 ;--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ; from ui512_significance.asm
-
-;   // find most significant bit in supplied source 512bit (8 QWORDS)
+;
 ;	// s16 msb_u( u64* );
+;   // find most significant bit in supplied source 512bit (8 QWORDS)
 ;   // returns: -1 if no most significant bit, bit number otherwise, bits numbered 0 to 511 inclusive
 ;	//	Note:	a returned zero means the significant bit is bit0 of the eighth word of the 512bit source parameter; (the right most bit).
 ;	//			a returned 511 means bit63 of the first word; (the left most bit).	
 EXTERNDEF		msb_u:PROC
 
-;   // find least significant bit in supplied source 512bit (8 QWORDS)
 ;	// s16 lsb_u( u64* );
+;   // find least significant bit in supplied source 512bit (8 QWORDS)
 ;   // returns: -1 if no least significant bit, bit number otherwise, bits numbered 0 to 511 inclusive
 ;	//	Note:	a returned zero means the significant bit is bit0 of the eighth word of the 512bit source parameter; (the right most bit).
 ;	//			a returned 511 means bit63 of the first word; (the left most bit).	

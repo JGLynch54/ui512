@@ -5,7 +5,7 @@
 ;
 ;			File:			ui512_macros.inc
 ;			Author:			John G. Lynch
-;			Legal:			Copyright @2025, per MIT License included
+;			Legal:			Copyright @2026, per MIT License included
 ;			Date:			October 24, 2025  (file creation)
 ;
 IFNDEF							ui512_macros_INC
@@ -253,63 +253,6 @@ Copy512Q		MACRO			dest:REQ, src:REQ
 
 				ENDM
 
-;--------------------------------------------------------------------------------------------------------------------------------------------------------------
-;	VerifyRegs <none>
-;
-;			If option is on, generate a function, callable by unit test routines, 
-;				to save non-volatile registers in passed structure.
-;
-IF	__VerifyRegs
-;--------------------------------------------------------------------------------------------------------------------------------------------------------------
-;			EXTERNDEF		reg_verify:PROC	;	void reg_verify ( u64* regstruct)
-;			reg_verify		-	copy non-volatile regs into callers struct of nine qwords) intended for unit tests to verify non-volatile regs are not changed
-;			Prototype:		-	void reg_verify( uu64* regstruct);
-;			regstruct		-	Address of 9 QWORDS in a struct where regs will be copied (in RCX)
-; //			reg_verify		-	save non-volatile regs for verification (debug)
-; //			Prototype		-	void reg_verify ( u64* reg struct)
-
-EXTERNDEF		reg_verify:PROC	;	void reg_verify ( u64* reg struct)
-
-VerifyRegs		MACRO
-				Leaf_Entry		reg_verify
-				MOV				Q_PTR [ RCX ] [ 0 * 8 ], R12
-				MOV				Q_PTR [ RCX ] [ 1 * 8 ], R13
-				MOV				Q_PTR [ RCX ] [ 2 * 8 ], R14
-				MOV				Q_PTR [ RCX ] [ 3 * 8 ], R15
-				MOV				Q_PTR [ RCX ] [ 4 * 8 ], RDI
-				MOV				Q_PTR [ RCX ] [ 5 * 8 ], RSI
-				MOV				Q_PTR [ RCX ] [ 6 * 8 ], RBX
-				MOV				Q_PTR [ RCX ] [ 7 * 8 ], RBP
-				MOV				Q_PTR [ RCX ] [ 8 * 8 ], RSP
-				RET
-reg_verify		ENDP
-				ENDM
-ENDIF
-
-;--------------------------------------------------------------------------------------------------------------------------------------------------------------
-;			Get a GP reg QWORD from within a Z register as specified by mask
-;			Note: RAX, ZMM0 and k1 are used and not restored
-;			Example usage: GetZatIdx R11, ZMM1, MaskBit2 or SetZatIdx ZMM1, R12, [ R9 ]  (where R9 is a bit mask, not an integer index)
-;			Note: These are req to reg ops; no memory fetches (other than instructions from pipeline)
-;
-GetZatMask		MACRO			dest, src, mask
-				LEA				RAX,  mask
-				KMOVB			k1, RAX
-				VPCOMPRESSQ		ZMM0 {k1}{z}, src
-				VMOVQ			dest, XMM0
-				ENDM
-
-;--------------------------------------------------------------------------------------------------------------------------------------------------------------
-;			Set a GP Reg QWORD within a Z register as specified by mask
-;			Note: RAX and k1 are used and not restored
-;			Example usage: SetZatIdx ZMM1, R8, MaskBit2
-;			Note: These are req to reg ops; no memory fetches (other than instructions from pipeline)
-;
-SetZatMask		MACRO			dest, src, mask
-				LEA				RAX, mask
-				KMOVB			k1, RAX
-				VPBROADCASTQ 	dest {k1}, src
-				ENDM
 
 ;--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ENDIF			; ui512_macros_INC

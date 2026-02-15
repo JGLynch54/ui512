@@ -5,8 +5,8 @@
 ;
 ;			File:			ui512_legalnotes.inc
 ;			Author:			John G. Lynch
-;			Legal:			Copyright 2025, per MIT License included
-;			Date:			Octoberr 24, 2025
+;			Legal:			Copyright 2026, per MIT License included
+;			Date:			October 24, 2025
 ;
 IFNDEF							ui512_legalnotes_INC
 ui512_legalnotes_INC			EQU		1
