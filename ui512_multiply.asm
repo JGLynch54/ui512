@@ -65,7 +65,7 @@ mult_u_Locals	ENDS
 				SUB				R15D, EAX							; save off multiplier index lower limit (eliminate multiplying leading zero words)	(R15)					
 
 ; In frame / stack reserved memory, clear 16 qword area for working version of overflow/product; set up indexes for loop				
-	IF __UseQ
+	IF __UseZ
 				VPXORQ			ZMM31, ZMM31, ZMM31
 				VMOVDQA64		ZM_PTR l_Ptr.product, ZMM31
 				VMOVDQA64		ZM_PTR l_Ptr.product + [ 8 * 8 ], ZMM31
@@ -188,4 +188,5 @@ mult64_Locals	ENDS
 
 mult_uT64		ENDP		
 ui512_multiply	ENDS
+
 				END													; end of module
