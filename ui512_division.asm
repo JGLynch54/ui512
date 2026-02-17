@@ -329,7 +329,8 @@ qhatok:
 				LEA				R14W, [ 3 ]							; max Nr of add back (shouldnt be needed, but the code just looks like endless loop possible)
 				MOV				l_Ptr.addbackcount, R14W			; save addback count count
 @addback:
-
+				JZ				toomanyadjust						; too many (safety) Note: DEC doesnt affect the carry flag
+				DEC				l_Ptr.qHat							; decrement qHat
 ; from multiply and subtract, have base addresses of currnumerator (R10) and subtracted product (R11), and length of add in R12
 				MOV				R9, R12								; length of add
 				MOVZX			R8, l_Ptr.mIdx						; calculate begining of the current numerator
@@ -345,8 +346,6 @@ qhatok:
 				DEC				R9
 				JGE				@B
 				DEC				l_Ptr.addbackcount					; addback counter
-				JZ				toomanyadjust						; too many (safety) Note: DEC doesnt affect the carry flag
-				DEC				l_Ptr.qHat							; decrement qHat
 				JC				@addback							; if borrow (carry), need to add back again
 no_addback:
 
@@ -456,5 +455,6 @@ div_u			ENDP
 div_uT64		ENDP
 
 ui512_division	ENDS												; end of section
+
 
 				END													; end of module
