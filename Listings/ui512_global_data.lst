@@ -1,4 +1,4 @@
-Microsoft (R) Macro Assembler (x64) Version 14.50.35724.0   02/15/26 11:40:14
+Microsoft (R) Macro Assembler (x64) Version 14.50.35724.0   02/17/26 21:50:46
 Source\ui512_global_data.asm				     Page 1 - 1
 
 
@@ -28,40 +28,23 @@ Source\ui512_global_data.asm				     Page 1 - 1
 			      C 
 			      C ;--------------------------------------------------------------------------------------------------------------------------------------------------------------
 			      C ;
-			      C ;			Notes:
-			      C ;				ui512 is a small project to provide basic operations for a variable type of unsigned 512 bit integer.
+			      C ;	Notes:
+			      C ;		ui512 is a small project to provide basic operations for a variable type of unsigned 512 bit integer.
 			      C ;
-			      C ;				ui512a provides basic operations: zero, copy, compare, add, subtract.
-			      C ;				ui512b provides basic bit-oriented operations: shift left, shift right, and, or, not, least significant bit and most significant bit.
-			      C ;               ui512md provides multiply and divide.
+			      C ;		It is written in assembly language, using the MASM (ml64) assembler provided as an option within Visual Studio.	(currently using VS Community 2026 18.3.0)
+			      C ;		It provides external signatures that allow linkage to C and C++ programs, where a shell/wrapper could encapsulate the methods as part of an object.
+			      C ;		It has assembly time options directing the use of Intel processor extensions: AVX4, AVX2, SIMD, or none:
+			      C ;		(Z (512), Y (256), or X (128) registers, or regular Q (64bit)).
+			      C ;		If processor extensions are used, the caller must align the variables declared and passed on the appropriate byte boundary (e.g. alignas 64 for 512)
+			      C ;		This module is very light-weight (less than 20K bytes) and relatively fast,	but is not intended for all processor types or all environments. 
 			      C ;
-			      C ;				It is written in assembly language, using the MASM (ml64) assembler provided as an option within Visual Studio.
-			      C ;				(currently using VS Community 2022 17.14.10)
+			      C ;		Intended use cases:
+			      C ;			1.) a "sum of primes" for primes up to 2^48. 
+			      C ;			2.) elliptical curve cryptography (ECC)
 			      C ;
-			      C ;				It provides external signatures that allow linkage to C and C++ programs,
-			      C ;				where a shell/wrapper could encapsulate the methods as part of an object.
+			      C ;		It provides external signatures that allow linkage to C and C++ programs,
+			      C ;		where a shell/wrapper could encapsulate the methods as part of an object.
 			      C ;
-			      C ;				Note: X64 ZMM regs are "little-endian". The 8 QWORD C array declarion is "big-endian".
-			      C ;				In memory the most significant word is first: var[0], the least last var[7]. Normally not an issue,
-			      C ;				but when that var is laoded in a Z-reg, the least significant is first, and the most last, which is
-			      C ;				the way z-regs are loaded, but convention has the z-reg first word commonly termed the most significant, 
-			      C ;				which is not the way our c arrays are defined. Not an issue programmatically, but often a qword shift left, or right
-			      C ;				or a carry or borrow to the next most significant word is not the same when the data is in a z-reg.
-			      C ;
-			      C ;				It has assembly time options directing the use of Intel processor extensions: AVX4, AVX2, SIMD, or none:
-			      C ;				(Z (512), Y (256), or X (128) registers, or regular Q (64bit)).
-			      C ;
-			      C ;				Note: The file "compile_time_options.inc" contains the options that can be configured for extension usage, and other options.
-			      C ;
-			      C ;				If processor extensions are used, the caller must align the variables declared and passed
-			      C ;				on the appropriate byte boundary (e.g. alignas 64 for 512)
-			      C ;
-			      C ;				The modules (in total) are very light-weight (less than 10K bytes) and relatively fast,
-			      C ;				but is not intended for all processor types or all environments. 
-			      C ;
-			      C ;				Intended use cases:
-			      C ;					1.) a "sum of primes" for primes up to 2^48. 
-			      C ;					2.) elliptical curve cryptography (ECC)
 			      C ;
 			      C ;--------------------------------------------------------------------------------------------------------------------------------------------------------------
 			      C ;
@@ -114,7 +97,7 @@ Source\ui512_global_data.asm				     Page 1 - 1
 			      C ;	Note: This is intended to be a mutually exclusive choice (UseZ thru UseQ).
 			      C ;	However, the coding of the options selects the "highest" one used and ignores the rest ( If __UseZ ... ELSEIF __UseY ... )
 			      C 
- = 00000000		      C __UseZ			EQU				0									; Use AVX4 processor features (512 bit registers and instructions)
+ = 00000001		      C __UseZ			EQU				1									; Use AVX4 processor features (512 bit registers and instructions)
  = 00000000		      C __UseY			EQU				0									; Use AVX2 processor features (256 bit registers and instructions)
  = 00000000		      C __UseX			EQU				0									; Use SIMD/SSE processor features (128 bit registers and instructions)
  = 00000001		      C __UseQ			EQU				1									; Do not use extensions, use standard x64 bit registers and instructions
@@ -437,7 +420,7 @@ Source\ui512_global_data.asm				     Page 1 - 1
  00000061			ui512_global	ENDS
 
 								END
-Microsoft (R) Macro Assembler (x64) Version 14.50.35724.0   02/15/26 11:40:14
+Microsoft (R) Macro Assembler (x64) Version 14.50.35724.0   02/17/26 21:50:46
 Source\ui512_global_data.asm				     Symbols 2 - 1
 
 
@@ -513,7 +496,7 @@ __UseBMI2  . . . . . . . . . . .	Number	 00000001h
 __UseQ . . . . . . . . . . . . .	Number	 00000001h   
 __UseX . . . . . . . . . . . . .	Number	 00000000h   
 __UseY . . . . . . . . . . . . .	Number	 00000000h   
-__UseZ . . . . . . . . . . . . .	Number	 00000000h   
+__UseZ . . . . . . . . . . . . .	Number	 00000001h   
 compile_time_options_INC . . . .	Text   	 1
 m32BCST  . . . . . . . . . . . .	Text   	 DWORD BCST
 m64BCST  . . . . . . . . . . . .	Text   	 QWORD BCST
