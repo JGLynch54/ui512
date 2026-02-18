@@ -22,7 +22,7 @@ compile_time_options_INC		EQU			<1>
 ;	Note: This is intended to be a mutually exclusive choice (UseZ thru UseQ).
 ;	However, the coding of the options selects the "highest" one used and ignores the rest ( If __UseZ ... ELSEIF __UseY ... )
 
-__UseZ			EQU				0									; Use AVX4 processor features (512 bit registers and instructions)
+__UseZ			EQU				1									; Use AVX4 processor features (512 bit registers and instructions)
 __UseY			EQU				0									; Use AVX2 processor features (256 bit registers and instructions)
 __UseX			EQU				0									; Use SIMD/SSE processor features (128 bit registers and instructions)
 __UseQ			EQU				1									; Do not use extensions, use standard x64 bit registers and instructions
@@ -31,6 +31,7 @@ __UseBMI2		EQU				1									; Bit manipulation instructions (Haswell and later) 
 ;
 __CheckAlign	EQU				0									; User is expected to pass arguments aligned on 64 byte boundaries, 
 ;																	; This setting enforces that with a check. It should not be necessary, but included to help debugging
+
 
 
 ENDIF			; ui512_compile_time_options_INC
