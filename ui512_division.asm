@@ -310,9 +310,8 @@ qhatok:
 
 ; base addresses of currnumerator (R10) and product (R11), length of subtract in R9 (decrement to zero)
 				CLC
-@@:				MOV				RAX, [ R10 ][ R9 * 8 ]				; currnumerator [ idx ] -> RAX
-				SBB				RAX, [ R11 ][ R9 * 8 ]				; subtract product qdiv [ idx ]
-				MOV				[ R10 ][ R9 * 8 ], RAX				; store difference back to currnumerator
+@@:				MOV				RAX, [ R11 ][ R9 * 8 ]				; qdiv [ idx ] -> RAX
+				SBB				[ R10 ][ R9 * 8 ],	RAX				; subtract product qdiv [ idx ] from currnumerator [ idx ]
 				DEC				R9
 				JGE				@B
 
@@ -340,9 +339,8 @@ qhatok:
 @@:				LEA				R10, l_Ptr.currnumerator [ R8 * 8 ]	;
 				LEA				R11, l_Ptr.qdiv [ R8 * 8 ]			; base of product to add back
 				CLC
-@@:				MOV				RAX, [ R10 ][ R9 * 8 ]				; currnumerator [ idx ] -> RAX
-				ADC				RAX, [ R11 ][ R9 * 8 ]				; qdiv [ idx ]
-				MOV				[ R10 ][ R9 * 8 ], RAX				; store sum back to currnumerator
+@@:				MOV				RAX, [ R11 ][ R9 * 8 ]				; qdiv [ idx ]
+				ADC				[ R10 ][ R9 * 8 ], RAX				; added (back) to currnumerator [idx]
 				DEC				R9
 				JGE				@B
 				DEC				l_Ptr.addbackcount					; addback counter
@@ -458,3 +456,4 @@ ui512_division	ENDS												; end of section
 
 
 				END													; end of module
+
