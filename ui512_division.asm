@@ -196,8 +196,7 @@ normdivdone:														; putting low into new msb ninth word of currnumerator
 				MOV				l_Ptr.nllimit, AX					; and lower limit (first, most significant QWORD index)
 				MOV				RDX, l_Ptr.normdivisor [ RAX * 8 ]	; get indexed word of divisor (leading non-zero)
 				MOV				l_Ptr.nDiv1, RDX					; will be using repeatedly to determine qHat
-				INC				RAX									; next word
-				MOV				RDX, l_Ptr.normdivisor [ RAX * 8 ]	; get indexed word of divisor (leading non-zero)
+				MOV				RDX, l_Ptr.normdivisor + 8 [ RAX * 8 ]	; get next word of divisor (leading non-zero)
 				MOV				l_Ptr.nDiv2, RDX					; will be using repeatedly to determine qHat
 
 ; next, u[m] related stuff.  verify u[mIdx] (currnumerator [ mIdx ]) < v[nIdx] (normdivisor [ nIdx ]), which should be true with proper normalization,
@@ -456,4 +455,5 @@ ui512_division	ENDS												; end of section
 
 
 				END													; end of module
+
 
