@@ -83,14 +83,28 @@ div_u_Locals	ENDS
 				CheckAlign		R8, @ret							; (in) Dividend
 				CheckAlign		R9, @ret							; (in) Divisor
 
-; clear callers quotient and remainder, and working memory (frame),
-				Zero512			RCX									; zero callers quotient
-				Zero512			RDX									; zero callers remainder
+; clear callers quotient, remainder, and working memory (in frame at RBP)
+	IF __UseZ
+				VPXORQ			ZMM31, ZMM31, ZMM31
+				VMOVDQA64		[ RCX ], ZMM31						; callers quotient
+				VMOVDQA64		[ RDX ], ZMM31						; callers remainder
+				FOR				idx, < 0, 1, 2, 3, 4, 5, 6 >
+					VMOVDQA64		[ RBP ] [ idx * 64 ], ZMM31		; clear working area
+				ENDM
+				
+	ELSE
 				XOR				RAX, RAX
+				MOV				RDI, RCX							; callers quotient
+				LEA				ECX, [ 8 ]
+				REP				STOSQ								; clear
+				MOV				RDI, RDX							; callers remainder
+				LEA				ECX, [ 8 ]
+				REP				STOSQ								; clear
+
 				MOV				RDI, RBP							; RBP points to stack reserved workspace "div_u_Locals"
 				MOV				ECX, sizeof(div_u_Locals) / 8		; length in QWORDS, Note: structure must be multiple of 8 for this to work
 				REP				STOSQ								; clear working area
-
+	ENDIF
 ; Examine divisor
 ; Note on msb_u: a returned zero means the most significant bit is bit0 of the eighth word of the 512bit source parameter; (the right most bit in the right most qword)
 ; a returned 511 means bit63 of the first word (the left most bit), a returned -1 means no bits set (the field is zero)
@@ -200,7 +214,7 @@ normdivdone:														; putting low into new msb ninth word of currnumerator
 				MOV				l_Ptr.nDiv2, RDX					; will be using repeatedly to determine qHat
 
 ; next, u[m] related stuff.  verify u[mIdx] (currnumerator [ mIdx ]) < v[nIdx] (normdivisor [ nIdx ]), which should be true with proper normalization,
-; but normalization may not have been necessary, leaving the first qword large. If so, need to add a new leading word (zero) for initial qHat calculation
+; but normalization may not have been necessary, possibly leaving the first qword large. If so, need to add a new leading word (zero) for initial qHat calculation
 				LEA				RAX, [ 15 ]
 				SUB				AX, l_Ptr.mDim
 				MOV				RDX, l_Ptr.currnumerator [ RAX * 8 ]	
@@ -238,12 +252,13 @@ maindivloop:
 
 ; Adjust qHat and rHat if necessary 
 ; **Note: comments on indexing differ from knuth, who numbers 1 descending, while we use from 0 ascending. Hence u[j-2] (in comments) is currnumerator [ mIdx + 2 ]
-				LEA				R14W, [ 3 ]							; max adjustments per qhat generation (shouldnt be needed, but the code just looks like endless loop possible)
+				LEA				R14W, [ 4 ]							; max adjustments per qhat generation (shouldnt be needed, but the code just looks like endless loop possible)
 				MOV				l_Ptr.adjustcount, R14W				; save adjustment counter
 checkqhat:
-				MOV				RAX, l_Ptr.qHat						; qHat in RAX
-				MUL				l_Ptr.nDiv2							; RDX:RAX is now (qhat * v[n-2])
-				; Compare (rHat << 64) + u[j-2] to (qhat * v[n-2]). Note: both are 2 qwords (128 bits) (if > then qHat is too big, adjust
+				DEC				l_Ptr.adjustcount                   ; Adjustment counter
+				JZ				toomanyadjust						; Too many adjustments, something wrong (safety check only)
+				MUL				l_Ptr.nDiv2							; RAX, is qHat, do mul, now RDX:RAX is (qhat * v[n-2])
+				; Compare (rHat << 64) + u[j-2] to (qhat * v[n-2]). Note: both are 2 qwords (128 bits) if > then qHat is too big, adjust, else OK
 				CMP				RDX, l_Ptr.rHat						; Compare high part of (qhat * v[n-2]) with rhat
 				JA				overestimate						; rHat*b + u[j-2] > qhat * v[n-2] on high word compare, so adjustment needed
 				JB				qhatok								; rHat*b + u[j-2] < qhat * v[n-2] on high word compare, so no adjustment needed
@@ -257,12 +272,11 @@ checkqhat:
 				CMP				RAX, RCX							; compare low: (qhat * v[n-2]) > u[j-2]?
 				JBE				qhatok
 overestimate:
-				DEC				l_Ptr.adjustcount                   ; Adjustment counter
-				JZ				toomanyadjust						; Too many adjustments, something wrong (safety check only)
 				DEC				l_Ptr.qHat							; Decrement qHat
 				; Add back v[n-1] to rHat (rHat was too small, so we are effectively moving one 'unit' of divisor back from the quotient to the remainder)
 				MOV				RCX, l_Ptr.nDiv1
-				ADD				l_Ptr.rHat, RCX					
+				ADD				l_Ptr.rHat, RCX	
+				MOV				RAX, l_Ptr.qHat						; qHat in RAX for retest, if necessay
 				JNC				checkqhat							; If carry (rHat overflow), re-test (rare)
 qhatok:
 
@@ -271,11 +285,17 @@ qhatok:
 ; we might need to repeat this process, but it should not need to be repeated more than once, as we only overestimate qHat by at most one 'unit' of divisor.
 	
 ; clear product (of qhat * normdivisor) work area (qdiv)
+	IF __UseZ
+				VPXORQ			ZMM31, ZMM31, ZMM31
+				VMOVDQA64		l_Ptr.qdiv, ZMM31					; clear, every time, what will be product of qHat * divisor (qdiv)
+				VMOVDQA64		l_Ptr.qdiv [ 8 * 8 ], ZMM31
+			
+	ELSE
 				XOR				RAX, RAX							
 				LEA				RDI, l_Ptr.qdiv						; clear, every time, product of qHat * divisor (qdiv)				
 				MOV				ECX, 16								; need values to start as zero, as results are accumulated
 				REP				STOSQ
-
+	ENDIF 
 ; compute length of and starting point for multiply	(and subtract and add-back)
 				MOVZX			R8, l_Ptr.mIdx						; calculate begining of where product will go (within qdiv)
 				LEA				R10, l_Ptr.qdiv [ R8 * 8 ]			;
@@ -324,7 +344,7 @@ qhatok:
 ; and if we add back the product to correct for the overestimate, we will get a carry (no borrow),
 ; so we can use the carry flag to determine whether we need to add back again.
 				JNC				no_addback							; if no borrow from subtract, skip add back
-				LEA				R14W, [ 3 ]							; max Nr of add back (shouldnt be needed, but the code just looks like endless loop possible)
+				LEA				R14W, [ 4 ]							; max Nr of add back (shouldnt be needed, but the code just looks like endless loop possible)
 				MOV				l_Ptr.addbackcount, R14W			; save addback count count
 @addback:
 				DEC				l_Ptr.addbackcount					; addback counter
@@ -453,8 +473,4 @@ div_uT64		ENDP
 
 ui512_division	ENDS												; end of section
 
-
 				END													; end of module
-
-
-
