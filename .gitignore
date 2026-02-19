@@ -33,3 +33,5 @@
 /ui512_bitops.obj
 /ui512_clear_copy_set.obj
 /ui512_subtraction.obj
+/ui512/x64/Debug
+/.vs
