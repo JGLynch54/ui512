@@ -1,5 +1,5 @@
-Microsoft (R) Macro Assembler (x64) Version 14.50.35724.0   02/17/26 21:50:46
-Source\ui512_multiply.asm				     Page 1 - 1
+Microsoft (R) Macro Assembler (x64) Version 14.50.35724.0   02/18/26 20:18:04
+ui512_multiply.asm					     Page 1 - 1
 
 
 				;
@@ -45,7 +45,6 @@ Source\ui512_multiply.asm				     Page 1 - 1
 			      C ;		It provides external signatures that allow linkage to C and C++ programs,
 			      C ;		where a shell/wrapper could encapsulate the methods as part of an object.
 			      C ;
-			      C ;
 			      C ;--------------------------------------------------------------------------------------------------------------------------------------------------------------
 			      C ;
 			      C ;			MIT License
@@ -70,6 +69,7 @@ Source\ui512_multiply.asm				     Page 1 - 1
 			      C ;				OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 			      C ;				SOFTWARE.
 			      C ;
+			      C 
 			      C ENDIF			; ui512_legalnotes_INC
 			      C 
 								INCLUDE			ui512_compile_time_options.inc
@@ -106,6 +106,7 @@ Source\ui512_multiply.asm				     Page 1 - 1
 			      C ;
  = 00000000		      C __CheckAlign	EQU				0									; User is expected to pass arguments aligned on 64 byte boundaries, 
 			      C ;																	; This setting enforces that with a check. It should not be necessary, but included to help debugging
+			      C 
 			      C 
 			      C 
 			      C ENDIF			; ui512_compile_time_options_INC
@@ -867,9 +868,10 @@ Source\ui512_multiply.asm				     Page 1 - 1
 
  00000287			mult_uT64		ENDP		
  00000287			ui512_multiply	ENDS
+
 								END													; end of module
-Microsoft (R) Macro Assembler (x64) Version 14.50.35724.0   02/17/26 21:50:46
-Source\ui512_multiply.asm				     Symbols 2 - 1
+Microsoft (R) Macro Assembler (x64) Version 14.50.35724.0   02/18/26 20:18:04
+ui512_multiply.asm					     Symbols 2 - 1
 
 
 
