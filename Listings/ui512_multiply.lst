@@ -1,4 +1,4 @@
-Microsoft (R) Macro Assembler (x64) Version 14.50.35724.0   02/18/26 20:18:04
+Microsoft (R) Macro Assembler (x64) Version 14.50.35724.0   02/18/26 20:59:27
 ui512_multiply.asm					     Page 1 - 1
 
 
@@ -870,7 +870,7 @@ ui512_multiply.asm					     Page 1 - 1
  00000287			ui512_multiply	ENDS
 
 								END													; end of module
-Microsoft (R) Macro Assembler (x64) Version 14.50.35724.0   02/18/26 20:18:04
+Microsoft (R) Macro Assembler (x64) Version 14.50.35724.0   02/18/26 20:59:27
 ui512_multiply.asm					     Symbols 2 - 1
 
 
