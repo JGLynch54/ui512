@@ -33,8 +33,7 @@ ui512_division	SEGMENT			PARA 'CODE'
 ;						-	All of the 512 vars are 8 QWORD arrays, or scalars that are used as 8 QWORD arrays, caller must ensure they are 64byte aligned
 ;						-	The 512 bit fields are "Big Endian" in the sense that the most significant qword is at the lowest address,
 ;							and the least significant qword is at the highest address, so that the leading bits of the field are in the first qword,
-;							and trailing bits are in the last qword. This way, we can use the x86-64 instructions to operate on the low end of the field for efficiency,
-;							and we can also use shifts to move bits between qwords as needed.
+;							and trailing bits are in the last qword. 
 
 div_u_Locals	STRUCT
 																	; Note: if qwords are added due to normalization, they are added at the beginning of the field, and the dimension is adjusted accordingly
@@ -115,8 +114,6 @@ div_u_Locals	ENDS
 				JE				divbyone							; msb == 0? -> divisor is one, exit with remainder = 0, quotient = dividend 
 				CMP				AX, 64								; divisor only one 64-bit word?
 				JL				divby64bit							; yes -> use div by 64bit (faster)
-
-; Divide an m digit (qword) dividend by an n digit (qword) divisor, both >= 2 qwords
 				MOV				l_Ptr.nMSB, AX						; save msb of divisor
 				SHR				AX, 6								; divide Nr bits by 64 to get qword count
 				MOV				l_Ptr.nDim, AX						; Dimension (Nr Qwords) of divisor (n)
@@ -130,8 +127,8 @@ div_u_Locals	ENDS
 				SHR				AX, 6
 				MOV				l_Ptr.mDim, AX						; save dimension (Nr Qwords) of dividend (m)
 
-; So far: we have checked (and processed) edge cases (div by zero, div by one, num < denom)
-; and we have m >= 2, n >= 2, and m >= n
+; So far: we have checked (and processed) edge cases (div by zero, div by one, num < denom) and diverted for divide by one qword.
+; We have m >= 2, n >= 2, and m >= n.
 
 ; Normalize divisor (if needed), and copy to working area
 ; Notes: The intent of normalization is to get first word of the divisor to be large.(>= b/2, where b (base of digits) is 2^64, one qword)
@@ -251,17 +248,20 @@ normdivdone:														; putting low into new msb ninth word of currnumerator
 
 ; mainloop, the loop, until jIDX reaches limit
 maindivloop:
+				LEA				R14W, [ 4 ]							; max adjustments per qhat generation (shouldnt be needed, but the code just looks like endless loop possible)
+				MOV				l_Ptr.adjustcount, R14W				; save adjustment counter
+				LEA				R14W, [ 4 ]							; max Nr of add back (shouldnt be needed, but the code just looks like endless loop possible)
+				MOV				l_Ptr.addbackcount, R14W			; save addback count count
 
 ; compute qHat and rHat
 ; The "hat" notation is from Knuth, and refers to the trial quotient digit (qHat) and trial remainder (rHat).
 ; The trial nature of qHat and rHat is because they are calculated from only the leading digits of the current dividend and divisor,
 ; and may need to be adjusted down if too large.
-; There are two tests for "too large":
+; There are two tests for "too large": (both test are monitored with counters to prevent infinite loops, but that should not happen)
 ; One is if (rHat << 64) + u[j-2] < qHat * v[n-2], then qHat is too large, and needs to be adjusted down.
 ; The second test is later (after multiply and subtract): if we get a borrow, then qHat is too large,
-; and needs to be adjusted down, and the subtract reversed (add back).
+; and needs to be adjusted down, and the subtract partially reversed (add back one value of divisor).
 ; The first test is a quick test that catches most overestimates of qHat, and the second test is a slower test that catches any remaining overestimates.
-
 				MOVZX			R8, l_Ptr.mIdx						; get mIdx. It is calculated from mDim, which in turn was adjusted for normalization
 				MOV				RDX, l_Ptr.currnumerator [ R8 * 8 ]	; the more significant qword of the 128bit dividend for divide
 				MOV				RAX, l_Ptr.currnumerator + 8 [ R8 * 8 ]	; mIdx + 1 to get low qword of currnumerator for divide
@@ -270,8 +270,6 @@ maindivloop:
 				MOV				l_Ptr.rHat, RDX						; and remainder. referred to as rHat in Knuth
 
 ; Test and adjust qHat and rHat if necessary (quick test)
-				LEA				R14W, [ 4 ]							; max adjustments per qhat generation (shouldnt be needed, but the code just looks like endless loop possible)
-				MOV				l_Ptr.adjustcount, R14W				; save adjustment counter
 checkqhat:
 				DEC				l_Ptr.adjustcount                   ; Adjustment counter
 				JZ				toomanyadjust						; Too many adjustments, something wrong (safety check only)
@@ -295,19 +293,17 @@ overestimate:
 				MOV				RCX, l_Ptr.nDiv1
 				ADD				l_Ptr.rHat, RCX	
 				MOV				RAX, l_Ptr.qHat						; qHat in RAX for retest, if necessay
-				JNC				checkqhat							; If carry (rHat overflow), re-test (rare)
+				JNC				checkqhat							; repeat this test if rHat < b (no carry), -> re-test (rare)
 qhatok:
 
 ; Multiply and subtract:  multiply qHat * divisor (n), subtract from currnumerator (at mIdx), and if borrow,
-; add back divisor (adjust qHat down by one, and add back divisor to currnumerator), and repeat until no borrow. Note: in the rare case that we need to adjust qHat down,
-; we might need to repeat this process, but it should not need to be repeated more than once, as we only overestimate qHat by at most one 'unit' of divisor.
+; add back one value of divisor. Repeat if necessary.
 	
 ; clear product (of qhat * normdivisor) work area (qdiv)
 	IF __UseZ
 				VPXORQ			ZMM31, ZMM31, ZMM31
 				VMOVDQA64		l_Ptr.qdiv, ZMM31					; clear, every time, what will be product of qHat * divisor (qdiv)
-				VMOVDQA64		l_Ptr.qdiv [ 8 * 8 ], ZMM31
-			
+				VMOVDQA64		l_Ptr.qdiv [ 8 * 8 ], ZMM31			
 	ELSE
 				XOR				RAX, RAX							
 				LEA				RDI, l_Ptr.qdiv						; clear, every time, product of qHat * divisor (qdiv)				
@@ -353,14 +349,12 @@ qhatok:
 				JGE				@B
 
 ; This is the second test for whether qHat is too large.
-; If there was borrow from the subtract, need to add back divisor (product) once to correct currnumerator, and adjust qHat down by one.
+; If there was borrow from the subtract, need to add back the value of the divisor correct currnumerator, and adjust qHat down by one.
 ; Note: if we needed to adjust qHat down, then we know that the current qHat * divisor was too large for the current dividend,
 ; therefore we know that the current dividend is less than the current product, therefore if we subtract one value of the divisor from the dividend we will get a borrow,
-; and if we add back the divisor to correct for the overestimate, we will get a carry, so we can use the carry flag to determine whether we need to add back again.
+; and if we add back the divisor to correct for the overestimate, we will get a carry, and the carry should be ignored as it offsets the borrow.
 
 				JNC				no_addback							; if no borrow from subtract, skip add back
-				LEA				R14W, [ 4 ]							; max Nr of add back (shouldnt be needed, but the code just looks like endless loop possible)
-				MOV				l_Ptr.addbackcount, R14W			; save addback count count
 @addback:
 				DEC				l_Ptr.addbackcount					; addback counter
 				JZ				toomanyadjust						; too many (safety) Note: DEC doesnt affect the carry flag
@@ -379,7 +373,7 @@ qhatok:
 				DEC				R9
 				JGE				@B
 				DEC				l_Ptr.qHat							; decrement qHat
-				JC				@addback							; if borrow (carry), need to add back again
+				JNC				@addback							; if borrow (carry), it offsets the borrow that got us here.
 no_addback:
 
 ; At this point, have valid qHat for this digit of quotient. Store digit of quotient

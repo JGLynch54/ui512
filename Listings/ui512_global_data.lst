@@ -1,4 +1,4 @@
-Microsoft (R) Macro Assembler (x64) Version 14.50.35724.0   02/18/26 20:59:27
+Microsoft (R) Macro Assembler (x64) Version 14.50.35724.0   02/20/26 14:06:03
 ui512_global_data.asm					     Page 1 - 1
 
 
@@ -421,7 +421,7 @@ ui512_global_data.asm					     Page 1 - 1
  00000061			ui512_global	ENDS
 
 								END
-Microsoft (R) Macro Assembler (x64) Version 14.50.35724.0   02/18/26 20:59:27
+Microsoft (R) Macro Assembler (x64) Version 14.50.35724.0   02/20/26 14:06:03
 ui512_global_data.asm					     Symbols 2 - 1
 
 
