@@ -250,7 +250,6 @@ normdivdone:														; putting low into new msb ninth word of currnumerator
 maindivloop:
 				LEA				R14W, [ 4 ]							; max adjustments per qhat generation (shouldnt be needed, but the code just looks like endless loop possible)
 				MOV				l_Ptr.adjustcount, R14W				; save adjustment counter
-				LEA				R14W, [ 4 ]							; max Nr of add back (shouldnt be needed, but the code just looks like endless loop possible)
 				MOV				l_Ptr.addbackcount, R14W			; save addback count count
 
 ; compute qHat and rHat
