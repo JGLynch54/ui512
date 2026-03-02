@@ -136,6 +136,9 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
+    <MASM>
+      <IncludePaths>includes;%(IncludePaths)</IncludePaths>
+    </MASM>
   </ItemDefinitionGroup>
   <ItemGroup>
     <None Include="includes\ui512_compile_time_options.inc" />

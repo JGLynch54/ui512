@@ -28,8 +28,11 @@ ui512_division	SEGMENT			PARA 'CODE'
 ;
 ;		Regs with contents destroyed, not restored: RAX, RCX, RDX, R8, R9, R10, R11 (others are used and restored)
 ;
-; 		Notes:			-	Algorithm is based on Knuths Algorithm D, with some modifications for efficiency and to avoid special cases. (e.g. one qword divide)
+; 		Notes:			-	The algorithm is based on Knuths Algorithm D, with some modifications for efficiency and to avoid special cases. (e.g. one qword divide)
 ;							See Knuth Art of Computer Programming, Vol 2, section 4.3.1, pages 272-274.
+;						-	Knuth refers to the divide as u[m] / v[n], where u is the dividend, v is the divisor,
+;							m is the dimension (Nr of qwords) of the dividend, and n is the dimension of the divisor.
+;						-   Each qword of the dividend and divisor is a "digit" in a base 2^64 (referred to as b) number system.
 ;						-	All of the 512 vars are 8 QWORD arrays, or scalars that are used as 8 QWORD arrays, caller must ensure they are 64byte aligned
 ;						-	The 512 bit fields are "Big Endian" in the sense that the most significant qword is at the lowest address,
 ;							and the least significant qword is at the highest address, so that the leading bits of the field are in the first qword,
@@ -52,17 +55,17 @@ rHat			QWORD			?									; trial remainder referred to as rHat in Knuth
 adjustcount		WORD			?									; counter for max adjustments to qHat
 addbackcount	WORD			?									; counter for max number of add backs if overestimated qHat
 									
-mMSB			WORD			?									; indexes and dimensions of dividend (numerator) Note: dimensions are zero-based (0 to 7)
+mMSB			WORD			?									; indices and dimensions of dividend (numerator) Note: dimensions are zero-based (0 to 7)
 mDim			WORD			?
 mIdx			WORD			?	
 mllimit			WORD			?
 
-nMSB			WORD			?									; indexes and dimensions of divisor (denominator)
+nMSB			WORD			?									; indices and dimensions of divisor (denominator)
 nDim			WORD			?									
 nIdx			WORD			?
 nllimit			WORD			?
 
-jDim			WORD			?									; indexes and dimensions of quotient
+jDim			WORD			?									; indices and dimensions of quotient
 jIdx			WORD			?
 jllimit			WORD			?
 
@@ -82,27 +85,18 @@ div_u_Locals	ENDS
 				CheckAlign		R8, @ret							; (in) Dividend
 				CheckAlign		R9, @ret							; (in) Divisor
 
-; clear callers quotient, remainder, and working memory (in frame at RBP)
+; clear working memory (in frame at RBP) Note: Do not clear callers quotient or remainder as the caller may be doing a divide in place,
+; and may have quotient and dividend as the same field, or remainder and divisor as the same field, so use them as they are until we have new values
 	IF __UseZ
-				VPXORQ			ZMM31, ZMM31, ZMM31
-				VMOVDQA64		[ RCX ], ZMM31						; callers quotient
-				VMOVDQA64		[ RDX ], ZMM31						; callers remainder
+				VPXORQ			ZMM31, ZMM31, ZMM31					; clear working area. Note: the locals must be multiple of 8 qwords for this to work without overrun, which they are with the padding at the end of the struct
 				FOR				idx, < 0, 1, 2, 3, 4, 5, 6 >
-					VMOVDQA64		[ RBP ] [ idx * 64 ], ZMM31		; clear working area
-				ENDM
-				
+					VMOVDQA64		[ RBP ] [ idx * 64 ], ZMM31		
+				ENDM				
 	ELSE
 				XOR				RAX, RAX
-				MOV				RDI, RCX							; callers quotient
-				LEA				ECX, [ 8 ]
-				REP				STOSQ								; clear
-				MOV				RDI, RDX							; callers remainder
-				LEA				ECX, [ 8 ]
-				REP				STOSQ								; clear
-
 				MOV				RDI, RBP							; RBP points to stack reserved workspace "div_u_Locals"
-				MOV				ECX, sizeof(div_u_Locals) / 8		; length in QWORDS, Note: structure must be multiple of 8 for this to work
-				REP				STOSQ								; clear working area
+				MOV				ECX, sizeof(div_u_Locals) / 8		; length in QWORDS 
+				REP				STOSQ								; clear working area. Note: the locals must be multiple of 8 for this to work without overrun, which they are with the padding at the end of the struct
 	ENDIF
 ; Examine divisor
 ; Note on msb_u: a returned zero means the most significant bit is bit0 of the eighth word of the 512bit source parameter; (the right most bit in the right most qword)
@@ -141,7 +135,7 @@ div_u_Locals	ENDS
 				AND				AX, 63								; masked down modulo 64 (within one qword)
 				MOV				R8W, 63								; max bits in qword
 				SUB				R8W, AX								; calculate shift count
-				JNZ				@F									; if zero, no normalization needed (means highest bit already on)
+				JNZ				@F									; if zero, no normalization needed (means highest bit in leading qword already on)
 
 				; normalize not needed (zero bits to shift), however still need to copy divisor and dividend to work areas
 				LEA				RCX, l_Ptr.normdivisor				; destination of normalized divisor
@@ -193,7 +187,7 @@ normdivdone:														; putting low into new msb ninth word of currnumerator
 ; We have normalized divisor and dividend, and set up dimensions of each
 ; The leading bit of the normalized divisor is in bit 63 of qword ( 7 - nDim ), thus the first qword of the normalized divisor is >= 0x8000000000000000
 
-; The dividend is in currnumerator, and may be up to one qword longer than before normalization, with the leading bit in bit 62 of qword ( 15 - mDim ),
+; The dividend is in currnumerator, and may be up to one qword longer than before normalization, with the leading bit at most in bit 62 of qword ( 15 - mDim ),
 ; thus the first qword of the normalized dividend is < 0x800000000000000. Check that as normalization may not have performed this shift.
 
 ; Therefor, the first qword of the normalized dividend is always less than the first qword of the normalized divisor, and the first divide
@@ -208,10 +202,10 @@ normdivdone:														; putting low into new msb ninth word of currnumerator
 				MOV				RDX, l_Ptr.normdivisor [ RAX * 8 ]	; get indexed word of divisor (leading non-zero)
 				MOV				l_Ptr.nDiv1, RDX					; will be using repeatedly to determine qHat
 				MOV				RDX, l_Ptr.normdivisor + 8 [ RAX * 8 ]	; get next word of divisor (we know there are at least two words of divisor))
-				MOV				l_Ptr.nDiv2, RDX					; will be using repeatedly to test qHat and rHat, and to adjust qHat if necessary
+				MOV				l_Ptr.nDiv2, RDX					; will be using repeatedly to test qHat and rHat, and to adjust qHat if necessary, so save them
 
-; next, u[m] related stuff.  verify u[mIdx] (currnumerator [ mIdx ]) < v[nIdx] (normdivisor [ nIdx ]), which should be true with proper normalization,
-; but normalization may not have been necessary, possibly leaving the first qword large. If so, need to add a new leading word (zero) for initial qHat calculation
+; next, u[m] related stuff. Verify u[mIdx] aka (currnumerator [ mIdx ]) < v[nIdx] aka (normdivisor [ nIdx ]), which should be true with proper normalization,
+; but normalization may not have been necessary, possibly leaving the first qword large. If so, need to add a new leading word (zero) for initial qHat calculation.
 				LEA				RAX, [ 15 ]
 				SUB				AX, l_Ptr.mDim
 				MOV				RDX, l_Ptr.currnumerator [ RAX * 8 ]	
@@ -225,6 +219,9 @@ normdivdone:														; putting low into new msb ninth word of currnumerator
 ; finally, initialize j related stuff. The quotient is at most mDim - nDim + 1 qwords,
 ; and the first qword of the quotient is generated from the divide of the first two qwords of the dividend by the first qword of the divisor,
 ; so we set jIdx to start at the index corresponding to that first quotient word, which is mIdx + 1
+; The loop is at most 8 - 2 + 1 = 7 iterations and is the worst case in terms of performance.
+; There are around 50 instructions per loop iteration, with one divide and n+1 multiplies (both instructions are relatively expensive), 
+; and the loop is doing at most 7 iterations, so we are well under the 512 instruction budget for this worst case scenario.
 				MOVZX			RAX, l_Ptr.mDim
 				SUB				AX, l_Ptr.nDim						; since nDim <= mDim, this will be from 0 (one qword) to 6 as mDim is 2->8, nDim 2->7
 				MOV				l_Ptr.jDim, AX						; the Nr digits (QWORDS) of quotient is <= mDim - nDim + 1. Set jDim
@@ -248,19 +245,20 @@ normdivdone:														; putting low into new msb ninth word of currnumerator
 
 ; mainloop, the loop, until jIDX reaches limit
 maindivloop:
-				LEA				R14W, [ 4 ]							; max adjustments per qhat generation (shouldnt be needed, but the code just looks like endless loop possible)
+				LEA				R14W, [ 4 ]							; max adjustments per qhat generation (shouldnt be needed, but the code just looks like prolonged loop possible)
 				MOV				l_Ptr.adjustcount, R14W				; save adjustment counter
 				MOV				l_Ptr.addbackcount, R14W			; save addback count count
 
 ; compute qHat and rHat
-; The "hat" notation is from Knuth, and refers to the trial quotient digit (qHat) and trial remainder (rHat).
+; The "hat" notation is from Knuth, and refers to the trial quotient digit (qHat) and trial remainder (rHat). (Math symbol q with a little hat on top to indicate trial quotient digit)
 ; The trial nature of qHat and rHat is because they are calculated from only the leading digits of the current dividend and divisor,
-; and may need to be adjusted down if too large.
-; There are two tests for "too large": (both test are monitored with counters to prevent infinite loops, but that should not happen)
+; and since the other digits of the dividend, or divisor were not consulted, the quotient digit might be too large and may need to be adjusted down.
+; There are two tests for "too large": (both test are monitored with counters to prevent prolonged loops, but that should not happen)
 ; One is if (rHat << 64) + u[j-2] < qHat * v[n-2], then qHat is too large, and needs to be adjusted down.
 ; The second test is later (after multiply and subtract): if we get a borrow, then qHat is too large,
 ; and needs to be adjusted down, and the subtract partially reversed (add back one value of divisor).
 ; The first test is a quick test that catches most overestimates of qHat, and the second test is a slower test that catches any remaining overestimates.
+; If both tests passed, then the quotient digit is correct, save it and move on to next with now reduced numerator (currnumerator).
 				MOVZX			R8, l_Ptr.mIdx						; get mIdx. It is calculated from mDim, which in turn was adjusted for normalization
 				MOV				RDX, l_Ptr.currnumerator [ R8 * 8 ]	; the more significant qword of the 128bit dividend for divide
 				MOV				RAX, l_Ptr.currnumerator + 8 [ R8 * 8 ]	; mIdx + 1 to get low qword of currnumerator for divide
@@ -321,12 +319,13 @@ qhatok:
 				MOVZX			R8, l_Ptr.nllimit					; index of divisor start
 				LEA				R11, l_Ptr.normdivisor [ R8 * 8 ]	; base of divisor at nllimit
 
-; at this point, have base addresses of product (R10) and divisor (R11) indexed to first qword of each,
-; and length of multiply in R9 (decrement to zero) perform multiply of qHat * divisor with product into qdiv in qwords corresponding to currnumerator 
+; at this point, have base addresses of product (R10) and divisor (R11) indexed to first non-zero qword of each,
+; and length of multiply in R9 (decrement to zero). Perform multiply of qHat * divisor with product into qdiv in qwords
+; corresponding to currnumerator qwords that we are subtracting from (starting at mIdx, which is indexed into R10, and going down from there)
 				MOV				R13, l_Ptr.qHat
 @@:				MOV				RAX, [ R11 ] [ R9 * 8 ]				; multiplicand [ idx ] qword -> RAX
 				MUL				R13									; times multiplier -> RAX, RDX
-				ADD				[ R10 ][ 1 * 8 ][ R9 * 8 ], RAX		; add RAX to working product [ idx + 1 ] qword
+				ADD				[ R10 ][ 1 * 8 ][ R9 * 8 ], RAX		; add RAX to working product [ idx + 1 ] qword Note: check bounds of qdiv grok says accessed 16
 				ADC				[ R10 ][ R9 * 8 ], RDX				; and add RDX with carry to [ idx ] qword of working product
 				DEC				R9
 				JGE				@B
@@ -348,7 +347,7 @@ qhatok:
 				JGE				@B
 
 ; This is the second test for whether qHat is too large.
-; If there was borrow from the subtract, need to add back the value of the divisor correct currnumerator, and adjust qHat down by one.
+; If there was borrow from the subtract (indicated by the carry flag), we need to add back the value of the divisor correct currnumerator, and adjust qHat down by one.
 ; Note: if we needed to adjust qHat down, then we know that the current qHat * divisor was too large for the current dividend,
 ; therefore we know that the current dividend is less than the current product, therefore if we subtract one value of the divisor from the dividend we will get a borrow,
 ; and if we add back the divisor to correct for the overestimate, we will get a carry, and the carry should be ignored as it offsets the borrow.
@@ -381,19 +380,19 @@ no_addback:
 				INC				R8W									; quotient index is mIdx + 1
 				MOV				l_Ptr.quotient [ R8 * 8 ], RAX		; store qHat in quotient working copy
 
-; Increment indices
+; Increment indices, check if done with loop -> do next digit if not done
 				INC				l_Ptr.mIdx							; increment mIdx
 				INC				l_Ptr.jIdx							; increment jIdx
 				CMP				l_Ptr.jIdx, 7
 				JL				maindivloop							; loop until jDim > limit (7)
 
-; Unnormalize remainder, move it to caller space
+; We are done. Unnormalize remainder, move it to caller space
 				MOV				RCX, RDXHome						; put remainder at callers remainder
 				LEA				RDX, l_Ptr.currnumerator [ 8 * 8 ]	; using working copy of currnumerator
 				MOV				R8W, l_Ptr.normf					; get normalization factor
 				CALL			shr_u								; shifting right to unnormalize
 
-; Store quotient to callers space
+; Move quotient to callers space
 				MOV				RCX, RCXHome						; callers quotient
 				LEA				RDX, l_Ptr.quotient					; working copy of quotient
 				Copy512			RCX, RDX							; copy quotient to callers area	
@@ -405,11 +404,19 @@ cleanupwretcode:Local_Exit		RDI, R15, R14, R13, R12
 
 ; Exception handling, divide by zero
 divbyzero:
+				MOV				RCX, RCXHome						; callers quotient
+				Zero512			RCX									; quotient is zero
+				MOV				RDX, RDXHome						; callers remainder
+				Zero512			RDX									; remainder is zero
 				LEA				EAX, [ retcode_neg_one ]
 				JMP				cleanupwretcode
 
 ; Exception handling, too many adjustments to qHat
 toomanyadjust:
+				MOV				RCX, RCXHome						; callers quotient
+				Zero512			RCX									; quotient is zero
+				MOV				RDX, RDXHome						; callers remainder
+				Zero512			RDX									; remainder is zero
 				LEA				EAX, [ 0707h ]
 				JMP				cleanupwretcode
 
@@ -426,13 +433,16 @@ divbyone:
 numtoremain:
 				MOV				R8, R8Home							; callers dividend
 				MOV				RDX, RDXHome						; callers remainder
-				Copy512			RDX, R8
+				Copy512			RDX, R8								; copy dividend to remainder
+				MOV				RCX, RCXHome						; callers quotient
+				Zero512			RCX									; quotient is zero
 				JMP				cleanupret
 
 ; Divide of m 64-bit qwords by one 64 bit qword divisor, use the quicker divide routine (div_uT64), and return
 divby64bit:
 				MOV				RCX, RCXHome						; set up parms for call to div by 64bit: RCX - addr of quotient
 				MOV				RDX, RDXHome						; RDX - addr of remainder
+				Zero512			RDX									; clear remainder			
 				MOV				R8, R8Home							; R8 - addr of dividend
 				MOV				RAX, R9Home							; RAX - addr of divisor from caller
 				MOV				R9, Q_PTR [ RAX ] [ 7 * 8 ]			; R9 - value of 64 bit divisor (de reference to get value)

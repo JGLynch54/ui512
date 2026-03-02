@@ -15,36 +15,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <None Include="ui512_addition.asm">
-      <Filter>Source Files</Filter>
-    </None>
-    <None Include="ui512_bitops.asm">
-      <Filter>Source Files</Filter>
-    </None>
-    <None Include="ui512_clear_copy_set.asm">
-      <Filter>Source Files</Filter>
-    </None>
-    <None Include="ui512_compare.asm">
-      <Filter>Source Files</Filter>
-    </None>
-    <None Include="ui512_division.asm">
-      <Filter>Source Files</Filter>
-    </None>
-    <None Include="ui512_global_data.asm">
-      <Filter>Source Files</Filter>
-    </None>
-    <None Include="ui512_multiply.asm">
-      <Filter>Source Files</Filter>
-    </None>
-    <None Include="ui512_shift.asm">
-      <Filter>Source Files</Filter>
-    </None>
-    <None Include="ui512_significance.asm">
-      <Filter>Source Files</Filter>
-    </None>
-    <None Include="ui512_subtraction.asm">
-      <Filter>Source Files</Filter>
-    </None>
     <None Include="includes\ui512_compile_time_options.inc">
       <Filter>Header Files</Filter>
     </None>
@@ -57,5 +27,37 @@
     <None Include="includes\ui512_macros.inc">
       <Filter>Header Files</Filter>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <MASM Include="ui512_addition.asm">
+      <Filter>Source Files</Filter>
+    </MASM>
+    <MASM Include="ui512_bitops.asm">
+      <Filter>Source Files</Filter>
+    </MASM>
+    <MASM Include="ui512_clear_copy_set.asm">
+      <Filter>Source Files</Filter>
+    </MASM>
+    <MASM Include="ui512_compare.asm">
+      <Filter>Source Files</Filter>
+    </MASM>
+    <MASM Include="ui512_division.asm">
+      <Filter>Source Files</Filter>
+    </MASM>
+    <MASM Include="ui512_global_data.asm">
+      <Filter>Source Files</Filter>
+    </MASM>
+    <MASM Include="ui512_multiply.asm">
+      <Filter>Source Files</Filter>
+    </MASM>
+    <MASM Include="ui512_shift.asm">
+      <Filter>Source Files</Filter>
+    </MASM>
+    <MASM Include="ui512_significance.asm">
+      <Filter>Source Files</Filter>
+    </MASM>
+    <MASM Include="ui512_subtraction.asm">
+      <Filter>Source Files</Filter>
+    </MASM>
   </ItemGroup>
 </Project>
