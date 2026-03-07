@@ -174,10 +174,8 @@ div_u_Locals	ENDS
 				JLE				normdivdone							; no
 
 				; Retrieve the shifted out bits, place them in a new leading word of currnumerator
-				MOV				AX, CX
-				AND				AX, 63								; get bit position within qword
-				LEA				CX, [ 63 ]
-				SUB				CL, AL								; get count of bits to shift right to get shifted out bits
+				LEA				CX, [ 64 ]
+				SUB				CX, l_Ptr.normf						; get count of bits to shift right to get shifted out bits
 				MOV				RAX, R8Home
 				MOV				RAX, Q_PTR [ RAX ]					; get most significant qword of original dividend
 				SHR				RAX, CL								; shifted out bits now in low part of RAX
